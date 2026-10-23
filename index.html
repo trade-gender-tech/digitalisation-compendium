@@ -61,8 +61,6 @@
   --body:     #4b5e80;    /* body text */
   --gold:     #fcc97e;    /* primary call to action, highlights on teal */
   --gold-600: #f5b65a;
-  --orange:   #e85c34;    /* How to Use step numbers */
-  --sky:      #e7edf9;    /* secondary button */
 }
 
 /* ---------- Base ---------- */
@@ -197,13 +195,13 @@ body { margin: 0; background: #f5f5f5; }
 /* ---------- How to use + Explore ---------- */
 .cs-howto       { display: flex; align-items: stretch; margin-top: 18px; }
 .cs-howto-step  { display: flex; flex-direction: column; align-items: center; flex: 1; gap: 10px; padding: 22px 14px; text-align: center; background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; }
-.cs-howto-n     { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: var(--orange); color: #fff; font-size: 15px; font-weight: 700; }
+.cs-howto-n     { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: var(--teal); color: #fff; font-size: 15px; font-weight: 700; }
 .cs-howto-title { margin-bottom: 2px; font-size: 13px; font-weight: 700; color: var(--ink); }
 .cs-howto-desc  { font-size: 12px; line-height: 1.6; color: var(--body); }
 .cs-howto-arr   { display: flex; align-items: center; padding: 0 8px; font-size: 22px; color: var(--teal-500); }
 .cs-explore-wrap { padding: 36px 0 52px; text-align: center; background: #fff; border-top: 1px solid #e5e5e5; }
-.btn-explore { padding: 15px 48px; font-size: 15px; font-weight: 700; background: var(--sky); color: var(--navy); border: 1px solid #d3ddf0; border-radius: 4px; cursor: pointer; }
-.btn-explore:hover { background: #dbe4f6; }
+.btn-explore { padding: 15px 48px; font-size: 15px; font-weight: 700; background: var(--teal); color: #fff; border: none; border-radius: 4px; cursor: pointer; box-shadow: 0 4px 16px rgba(0,78,96,0.25); }
+.btn-explore:hover { background: var(--teal-700); }
 
 /* ---------- Database: filters ---------- */
 .db-section { background: #fff; }
