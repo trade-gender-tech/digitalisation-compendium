@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WTO | Digitalisation Compendium</title>
+<link rel="icon" type="image/png" href="images/favicon.png">
+
+<!--
+  =============================================================================
+  EMPOWERING WOMEN TO TRADE THROUGH DIGITALIZATION — POLICY INSIGHTS COMPENDIUM
+  WTO Trade and Gender Office
+
+  Package contents (paths are relative to this file):
+    index.html                        this page
+    data/digitalization_data.json     the questionnaire responses (verbatim), loaded by this page
+    data/digitalization_data.js       the same data as a script, used only when the page is opened from disk
+    images/                           site header/footer, hero background, illustrations
+    vendor/                           third-party libraries and fonts
+    downloads/                        the compendium in Excel, offered in the hero
+    tools/                            questionnaire_to_excel.py and excel_to_json.py (see README.md)
+
+  Works when opened straight from disk (file://) and from any web server.
+
+  Libraries (local copies in vendor/, so the page also works offline):
+    Bootstrap 3.4.1          on wto.org, replace bootstrap.min.css with wto.css; its JS runs the detail pop-up
+    jQuery 3.7.1             the page script is plain ES5 and also runs on jQuery 1.12+
+    bootstrap-select 1.13.18 searchable filter dropdowns
+    Open Sans                page font (vendor/open-sans/)
+  The charts are plain HTML/CSS bars drawn by the page script (no chart library).
+
+  Page layout:
+    site header (image)   →  replaced by the WTO site header on wto.org
+    main.digi-compendium  →  breadcrumbs, hero, Background & respondents panel, Questionnaire Themes,
+                             Key Findings, Insights from Other Stakeholders,
+                             How to Use, database (Response / Question / Matrix views)
+    site footer (image)   →  replaced by the WTO site footer on wto.org
+  =============================================================================
+-->
+
+<link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="vendor/bootstrap-select/css/bootstrap-select.min.css">
+<link rel="stylesheet" href="vendor/open-sans/open-sans.css">
+
+<style>
+/* Colours: teal palette of the WTO trade and gender databases. All colours are tokens (below), so the theme
+   can be changed in one place. Chart dots (validated for colour-vision deficiency): #00566a (finding),
+   #62b3bd (partial answer), #e0e3e6 (the rest); every dot row also has a written legend with counts. */
+.digi-compendium, #detailModal, #vizTip {
+  --teal-900: #003e4a;    /* darkest: hero and panel gradients */
+  --teal-800: #004e5a;
+  --teal-700: #004e60;    /* table headers, figures */
+  --teal:     #006072;    /* main: results bar, buttons, bars */
+  --teal-600: #00667e;    /* links, small headings, arrows */
+  --teal-500: #0f9099;    /* accent bars and borders */
+  --teal-100: #ccedf0;    /* tag fill */
+  --teal-50:  #e6f3f4;    /* hover fill */
+  --teal-ink: #185870;    /* text on tag fill */
+  --navy:     #00187b;    /* section headings, titles */
+  --ink:      #14295c;    /* dark text */
+  --body:     #4b5e80;    /* body text */
+  --gold:     #fcc97e;    /* primary call to action, highlights on teal */
+  --gold-600: #f5b65a;
+  --orange:   #e85c34;    /* How to Use step numbers */
+  --sky:      #e7edf9;    /* secondary button */
+}
+
+/* ---------- Base ---------- */
+body { margin: 0; background: #f5f5f5; }
+.digi-compendium { background: #f5f5f5; color: #333; font-family: 'Open Sans', Arial, sans-serif; font-size: 14px; }
+.digi-compendium *, .digi-compendium *::before, .digi-compendium *::after { box-sizing: border-box; }
+.digi-compendium h1, .digi-compendium h2, .digi-compendium h3 { font-family: inherit; margin-top: 0; }
+.page-wrap { max-width: 1200px; margin: 0 auto; padding: 0 25px 40px 26px; }
+
+/* ---------- Site header / footer / breadcrumbs ---------- */
+.site-header img, .site-footer img { display: block; width: 100%; height: auto; }
+#breadcrumbsDiv    { padding: 10px 0 8px 12px; font-size: 11px; color: #444; background: #f0f0f0; border-bottom: 1px solid #e0e0e0; }
+#breadcrumbsDiv ol { display: flex; flex-wrap: wrap; align-items: center; margin: 0; padding: 0; list-style: none; }
+#breadcrumbsDiv li { display: flex; align-items: center; }
+#breadcrumbsDiv li + li::before { content: "\2192"; margin: 0 6px; color: var(--teal); }
+#breadcrumbsDiv a  { color: var(--teal); text-decoration: none; }
+#breadcrumbsDiv span { color: #555; }
+
+/* ---------- Hero ---------- */
+.cs-hero {
+  background:
+    linear-gradient(to right, rgba(0,52,62,0.90) 0%, rgba(0,52,62,0.80) 32%, rgba(0,52,62,0.38) 50%, rgba(0,52,62,0.06) 62%, transparent 70%),
+    url('images/hero.png') right center/cover no-repeat,
+    linear-gradient(130deg, var(--teal-900) 0%, var(--teal) 45%, var(--teal) 100%);
+  background-blend-mode: normal, luminosity, normal;   /* the image takes the teal colour of the layer below */
+  padding: 36px 36px 30px; color: #fff; overflow: hidden;
+}
+.cs-hero-content { max-width: 56%; }
+.cs-kicker  { display: block; margin-bottom: 12px; padding-left: 10px; border-left: 3px solid var(--gold); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.72); }
+.cs-hero h1 { margin-bottom: 8px; font-size: 31px; font-weight: 700; line-height: 1.25; color: #fff; }
+.cs-tagline { margin-bottom: 30px; font-size: 15px; color: rgba(255,255,255,0.78); }
+.cs-stats    { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 30px; }
+.cs-stat     { flex: 1; min-width: 110px; padding: 16px 12px; text-align: center; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; }
+.cs-stat-num { display: block; font-size: 34px; font-weight: 700; line-height: 1; color: #fff; }
+.cs-stat-lbl { display: block; margin-top: 7px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: rgba(255,255,255,0.68); }
+.cs-dl-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 24px; }
+.cs-dl-explore { padding: 11px 20px; font-size: 13px; font-weight: 700; background: var(--gold); color: #10202a; border: none; border-radius: 4px; cursor: pointer; box-shadow: 0 4px 16px rgba(0,0,0,0.18); }
+.cs-dl-explore:hover { background: var(--gold-600); }
+.cs-dl { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 17px; font-size: 13px; font-weight: 700; text-decoration: none; background: rgba(255,255,255,0.06); color: #fff; border: 1.5px solid rgba(255,255,255,0.75); border-radius: 4px; }
+.cs-dl::before { content: '\2193'; }
+.cs-dl:hover { background: rgba(255,255,255,0.16); color: #fff; text-decoration: none; }
+
+/* ---------- Sections ---------- */
+.cs-section        { padding: 34px 36px; background: #fff; border-top: 1px solid #e5e5e5; }
+.cs-section.cs-alt { background: #f6f6f6; }
+.cs-head    { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+.cs-bar     { width: 4px; height: 26px; flex-shrink: 0; background: var(--teal-500); border-radius: 2px; }
+.cs-head h2 { margin: 0; font-size: 20px; font-weight: 700; color: var(--navy); }
+.cs-lead    { margin: 14px 0 0; font-size: 15px; line-height: 1.7; color: var(--body); }
+.cs-sub { display: block; margin: 26px 0 13px; padding-bottom: 7px; border-bottom: 1px solid #e0e0e0; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--teal-600); }
+
+/* ---------- Who responded ---------- */
+/* Respondents panel: total on the left; one row per region (and one for other stakeholders)
+   with one dot per respondent and their names */
+.reach { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 28px; margin-top: 24px; padding: 26px 30px; color: #fff;
+         background: linear-gradient(120deg, rgba(0,52,62,0.97) 0%, rgba(0,78,90,0.94) 55%, rgba(0,110,124,0.90) 100%), url('images/hero.png') right center/cover no-repeat;
+         border-radius: 12px; box-shadow: 0 8px 28px rgba(0,52,62,0.18); }
+.reach-total { display: flex; flex-direction: column; justify-content: center; padding-right: 24px; border-right: 1px solid rgba(255,255,255,0.18); }
+.reach-num   { font-size: 64px; font-weight: 800; line-height: 1; letter-spacing: -2px; }
+.reach-lbl   { margin-top: 4px; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.85); }
+.reach-sub   { margin-top: 14px; font-size: 12.5px; line-height: 1.7; color: rgba(255,255,255,0.72); }
+.reach-sub b { color: #fff; }
+.reach-rows  { display: flex; flex-direction: column; }
+.reach-row   { display: grid; grid-template-columns: 200px 132px minmax(0, 1fr); align-items: center; gap: 16px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.12); }
+.reach-row:last-child { border-bottom: none; }
+.reach-region { font-size: 13px; font-weight: 700; line-height: 1.3; }
+.reach-region small { display: block; margin-top: 1px; font-size: 11px; font-weight: 400; color: rgba(255,255,255,0.65); }
+.reach-dots  { display: flex; flex-wrap: wrap; gap: 5px; }
+.reach-dot   { width: 13px; height: 13px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 2px rgba(255,255,255,0.15); }
+.reach-row.is-other .reach-dot { background: var(--gold); }
+.reach-row.is-other { margin-top: 6px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.3); }
+.reach-row > * { min-width: 0; }
+.reach-names { display: flex; flex-wrap: wrap; gap: 2px 0; font-size: 13px; line-height: 1.55; color: rgba(255,255,255,0.92); }
+.reach-names span:not(:last-child)::after { content: "·"; margin: 0 7px; color: rgba(255,255,255,0.45); } /* separator stays at line ends */
+
+/* ---------- Questionnaire themes (always shown) ---------- */
+.cs-pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 16px; }
+.cs-pillar { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 22px 16px; text-align: center; background: #fff; border: 1px solid #e0e0e0; border-top: 4px solid var(--teal-500); border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.cs-pillar img  { width: 72px; height: 72px; object-fit: contain; }
+.cs-pillar-top  { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.cs-pillar-n    { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 50%; background: linear-gradient(135deg, var(--teal-700) 0%, var(--teal-600) 100%); color: #fff; font-size: 13px; font-weight: 800; }
+.cs-pillar-text { font-size: 14px; font-weight: 600; color: var(--navy); }
+.cs-pillar-count { padding: 2px 8px; font-size: 11px; font-weight: 700; color: var(--teal); background: rgba(0,96,114,0.08); border: 1px solid rgba(0,96,114,0.2); border-radius: 10px; }
+.cs-pillar-desc { width: 100%; padding-top: 10px; border-top: 1px solid rgba(0,0,0,0.07); font-size: 12px; line-height: 1.6; text-align: left; color: var(--body); }
+
+/* ---------- About: objectives ---------- */
+.obj-grid  { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 4px; }
+.obj-card  { display: flex; gap: 16px; padding: 18px; background: #fff; border: 1px solid #e3e8ee; border-radius: 8px; }
+.obj-card img { width: 72px; height: 72px; flex-shrink: 0; object-fit: contain; }
+.obj-title { margin: 0 0 5px; font-size: 14px; font-weight: 700; color: var(--navy); }
+.obj-text  { margin: 0; font-size: 12.5px; line-height: 1.6; color: var(--body); }
+.cs-lead.is-after { margin-top: 22px; }
+
+/* ---------- What the responses show: one card per finding, 18 dots = 18 WTO Members ---------- */
+.fd-grid   { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 20px; }
+.fd-card   { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 4px 18px; padding: 20px 22px; background: #fff; border: 1px solid #e0e6ed; border-left: 4px solid var(--teal-500); border-radius: 8px; }
+.fd-figure { grid-row: span 3; display: flex; flex-direction: column; align-items: flex-start; }
+.fd-num    { font-size: 44px; font-weight: 800; line-height: 1; letter-spacing: -1px; color: var(--teal-700); }
+.fd-of     { margin-top: 4px; font-size: 11px; font-weight: 600; line-height: 1.35; text-transform: uppercase; letter-spacing: 0.05em; color: #7a8a99; }
+.fd-head   { margin: 0; font-size: 15px; font-weight: 700; line-height: 1.45; color: var(--navy); }
+.fd-sub    { margin: 2px 0 0; font-size: 12.5px; line-height: 1.55; color: var(--body); }
+.fd-dots   { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 10px; }
+.fd-dot    { width: 12px; height: 12px; border-radius: 50%; }
+.fd-legend { display: flex; flex-wrap: wrap; gap: 3px 14px; margin-top: 6px; font-size: 11.5px; color: #5a6e7f; }
+.fd-legend span { display: inline-flex; align-items: center; gap: 5px; }
+.fd-legend i { width: 9px; height: 9px; border-radius: 50%; }
+
+/* ---------- Bar chart (Question view) and tooltip ---------- */
+.hb-row   { display: grid; grid-template-columns: minmax(0, 42%) minmax(0, 1fr); align-items: center; gap: 4px 12px; padding: 5px 0; }
+.hb-label { font-size: 12px; line-height: 1.35; color: #33475b; }
+.hb-bars  { display: flex; flex-direction: column; gap: 3px; }
+.hb-line  { display: grid; grid-template-columns: minmax(0, 1fr) 26px; align-items: center; gap: 6px; outline: none; } /* track | value */
+.hb-track { min-width: 0; }
+.hb-bar   { height: 14px; min-width: 2px; background: var(--teal); border-radius: 0 4px 4px 0; }   /* width = exact share of the track */
+.hb-line:hover .hb-bar, .hb-line:focus .hb-bar { filter: brightness(1.15); }
+.hb-val   { font-size: 12px; font-weight: 700; color: var(--ink); }
+.hb-scale { display: grid; grid-template-columns: minmax(0, 42%) minmax(0, 1fr); gap: 12px; margin-top: 6px; padding-right: 32px; font-size: 10.5px; color: #8a97a4; }
+.hb-scale div + div { border-top: 1px solid #e6eaef; padding-top: 4px; }
+#vizTip { position: fixed; z-index: 10000; max-width: 340px; padding: 9px 12px; font-size: 12px; line-height: 1.5; white-space: pre-line; color: #fff; background: rgba(0,40,48,0.96); border-radius: 6px; pointer-events: none; opacity: 0; transition: opacity 0.12s; }
+#vizTip.show { opacity: 1; }
+#vizTip b { display: block; font-size: 14px; }
+
+/* ---------- Other stakeholders ---------- */
+.sh-band   { margin: 18px -36px 0; padding: 30px 36px 32px; background: linear-gradient(130deg, var(--teal-900) 0%, var(--teal) 55%, var(--teal-600) 100%); }
+.sh-quotes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.sh-quote  { display: flex; flex-direction: column; gap: 12px; margin: 0; padding: 22px 24px 20px; color: #fff; background: rgba(255,255,255,0.09); border: 1px solid rgba(255,255,255,0.18); border-radius: 10px; }
+.sh-quote-topic { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gold); }
+.sh-quote blockquote { position: relative; margin: 0; padding: 0 0 0 30px; border: none; font-size: 17px; font-weight: 600; line-height: 1.5; color: #fff; }
+.sh-quote blockquote::before { content: "\201C"; position: absolute; left: 0; top: -10px; font-size: 48px; font-weight: 700; line-height: 1; color: var(--gold); }
+.sh-quote figcaption { margin-top: auto; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.18); font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.85); }
+.sh-quote figcaption small { display: block; font-weight: 400; color: rgba(255,255,255,0.6); }
+/* ---------- How to use + Explore ---------- */
+.cs-howto       { display: flex; align-items: stretch; margin-top: 18px; }
+.cs-howto-step  { display: flex; flex-direction: column; align-items: center; flex: 1; gap: 10px; padding: 22px 14px; text-align: center; background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; }
+.cs-howto-n     { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: var(--orange); color: #fff; font-size: 15px; font-weight: 700; }
+.cs-howto-title { margin-bottom: 2px; font-size: 13px; font-weight: 700; color: var(--ink); }
+.cs-howto-desc  { font-size: 12px; line-height: 1.6; color: var(--body); }
+.cs-howto-arr   { display: flex; align-items: center; padding: 0 8px; font-size: 22px; color: var(--teal-500); }
+.cs-explore-wrap { padding: 36px 0 52px; text-align: center; background: #fff; border-top: 1px solid #e5e5e5; }
+.btn-explore { padding: 15px 48px; font-size: 15px; font-weight: 700; background: var(--sky); color: var(--navy); border: 1px solid #d3ddf0; border-radius: 4px; cursor: pointer; }
+.btn-explore:hover { background: #dbe4f6; }
+
+/* ---------- Database: filters ---------- */
+.db-section { background: #fff; }
+#db-error   { display: none; padding: 40px; text-align: center; color: #c00; }
+.filter-panel    { padding: 20px 24px 16px; border-bottom: 1px solid #e0e0e0; }
+.filter-panel h2 { margin-bottom: 16px; font-size: 18px; font-weight: 700; color: var(--teal); }
+.search-row { display: flex; margin-bottom: 18px; }
+.search-row input { flex: 1; min-width: 0; height: 38px; padding: 0 12px; font-size: 14px; font-family: inherit; background: #f2f1f0; border: none; outline: none; }
+.search-icon-btn { display: flex; align-items: center; justify-content: center; width: 42px; height: 38px; background: var(--teal); border: none; }
+.search-icon-btn svg { width: 18px; height: 18px; }
+.filter-group-title { grid-column: 1 / -1; margin: 4px 0 -4px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--teal-600); }
+.filter-grid  { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px 20px; margin-bottom: 16px; }
+.filter-item  { min-width: 0; }
+.filter-item label { display: block; margin-bottom: 5px; font-size: 13px; font-weight: 700; color: #222; }
+.filter-actions { display: flex; justify-content: center; }
+.btn-clear { padding: 9px 32px; font-size: 14px; font-weight: 600; color: #fff; background: var(--teal); border: none; cursor: pointer; }
+.filter-item .bootstrap-select, .filter-item .bootstrap-select.btn-group { display: block !important; width: 100% !important; }
+.filter-item .bootstrap-select > .dropdown-toggle { position: relative; width: 100% !important; height: 48px; padding: 0 14px !important; line-height: 48px !important; font-size: 14px; color: #999 !important; background: #f2f1f0 !important; border: none !important; border-radius: 0 !important; box-shadow: none !important; }
+.filter-item .bootstrap-select.has-real-value > .dropdown-toggle { color: #222 !important; }
+.filter-item .bootstrap-select.disabled > .dropdown-toggle { opacity: 0.55; }
+.filter-item .bootstrap-select > .dropdown-toggle .filter-option { float: none !important; height: 48px; padding-right: 48px; line-height: 48px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.filter-item .bootstrap-select > .dropdown-toggle .filter-option-inner-inner { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.filter-item .bootstrap-select .caret { display: none !important; }
+.filter-item .bootstrap-select > .dropdown-toggle::after { content: "\25BC"; position: absolute; top: 0; right: 0; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fff; background: var(--teal); border: none; margin: 0; }
+.bootstrap-select .dropdown-menu { min-width: 100%; padding: 0 !important; border-radius: 0 !important; z-index: 9000 !important; }
+.bootstrap-select .dropdown-menu li a { padding: 9px 14px !important; font-size: 13px !important; line-height: 1.45; white-space: normal; }
+.bootstrap-select .dropdown-menu li a span.text { white-space: normal; }
+.bootstrap-select .dropdown-menu li.selected a { color: #fff !important; background: var(--teal) !important; }
+.bootstrap-select .dropdown-menu li.selected a small.text-muted { color: rgba(255,255,255,0.8) !important; }
+.bootstrap-select .dropdown-menu li.dropdown-header { padding: 8px 14px 4px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--teal-600); }
+.info-icon { display: inline-flex; align-items: center; justify-content: center; position: relative; width: 16px; height: 16px; margin-left: 4px; vertical-align: middle; font-family: Georgia, serif; font-size: 10px; font-weight: 700; font-style: italic; color: var(--teal); border: 1.5px solid var(--teal); border-radius: 50%; cursor: pointer; }
+.info-icon::after { content: attr(data-tooltip); position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); z-index: 9999; width: 260px; padding: 10px 14px; font-family: 'Open Sans', Arial, sans-serif; font-size: 12px; font-weight: 400; font-style: normal; line-height: 1.5; color: #333; background: #fff; border: 1px solid #ccc; border-radius: 4px; opacity: 0; visibility: hidden; pointer-events: none; }
+.info-icon:hover::after, .info-icon:focus::after { opacity: 1; visibility: visible; }
+
+/* ---------- Database: stats, results bar, tabs ---------- */
+.stats-bar { display: flex; gap: 1px; background: #e0e0e0; border-bottom: 1px solid #e0e0e0; }
+.stat-box  { flex: 1; padding: 14px 20px; text-align: center; background: #fff; }
+.stat-num  { display: block; font-size: 28px; font-weight: 700; line-height: 1; color: var(--teal); }
+.stat-lbl  { display: block; margin-top: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: #888; }
+.results-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 14px 8px 24px; color: #fff; background: linear-gradient(135deg, var(--teal-700) 0%, var(--teal) 100%); }
+.results-text { font-size: 14px; font-weight: 700; }
+.view-tabs { display: flex; gap: 4px; }
+.view-tab  { display: inline-flex; align-items: center; gap: 7px; padding: 7px 14px; font-size: 13px; font-weight: 600; font-family: inherit; color: #fff; background: transparent; border: 1px solid rgba(255,255,255,0.4); cursor: pointer; }
+.view-tab.active { color: var(--teal-700); background: #fff; border-color: #fff; }
+.view-hint { padding: 10px 24px; font-size: 12.5px; color: #5a6e7f; background: #f6f8fa; border-bottom: 1px solid #e3e8ee; }
+.view-empty { padding: 40px 24px; text-align: center; color: #5a6e7f; }
+
+/* ---------- Answers ---------- */
+.tag { display: inline-block; max-width: 100%; padding: 3px 9px; font-size: 11.5px; font-weight: 600; line-height: 1.4; white-space: normal; color: var(--teal-ink); background: var(--teal-100); border-radius: 3px; }
+.tag-group { color: #5a4413; background: #fcedd2; }
+.tag-area  { color: #1c3f7a; background: #d8e7fc; }
+.tags      { display: flex; flex-wrap: wrap; gap: 5px; }
+.ans-note  { margin-top: 8px; }
+.ans-prompt { display: block; overflow: hidden; margin-bottom: 3px; font-size: 11px; color: #8a97a4; text-overflow: ellipsis; white-space: nowrap; }
+.ans-text  { font-size: 13px; line-height: 1.65; white-space: pre-line; overflow-wrap: anywhere; }
+.ans-text a { color: var(--teal); text-decoration: underline; }
+.ans-empty { font-size: 12px; font-style: italic; color: #8a97a4; }
+mark { padding: 0 1px; background: #ffe08a; }
+.q-code { display: inline-block; min-width: 34px; margin-right: 6px; font-size: 11px; font-weight: 800; color: var(--teal-600); }
+
+/* ---------- Response view ---------- */
+.rv-wrap  { display: grid; grid-template-columns: 270px minmax(0, 1fr); min-height: 420px; }
+.rv-list  { position: sticky; top: 0; align-self: start; max-height: 85vh; overflow-y: auto; background: #f8f9fb; border-right: 1px solid #e3e8ee; }
+.rv-list-group { padding: 12px 16px 6px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--teal-600); }
+.rv-item  { display: block; width: 100%; padding: 9px 16px; text-align: left; font-family: inherit; background: transparent; border: none; border-left: 3px solid transparent; cursor: pointer; }
+.rv-item:hover { background: var(--teal-50); }
+.rv-item.active { background: #fff; border-left-color: var(--teal-500); }
+.rv-item-name { display: block; font-size: 13px; font-weight: 600; color: var(--ink); }
+.rv-item-area { display: block; font-size: 11px; color: #7a8a99; }
+.rv-select { display: none; margin-bottom: 12px; }
+.rv-select select { width: 100%; height: 40px; padding: 0 10px; font-size: 14px; background: #fff; border: 1px solid #cfd7e0; }
+.rv-main  { min-width: 0; padding: 22px 28px 30px; }
+.rv-nav   { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+.rv-nav-btn { padding: 6px 14px; font-size: 12.5px; font-weight: 600; color: var(--teal-700); background: #fff; border: 1px solid #c9d6e4; cursor: pointer; }
+.rv-nav-btn:disabled { color: #aab4be; cursor: default; }
+.rv-nav-pos { font-size: 12px; color: #7a8a99; }
+.rv-head  { padding-bottom: 14px; border-bottom: 2px solid var(--teal-500); }
+.rv-name  { margin: 6px 0 8px; font-size: 24px; font-weight: 700; color: var(--navy); }
+.rv-info  { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 3px 14px; margin: 0; font-size: 12.5px; }
+.rv-info dt { font-weight: 600; color: #5a6e7f; }
+.rv-info dd { margin: 0; overflow-wrap: anywhere; }
+.rv-theme { margin: 24px 0 4px; padding-bottom: 6px; border-bottom: 1px solid #e0e0e0; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--teal-600); }
+.rv-q     { padding: 14px 0; border-bottom: 1px solid #eef0f3; }
+.rv-q-text { margin-bottom: 8px; font-size: 13px; font-weight: 700; line-height: 1.5; color: var(--navy); }
+.rv-q.flash { animation: rv-flash 1.6s ease; }
+@keyframes rv-flash { 0%, 40% { background: #fff6d6; } 100% { background: transparent; } }
+
+/* ---------- Question view ---------- */
+.qv-list  { padding: 18px 20px 24px; background: #f5f6f8; }
+.qv-card  { margin-bottom: 18px; padding: 20px 22px 14px; background: #fff; border: 1px solid #e0e6ed; border-radius: 8px; }
+.qv-meta  { margin-bottom: 4px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--teal-600); }
+.qv-q     { margin: 0 0 14px; font-size: 14.5px; font-weight: 700; line-height: 1.5; color: var(--navy); }
+.qv-chart { margin-bottom: 14px; padding: 12px 14px; background: #f8f9fb; border-radius: 6px; }
+.qv-chart-note { margin-bottom: 6px; font-size: 11px; color: #7a8a99; }
+.qv-row   { display: grid; grid-template-columns: 190px minmax(0, 1fr); align-items: start; gap: 6px 18px; padding: 12px 0; border-top: 1px solid #eef0f3; }
+.qv-row.is-hidden { display: none; }
+.qv-who   { padding: 0; text-align: left; font-family: inherit; font-size: 13px; font-weight: 700; color: var(--teal); background: none; border: none; cursor: pointer; }
+.qv-who small { display: block; font-size: 11px; font-weight: 400; color: #7a8a99; }
+.qv-body  { min-width: 0; }
+.qv-body .ans-text.clamped { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+.qv-more, .qv-all { padding: 0; margin-top: 4px; font-size: 12px; font-weight: 600; color: var(--teal); background: none; border: none; cursor: pointer; }
+.qv-all   { display: block; width: 100%; padding: 9px 0; border-top: 1px solid #eef0f3; }
+
+/* ---------- Matrix view ---------- */
+.mx-group { padding: 16px 20px 6px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink); }
+.mx-wrap  { max-height: 80vh; margin: 0 20px 20px; overflow: auto; border: 1px solid #dfe5ec; }
+.mx-table { border-collapse: separate; border-spacing: 0; font-size: 12px; }
+.mx-table th, .mx-table td { width: 230px; min-width: 230px; max-width: 230px; padding: 9px 10px; vertical-align: top; text-align: left; border-right: 1px solid #e6eaef; border-bottom: 1px solid #e6eaef; }
+.mx-table thead th { position: sticky; top: 0; z-index: 2; color: #fff; background: var(--teal-700); font-weight: 600; }
+.mx-qtext { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; margin-top: 3px; font-size: 11px; font-weight: 400; line-height: 1.4; color: rgba(255,255,255,0.85); }
+.mx-table thead .q-code { color: var(--gold); }
+.mx-table .mx-name { position: sticky; left: 0; z-index: 1; width: 170px; min-width: 170px; max-width: 170px; font-weight: 700; color: var(--ink); background: #fff; }
+.mx-table thead .mx-name { z-index: 3; color: #fff; background: var(--teal-700); }
+.mx-name small { display: block; font-weight: 400; color: #7a8a99; }
+.mx-cell  { cursor: pointer; outline: none; }
+.mx-cell:hover, .mx-cell:focus { background: var(--teal-50); }
+.mx-cell .tag { padding: 2px 7px; font-size: 11px; }
+.mx-excerpt { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; font-size: 11.5px; line-height: 1.5; overflow-wrap: anywhere; }
+.mx-has-note { display: inline-block; margin-top: 6px; font-size: 10.5px; font-weight: 700; color: var(--teal-600); }
+/* Long cells are cut at 150px (fade + hint); the click pop-up shows everything */
+.mx-inner { position: relative; max-height: 150px; overflow: hidden; }
+.mx-inner.is-cut { -webkit-mask-image: linear-gradient(#000 70%, transparent); mask-image: linear-gradient(#000 70%, transparent); }
+.mx-cut-hint { display: block; margin-top: 4px; font-size: 10.5px; font-weight: 700; color: var(--teal); }
+
+/* ---------- Detail pop-up ---------- */
+#detailModal .modal-header { color: #fff; background: var(--teal); }
+#detailModal .modal-header .close { color: #fff; opacity: 0.85; }
+#detailModal .modal-title small { display: block; font-size: 12px; color: rgba(255,255,255,0.8); }
+#detailModal .modal-body, #detailModal .modal-title { font-family: 'Open Sans', Arial, sans-serif; }
+#detailModal .dm-q { margin-bottom: 12px; font-size: 13.5px; font-weight: 700; color: var(--teal-700); }
+.btn-open-response { padding: 8px 18px; font-weight: 600; color: #fff; background: var(--teal-500); border: none; border-radius: 4px; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1024px) {
+  .cs-hero-content { max-width: 66%; }
+  .cs-section { padding: 28px; }
+  .sh-band { margin: 18px -28px 0; padding: 26px 28px 28px; }
+  .cs-pillars, .filter-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .rv-wrap { grid-template-columns: 220px minmax(0, 1fr); }
+  .reach { grid-template-columns: 180px minmax(0, 1fr); gap: 22px; }
+  .reach-row { grid-template-columns: minmax(0, 1fr) auto; gap: 6px 16px; }
+  .reach-names { grid-column: 1 / -1; }
+  .filter-item label { position: relative; } .info-icon { position: static; }
+  .info-icon::after { left: 0; right: 0; width: auto; transform: none; }
+}
+@media (max-width: 768px) {
+  .page-wrap { padding: 0 12px 32px; }
+  .cs-hero { background: linear-gradient(rgba(0,52,62,0.9), rgba(0,52,62,0.86)), url('images/hero.png') 72% center/cover no-repeat, var(--teal-900); background-blend-mode: normal, luminosity, normal; padding: 26px 20px 30px; }
+  .cs-hero-content { max-width: 100%; }
+  .cs-hero h1 { font-size: 24px; }
+  .cs-section { padding: 24px 20px; }
+  .sh-quotes, .obj-grid, .fd-grid { grid-template-columns: minmax(0, 1fr); }
+  .reach { grid-template-columns: minmax(0, 1fr); gap: 16px; padding: 22px 20px; }
+  .reach-total { flex-direction: row; flex-wrap: wrap; justify-content: flex-start; align-items: baseline; gap: 4px 12px; padding: 0 0 14px; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.18); }
+  .reach-num { font-size: 44px; } .reach-sub { width: 100%; margin-top: 2px; }
+
+  .sh-band { margin: 18px -20px 0; padding: 22px 20px 24px; }
+  .sh-quote blockquote { font-size: 15px; }
+  .cs-howto { flex-direction: column; gap: 10px; } .cs-howto-arr { display: none; }
+  .stats-bar { flex-wrap: wrap; } .stat-box { flex: 1 1 calc(50% - 1px); }
+  .rv-wrap { grid-template-columns: minmax(0, 1fr); }
+  .rv-list { display: none; } .rv-select { display: block; }
+  .rv-main { padding: 16px; }
+  .qv-list { padding: 12px 10px; } .qv-row { grid-template-columns: minmax(0, 1fr); }
+  .mx-wrap { margin: 0 10px 16px; }
+}
+@media (max-width: 480px) {
+  .page-wrap { padding: 0 0 24px; }
+  .cs-hero { padding: 20px 16px 24px; } .cs-hero h1 { font-size: 20px; }
+  .cs-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .cs-stat-num { font-size: 22px; }
+  .cs-dl-row { grid-template-columns: minmax(0, 1fr); }
+  .cs-section { padding: 20px 16px; }
+  .cs-pillars, .filter-grid { grid-template-columns: minmax(0, 1fr); }
+  .obj-card { flex-direction: column; gap: 10px; } .obj-card img { width: 56px; height: 56px; }
+  .fd-card { grid-template-columns: minmax(0, 1fr); padding: 16px; } .fd-figure { grid-row: auto; flex-direction: row; align-items: baseline; gap: 8px; }
+  .reach { padding: 18px 16px; } .reach-row { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .sh-band { margin: 18px -16px 0; padding: 20px 16px 22px; }
+  .hb-row, .hb-scale { grid-template-columns: minmax(0, 1fr); gap: 3px; }
+  .btn-explore { width: 100%; padding: 13px 28px; }
+  .view-tabs { width: 100%; } .view-tab { flex: 1; justify-content: center; padding: 7px 4px; font-size: 12px; }
+  .rv-info { grid-template-columns: minmax(0, 1fr); }
+  .mx-table th, .mx-table td { width: 190px; min-width: 190px; max-width: 190px; }
+  .mx-table .mx-name { width: 120px; min-width: 120px; max-width: 120px; }
+}
+</style>
+</head>
+<body>
+
+<!-- WTO SITE HEADER — web team: replace with the standard WTO site header -->
+<header class="site-header"><img src="images/site-header.png" alt="World Trade Organization — Women and Trade"></header>
+
+<main class="digi-compendium">
+<div class="page-wrap">
+
+  <nav id="breadcrumbsDiv" aria-label="Breadcrumb">
+    <ol>
+      <li><a href="/index.htm">home</a></li>
+      <li><a href="/english/tratop_e/tratop_e.htm">trade topics</a></li>
+      <li><a href="/english/tratop_e/womenandtrade_e/womenandtrade_e.htm">women and trade</a></li>
+      <li><span>database: digitalisation compendium</span></li>
+    </ol>
+  </nav>
+
+  <!-- HERO (figures recalculated from the data) -->
+  <section class="cs-hero">
+    <div class="cs-hero-content">
+      <span class="cs-kicker">Informal Working Group on Trade and Gender &middot; Informal Working Group on MSMEs</span>
+      <h1>Empowering Women to Trade through Digitalisation: Policy Insights</h1>
+      <p class="cs-tagline">Trade policies, initiatives and programmes that support women, including women-led MSMEs, in all trade-related aspects of digitalisation</p>
+      <div class="cs-stats">
+        <div class="cs-stat"><span class="cs-stat-num" id="hero-responses">–</span><span class="cs-stat-lbl">Responses</span></div>
+        <div class="cs-stat"><span class="cs-stat-num" id="hero-members">–</span><span class="cs-stat-lbl">WTO Members</span></div>
+        <div class="cs-stat"><span class="cs-stat-num" id="hero-stakeholders">–</span><span class="cs-stat-lbl">Other Stakeholders</span></div>
+        <div class="cs-stat"><span class="cs-stat-num" id="hero-regions">–</span><span class="cs-stat-lbl">Regions</span></div>
+      </div>
+      <div class="cs-dl-row">
+        <button type="button" class="cs-dl-explore" id="btnExploreDbTop">Explore Compendium &rarr;</button>
+        <a href="downloads/digitalization-compendium.xlsx" class="cs-dl" download>Download Compendium (Excel)</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT THE COMPENDIUM — launch, rationale and objectives, from the joint proposal
+       WT/MIN(26)/4 • INF/TGE/COM/13/Rev.1 • INF/MSME/W/68/Rev.1 (27 February 2026) -->
+  <section class="cs-section">
+    <div class="cs-head"><div class="cs-bar"></div><h2>About the Compendium</h2></div>
+    <p class="cs-lead">Launched at the WTO's Fourteenth Ministerial Conference (MC14) in Yaoundé, at a side event on 25 March 2026, the Compendium is a joint initiative of the Informal Working Group on Trade and Gender and the Informal Working Group on MSMEs. It was proposed in a joint communication of 27 February 2026 (WT/MIN(26)/4 &bull; INF/TGE/COM/13/Rev.1 &bull; INF/MSME/W/68/Rev.1) by the Co-Chairs of the Informal Working Group on Trade and Gender, Ambassador Ana Patricia Benedetti (El Salvador), Ambassador James Baxter (Australia) and Ambassador Clara Delgado (Cabo Verde), and the Coordinator of the Informal Working Group on MSMEs, Ambassador Matthew Wilson (Barbados). It supports the implementation of the IWG Work Plan 2025&ndash;2026 (INF/TGE/W/10/Rev.3) and the MSME Group Coordinator's Report (INF/MSME/W/64/Rev.1).</p>
+
+    <span class="cs-sub">Objectives and Scope</span>
+    <div class="obj-grid">
+      <div class="obj-card"><img src="images/purpose-policy.png" alt="">
+        <div><h3 class="obj-title">Map policies, initiatives and programmes</h3>
+          <p class="obj-text">The Compendium maps WTO Members' and Observer Governments' trade policies, initiatives and programmes focusing on supporting women, including women-led MSMEs, in all trade-related aspects of digitalisation, including e-commerce and trade in technology products.</p></div></div>
+      <div class="obj-card"><img src="images/purpose-knowledge.png" alt="">
+        <div><h3 class="obj-title">Reflect Members' priorities</h3>
+          <p class="obj-text">Its scope reflects Members' priorities and objectives. It covers trade policies that support women in digitalisation, such as export preparedness and support programmes and e-commerce and gender chapters in free trade agreements, as well as other policies that affect women's ability to engage in digitalisation and trade, such as education and skills training, workforce participation, access to technology, cybersecurity, e-payment systems and access to finance.</p></div></div>
+      <div class="obj-card"><img src="images/purpose-capacity.png" alt="">
+        <div><h3 class="obj-title">Reach women in all their diversity</h3>
+          <p class="obj-text">It focuses on women entrepreneurs, including women-led MSMEs, and other groups such as women workers, young women, women-led start-ups, women in the green economy, indigenous women, women in rural areas and women farmers.</p></div></div>
+      <div class="obj-card"><img src="images/purpose-archive.png" alt="">
+        <div><h3 class="obj-title">Bring in other WTO stakeholders</h3>
+          <p class="obj-text">International and regional organizations, development banks, the private sector and other WTO stakeholders are invited to contribute information they have already collected on Members' policies, initiatives and programmes, and to add their own initiatives supporting women in digitalisation.</p></div></div>
+    </div>
+
+    <p class="cs-lead is-after">The Compendium draws on two lines of work: information already collected by Members and WTO stakeholders, such as the International Trade Centre, the International Telecommunication Union, the World Intellectual Property Organization, the Universal Postal Union and the Global Alliance for Trade Facilitation; and new information collected through a survey of WTO Members, Observer Governments and other WTO stakeholders. This database presents the survey responses, received between June and October 2026, verbatim.</p>
+    <!-- Respondents panel (filled from the data) -->
+    <div class="reach" id="reach"></div>
+  </section>
+
+  <!-- SURVEY THEMES (always shown; question ranges filled from the data) -->
+  <section class="cs-section cs-alt">
+    <div class="cs-head"><div class="cs-bar"></div><h2>Survey Themes</h2></div>
+    <p class="cs-lead">The survey for WTO Members covers six themes, plus a final question for additional comments, good practices and references. Other stakeholders answered a dedicated survey of twelve questions.</p>
+    <div class="cs-pillars">
+      <div class="cs-pillar"><img src="images/pillar-1.png" alt=""><div class="cs-pillar-top"><span class="cs-pillar-n">1</span><span class="cs-pillar-text">Strategies and Priorities</span><span class="cs-pillar-count" id="cs-theme-count-1"></span></div><div class="cs-pillar-desc">Whether women are included in national digital strategies, the dimensions of digitalisation that most influence their participation, the sectors offering the greatest opportunities and challenges, and Members' priority objectives and actions.</div></div>
+      <div class="cs-pillar"><img src="images/pillar-2.png" alt=""><div class="cs-pillar-top"><span class="cs-pillar-n">2</span><span class="cs-pillar-text">Initiatives, Instruments and Market Access</span><span class="cs-pillar-count" id="cs-theme-count-2"></span></div><div class="cs-pillar-desc">Programmes supporting women in digital trade, the areas of intervention they cover, trade policies with digitalisation-related components, the instruments used and the market access support available to women entrepreneurs.</div></div>
+      <div class="cs-pillar"><img src="images/pillar-3.png" alt=""><div class="cs-pillar-top"><span class="cs-pillar-n">3</span><span class="cs-pillar-text">Skills and Capacity Building</span><span class="cs-pillar-count" id="cs-theme-count-3"></span></div><div class="cs-pillar-desc">Training on digital entrepreneurship, e-commerce and artificial intelligence, the skills covered, train-the-trainer approaches and their impact, and capacity building with international or regional organizations.</div></div>
+      <div class="cs-pillar"><img src="images/pillar-4.png" alt=""><div class="cs-pillar-top"><span class="cs-pillar-n">4</span><span class="cs-pillar-text">Coordination and Actors</span><span class="cs-pillar-count" id="cs-theme-count-4"></span></div><div class="cs-pillar-desc">How policies on women, trade and digitalisation are coordinated across government, the governance mechanisms in place and the actors involved in supporting women in digital trade.</div></div>
+      <div class="cs-pillar"><img src="images/purpose-knowledge.png" alt=""><div class="cs-pillar-top"><span class="cs-pillar-n">5</span><span class="cs-pillar-text">Data, Monitoring and Evaluation</span><span class="cs-pillar-count" id="cs-theme-count-5"></span></div><div class="cs-pillar-desc">Collection of sex-disaggregated data on digital trade, the types of data and institutions involved, data on barriers and market access, and how programmes are monitored and evaluated.</div></div>
+      <div class="cs-pillar"><img src="images/purpose-policy.png" alt=""><div class="cs-pillar-top"><span class="cs-pillar-n">6</span><span class="cs-pillar-text">Trade Facilitation, Innovation and Finance</span><span class="cs-pillar-count" id="cs-theme-count-6"></span></div><div class="cs-pillar-desc">Initiatives linking digital infrastructure with trade facilitation, the inclusion of women in innovation-driven trade initiatives, and support for investment, start-up funding, incubators and accelerators.</div></div>
+    </div>
+  </section>
+
+  <!-- WHAT THE RESPONSES SHOW — six findings, counted from the data -->
+  <section class="cs-section">
+    <div class="cs-head"><div class="cs-bar"></div><h2>What the Responses Show</h2></div>
+    <p class="cs-lead">Six findings from the responses of WTO Members. Each dot is one Member; the figures are counted directly from the answers, which are quoted as worded in the survey. Open the Compendium to read the explanations, examples and references behind them.</p>
+    <div class="fd-grid" id="fd-grid"></div>
+  </section>
+
+  <!-- OTHER STAKEHOLDERS (verbatim quotes + answers; full text is in the database) -->
+  <section class="cs-section">
+    <div class="cs-head"><div class="cs-bar"></div><h2>Insights from Other Stakeholders</h2></div>
+    <p class="cs-lead">Other WTO stakeholders were invited to share what they know about Members' policies, initiatives and programmes, and their own work to support women in digitalisation. International organizations and academia answered a dedicated survey on the measures governments have implemented, the partnerships, challenges and outcomes involved, and the lessons learned. In their own words:</p>
+    <div class="sh-band"><div class="sh-quotes" id="sh-quotes"></div></div>
+  </section>
+
+  <!-- HOW TO USE -->
+  <section class="cs-section cs-alt">
+    <div class="cs-head"><div class="cs-bar"></div><h2>How to Use</h2></div>
+    <div class="cs-howto">
+      <div class="cs-howto-step"><div class="cs-howto-n">1</div><div><div class="cs-howto-title">Choose responses</div><div class="cs-howto-desc">Filter by respondent type, region or category, or pick specific respondents. The keyword search keeps only the responses that mention a word.</div></div></div>
+      <div class="cs-howto-arr">&#8594;</div>
+      <div class="cs-howto-step"><div class="cs-howto-n">2</div><div><div class="cs-howto-title">Choose questions</div><div class="cs-howto-desc">Show all questions, or only some themes or questions. Keyword matches are highlighted in every answer and explanation.</div></div></div>
+      <div class="cs-howto-arr">&#8594;</div>
+      <div class="cs-howto-step"><div class="cs-howto-n">3</div><div><div class="cs-howto-title">Pick a view</div><div class="cs-howto-desc"><strong>Response view</strong> reads one full response at a time. <strong>Question view</strong> compares every answer to a question. <strong>Matrix view</strong> shows all responses side by side.</div></div></div>
+      <div class="cs-howto-arr">&#8594;</div>
+      <div class="cs-howto-step"><div class="cs-howto-n">4</div><div><div class="cs-howto-title">Open the details</div><div class="cs-howto-desc">In the matrix, hover over a cell for a preview and click it for the full answer and explanation. Click a respondent's name in Question view to open their full response.</div></div></div>
+    </div>
+  </section>
+
+  <div class="cs-explore-wrap">
+    <button type="button" class="btn-explore" id="btnExploreDb" aria-expanded="false" aria-controls="dbCollapse">&#9660;&nbsp; Explore the Compendium</button>
+  </div>
+
+  <!-- DATABASE (hidden until Explore is clicked) -->
+  <div id="dbCollapse" style="display:none">
+    <div class="db-section">
+      <div id="db-error">Error loading data. Please ensure the <strong>data</strong> folder (digitalization_data.json and digitalization_data.js) is present next to this page.</div>
+
+      <div class="filter-panel" id="db-ui">
+        <h2>Search &amp; Filter</h2>
+        <div class="search-row">
+          <input type="text" id="keywordInput" placeholder="Search all answers and explanations, e.g. e-commerce, SheTrades, cybersecurity…" aria-label="Search the compendium">
+          <button class="search-icon-btn" type="button" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg></button>
+        </div>
+        <div class="filter-grid">
+          <div class="filter-group-title">Responses</div>
+          <div class="filter-item"><label for="f-group">Respondent Type <span class="info-icon" tabindex="0" data-tooltip="WTO Members, or other stakeholders (international organizations and academia), who answered a separate questionnaire.">i</span></label>
+            <select id="f-group" class="selectpicker" data-width="100%"></select></div>
+          <div class="filter-item"><label for="f-area">Region / Category <span class="info-icon" tabindex="0" data-tooltip="Region of the WTO Member, or category of the other stakeholder. Choose one or several.">i</span></label>
+            <select id="f-area" class="selectpicker" multiple data-width="100%" data-actions-box="true" data-selected-text-format="count > 2" title="All"></select></div>
+          <div class="filter-item"><label for="f-respondent">Respondents <span class="info-icon" tabindex="0" data-tooltip="Pick one or several WTO Members or organizations to see only their responses.">i</span></label>
+            <select id="f-respondent" class="selectpicker" multiple data-live-search="true" data-width="100%" data-actions-box="true" data-selected-text-format="count > 2" title="All"></select></div>
+          <div class="filter-group-title">Questions</div>
+          <div class="filter-item"><label for="f-theme">Themes <span class="info-icon" tabindex="0" data-tooltip="Show only the questions of one or several themes.">i</span></label>
+            <select id="f-theme" class="selectpicker" multiple data-width="100%" data-actions-box="true" data-selected-text-format="count > 1" title="All"></select></div>
+          <div class="filter-item"><label for="f-question">Questions <span class="info-icon" tabindex="0" data-tooltip="Show only one or several questions. Type to search the question wording.">i</span></label>
+            <select id="f-question" class="selectpicker" multiple data-live-search="true" data-width="100%" data-actions-box="true" data-selected-text-format="count > 3" title="All"></select></div>
+        </div>
+        <div class="filter-actions"><button type="button" class="btn-clear" id="btnClear">Clear Filters</button></div>
+      </div>
+
+      <div class="stats-bar" id="statsBar">
+        <div class="stat-box"><span class="stat-num" id="stat-responses">–</span><span class="stat-lbl">Responses</span></div>
+        <div class="stat-box"><span class="stat-num" id="stat-members">–</span><span class="stat-lbl">WTO Members</span></div>
+        <div class="stat-box"><span class="stat-num" id="stat-stakeholders">–</span><span class="stat-lbl">Other Stakeholders</span></div>
+        <div class="stat-box"><span class="stat-num" id="stat-questions">–</span><span class="stat-lbl">Questions Shown</span></div>
+      </div>
+      <div class="results-bar">
+        <span class="results-text" id="resultsText"></span>
+        <div class="view-tabs" role="tablist" aria-label="View">
+          <button type="button" class="view-tab active" data-view="response" role="tab" aria-selected="true">&#9636; Response view</button>
+          <button type="button" class="view-tab" data-view="question" role="tab" aria-selected="false">&#9776; Question view</button>
+          <button type="button" class="view-tab" data-view="matrix" role="tab" aria-selected="false">&#9638; Matrix view</button>
+        </div>
+      </div>
+      <div class="view-hint" id="viewHint"></div>
+      <div id="view-response" class="db-view"></div>
+      <div id="view-question" class="db-view" style="display:none"></div>
+      <div id="view-matrix" class="db-view" style="display:none"></div>
+    </div>
+  </div>
+
+</div>
+</main>
+
+<!-- WTO SITE FOOTER — web team: replace with the standard WTO site footer -->
+<footer class="site-footer"><img src="images/site-footer.png" alt="World Trade Organization — site footer"></footer>
+
+<!-- Detail pop-up for one answer (Bootstrap 3 modal), opened from the matrix -->
+<div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="detailModalTitle">
+  <div class="modal-dialog modal-lg" role="document"><div class="modal-content">
+    <div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 class="modal-title" id="detailModalTitle"></h4></div>
+    <div class="modal-body" id="detailModalBody"></div>
+    <div class="modal-footer"><button type="button" class="btn-open-response" id="detailOpenResponse">Open full response</button></div>
+  </div></div>
+</div>
+<div id="vizTip" role="tooltip"></div>
+
+<script src="vendor/jquery/jquery-3.7.1.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="vendor/bootstrap-select/js/bootstrap-select.min.js"></script>
+
+<script>
+/* PAGE SCRIPT — A settings & helpers · B cover pages · C database (filters, three views, pop-up) · D start-up.
+   All respondent text is inserted escaped; answers and explanations are never reworded. */
+(function ($) {
+  'use strict';
+
+  /* ---------- A. Settings ---------- */
+  var ALL = '__all__', ROWS_COLLAPSED = 5;
+  var DARK = '#00566a', LIGHT = '#62b3bd', NEUTRAL = '#e0e3e6';   /* validated for colour-vision deficiency */
+
+  /* "What the responses show": six findings among WTO Members. Each returns the headline figure, a sentence
+     and the dots (dark = the finding, light = a partial answer, grey = the rest). Answers are quoted verbatim. */
+  function q(s) { return '“' + escapeHtml(s) + '”'; }
+  var FINDINGS = [
+    function (c) {
+      var a = c.count('Q1', ['Yes, explicitly included']), b = c.count('Q1', ['Included indirectly']);
+      return { num: a, head: 'explicitly include women in their national digital economy, e-commerce or digital trade strategies',
+               sub: b + ' more include women indirectly.', dots: [[a, DARK, 'explicitly'], [b, LIGHT, 'indirectly']] };
+    },
+    function (c) {
+      var a = c.count('Q7', ['Yes, dedicated programmes specifically targeting women in digital trade']), b = c.count('Q7', ['Yes, general programmes including women']);
+      return { num: a, head: 'run programmes dedicated to women in digital trade',
+               sub: b + ' more include women in general programmes.', dots: [[a, DARK, 'dedicated'], [b, LIGHT, 'general']] };
+    },
+    function (c) {
+      var t = c.top('Q5');
+      return { num: t.count, head: 'prioritise ' + t.values.map(q).join(' and ') + ' to support women in digital trade',
+               sub: 'The most common policy objective among the ' + c.n + ' Members.', dots: [[t.count, DARK, 'chose it']] };
+    },
+    function (c) {
+      var o = c.top('Q3'), ch = c.top('Q4');
+      return { num: o.count, head: 'see the greatest opportunities for women in ' + o.values.map(q).join(' and '),
+               sub: 'The greatest challenges: ' + ch.values.map(q).join(' and ') + ' (' + ch.count + ' Members' + (ch.values.length > 1 ? ' each' : '') + ').',
+               dots: [[o.count, DARK, 'chose it']] };
+    },
+    function (c) {
+      var a = c.count('Q28', ['Yes, targeted support']), b = c.count('Q28', ['Yes, general support']);
+      return { num: a + b, head: 'support women entrepreneurs in accessing investment, start-up funding, incubators, accelerators or investor networks',
+               sub: a + ' with targeted support, ' + b + ' with general support.', dots: [[a, DARK, 'targeted'], [b, LIGHT, 'general']] };
+    },
+    function (c) {
+      var a = c.count('Q20', ['Yes, regularly', 'Yes, occasionally']), dev = c.count('Q20', ['Data collection under development']), no = c.count('Q20', ['No']);
+      return { num: a, head: 'collect sex-disaggregated data on digital trade, regularly or occasionally',
+               sub: no + ' do not, and ' + dev + ' are developing data collection.', dots: [[a, DARK, 'collect'], [dev, LIGHT, 'under development']] };
+    }
+  ];
+
+  /* Stakeholder quotes: exact sentences, shown only if found word for word in the data */
+  var QUOTES = [
+    { name: 'UN Trade and Development (UNCTAD)', code: 'S12', topic: 'What would help most', text: 'No single institution can address all barriers faced by women entrepreneurs.' },
+    { name: 'International Labour Organization (ILO)', code: 'S4', topic: 'Challenges encountered', text: 'A further challenge is that government support is often fragmented, which can lead to siloed initiatives rather than coordinated support for women entrepreneurs.' },
+    { name: 'Universal Postal Union (UPU)', code: 'S6', topic: 'Good practice', text: 'The GRIT is about meeting women where they are.' },
+    { name: 'Institute of International Studies, University of Chile', code: 'S11', topic: 'Remaining gaps', text: 'There are huge gaps. Many more women-led MSMEs need to be reached' }
+  ];
+  var HINTS = {
+    response: 'One full response at a time. Choose a respondent from the list, or use Previous / Next.',
+    question: 'Every answer to each question, with the number of respondents who chose each answer. Click a name to open the full response.',
+    matrix:   'All responses side by side. Hover over a cell for a preview of the explanation; click it for the full answer.'
+  };
+
+  /* ---------- State ---------- */
+  var meta = {}, questions = [], qByCode = {}, respondents = [], byId = {};
+  var groupCounts = { members: 0, stakeholders: 0 };
+  var view = 'response', currentId = null, keyword = '', shown = [], visibleQs = [];
+
+  /* ---------- Helpers ---------- */
+  function escapeHtml(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+  function escapeRegex(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+  function highlight(html) {   /* marks the keyword outside tags */
+    if (!keyword) return html;
+    var re = new RegExp('(' + escapeRegex(escapeHtml(keyword)) + ')', 'gi');
+    return html.split(/(<[^>]+>)/).map(function (p) { return p.charAt(0) === '<' ? p : p.replace(re, '<mark>$1</mark>'); }).join('');
+  }
+  function richText(s) {       /* escaped, links clickable, keyword highlighted; wording unchanged */
+    return highlight(escapeHtml($.trim(s)).replace(/https?:\/\/[^\s<>"]+[^\s<>".,;:)\]]/g, function (u) {
+      return '<a href="' + u + '" target="_blank" rel="noopener">' + u + '</a>';
+    }));
+  }
+  function answer(r, code) { return r.answers[code] || { options: [], main: '', notes: [] }; }
+  function hasAnswer(a) { return a.options.length || $.trim(a.main) || a.notes.some(function (n) { return $.trim(n); }); }
+  function isNA(o) { return /^NA\/?\s*do not know/i.test(o) || /^Other\b/.test(o); }
+  function codeLabel(c) { return c.replace('bis', ' bis'); }
+  function plural(n, one, many) { return n + ' ' + (n === 1 ? one : many); }
+  function members() { return respondents.filter(function (r) { return r.group === 'members'; }); }
+  function others() { return respondents.filter(function (r) { return r.group === 'stakeholders'; }); }
+  function optionCounts(list, code) {   /* most frequent first, NA/Other last */
+    var counts = {}, order = [];
+    list.forEach(function (r) { answer(r, code).options.forEach(function (o) { if (!counts[o]) { counts[o] = 0; order.push(o); } counts[o]++; }); });
+    return order.map(function (o) { return { value: o, count: counts[o] }; })
+      .sort(function (a, b) { return (isNA(a.value) - isNA(b.value)) || b.count - a.count; });
+  }
+
+  /* Tooltip for chart marks and matrix cells (textContent only) */
+  var $tip = $('#vizTip');
+  $(document).on('mouseenter focus', '[data-tip],[data-tip-title]', function () {
+    var title = this.getAttribute('data-tip-title'), body = this.getAttribute('data-tip');
+    $tip.empty();
+    if (title) $tip.append($('<b>').text(title));
+    if (body) $tip.append(document.createTextNode(body));
+    var r = this.getBoundingClientRect();
+    $tip.css({ maxWidth: Math.min(340, window.innerWidth - 20) });
+    var left = Math.max(10, Math.min(r.left + r.width / 2 - $tip.outerWidth() / 2, window.innerWidth - $tip.outerWidth() - 10));
+    var top = r.top - $tip.outerHeight() - 8;
+    $tip.css({ left: left, top: top < 8 ? r.bottom + 8 : top }).addClass('show');
+  }).on('mouseleave blur', '[data-tip],[data-tip-title]', function () { $tip.removeClass('show'); });
+  $(window).on('scroll', function () { $tip.removeClass('show'); });
+
+  /* ---------- B. Cover pages ---------- */
+
+  /* Horizontal bars: rows [{label, values:[n] or [a,b]}], scale 0..max; value at each bar tip */
+  function barChart(rows, max, unit, series) {
+    return rows.map(function (row) {
+      return '<div class="hb-row"><div class="hb-label">' + escapeHtml(row.label) + '</div><div class="hb-bars">' + row.values.map(function (v, i) {
+        return '<div class="hb-line" tabindex="0" data-tip-title="' + v + ' of ' + max + ' ' + unit + '" data-tip="' + escapeHtml((series ? series[i] + ': ' : '') + row.label) + '">' +
+          '<div class="hb-track"><div class="hb-bar" style="width:' + (max ? v / max * 100 : 0).toFixed(2) + '%"></div></div><span class="hb-val">' + v + '</span></div>';
+      }).join('') + '</div></div>';
+    }).join('') + '<div class="hb-scale"><div></div><div>Number of ' + unit + ' (of ' + max + ')</div></div>';
+  }
+
+  function fillCover() {
+    $('#hero-responses').text(respondents.length);
+    $('#hero-members').text(groupCounts.members);
+    $('#hero-stakeholders').text(groupCounts.stakeholders);
+
+    /* Respondents panel: total, then one row per region (largest first) and one for the other stakeholders */
+    var regions = {};
+    members().forEach(function (r) { (regions[r.area] = regions[r.area] || []).push(r.name); });
+    function reachRow(title, sub, names, other) {
+      return '<div class="reach-row' + (other ? ' is-other' : '') + '"><div class="reach-region">' + escapeHtml(title) + '<small>' + escapeHtml(sub) + '</small></div>' +
+        '<div class="reach-dots" role="img" aria-label="' + names.length + '">' + names.map(function () { return '<i class="reach-dot"></i>'; }).join('') + '</div>' +
+        '<div class="reach-names">' + names.sort().map(function (n) { return '<span>' + escapeHtml(n) + '</span>'; }).join('') + '</div></div>';
+    }
+    var regionKeys = Object.keys(regions).sort(function (a, b) { return regions[b].length - regions[a].length || a.localeCompare(b); });
+    $('#reach').html(
+      '<div class="reach-total"><span class="reach-num">' + respondents.length + '</span><span class="reach-lbl">Responses</span>' +
+      '<div class="reach-sub"><b>' + groupCounts.members + '</b> WTO Members from <b>' + regionKeys.length + '</b> regions<br><b>' + groupCounts.stakeholders + '</b> other stakeholders</div></div>' +
+      '<div class="reach-rows">' + regionKeys.map(function (k) { return reachRow(k, plural(regions[k].length, 'WTO Member', 'WTO Members'), regions[k], false); }).join('') +
+      reachRow('Other stakeholders', 'International organizations and academia', others().map(function (r) { return r.name; }), true) + '</div>');
+
+    /* Theme cards: question range and count */
+    meta.themes.slice(0, 6).forEach(function (t, i) {
+      var qs = questions.filter(function (q) { return q.theme === t; });
+      if (qs.length) $('#cs-theme-count-' + (i + 1)).text(codeLabel(qs[0].code) + '–' + codeLabel(qs[qs.length - 1].code) + ' · ' + plural(qs.length, 'question', 'questions'));
+    });
+
+    var list = members(), n = list.length;
+    $('#hero-regions').text(regionKeys.length);
+
+    /* What the responses show */
+    var c = {
+      n: n,
+      count: function (code, answers) {
+        return list.filter(function (r) { return answer(r, code).options.some(function (o) { return answers.indexOf(o) !== -1; }); }).length;
+      },
+      top: function (code) {
+        var counts = optionCounts(list, code).filter(function (o) { return !isNA(o.value); });
+        var best = counts.length ? counts[0].count : 0;
+        return { count: best, values: counts.filter(function (o) { return o.count === best; }).map(function (o) { return o.value; }) };
+      }
+    };
+    $('#fd-grid').html(FINDINGS.map(function (make) {
+      var f = make(c), dots = '', used = 0, legend = '';
+      f.dots.forEach(function (d) {
+        for (var i = 0; i < d[0]; i++) dots += '<i class="fd-dot" style="background:' + d[1] + '"></i>';
+        used += d[0];
+        legend += '<span><i style="background:' + d[1] + '"></i>' + d[0] + ' ' + escapeHtml(d[2]) + '</span>';
+      });
+      for (var k = used; k < n; k++) dots += '<i class="fd-dot" style="background:' + NEUTRAL + '"></i>';
+      legend += '<span><i style="background:' + NEUTRAL + '"></i>' + (n - used) + ' other' + (n - used === 1 ? '' : 's') + '</span>';
+      return '<div class="fd-card"><div class="fd-figure"><span class="fd-num">' + f.num + '</span><span class="fd-of">of ' + n + ' WTO Members</span></div>' +
+        '<p class="fd-head">' + f.head + '</p><p class="fd-sub">' + f.sub + '</p>' +
+        '<div><div class="fd-dots" role="img" aria-label="' + f.num + ' of ' + n + '">' + dots + '</div><div class="fd-legend">' + legend + '</div></div></div>';
+    }).join(''));
+
+    /* Other stakeholders: verbatim quotes */
+    function squash(s) { return s.replace(/\s+/g, ' ').trim(); }
+    $('#sh-quotes').html(QUOTES.map(function (q) {
+      var r = others().filter(function (x) { return x.name === q.name; })[0];
+      if (!r) return '';
+      var a = answer(r, q.code);
+      if (squash([a.main].concat(a.notes).join(' ')).indexOf(squash(q.text)) === -1) return '';
+      return '<figure class="sh-quote"><span class="sh-quote-topic">' + escapeHtml(q.topic) + '</span><blockquote>' + escapeHtml(q.text) + '</blockquote>' +
+        '<figcaption>' + escapeHtml(r.name) + '<small>' + escapeHtml(r.area) + '</small></figcaption></figure>';
+    }).join(''));
+  }
+
+  /* ---------- C. Database ---------- */
+  var $db = $('#dbCollapse'), $exploreBtn = $('#btnExploreDb');
+  function scrollToDatabase() { $('html, body').animate({ scrollTop: $db.offset().top - 20 }, 350); }
+  function openDatabase() { $exploreBtn.html('&#9650;&nbsp; Hide the Compendium').attr('aria-expanded', 'true'); $db.slideDown(380); scrollToDatabase(); }
+  $exploreBtn.on('click', function () {
+    if ($db.is(':visible')) $db.slideUp(380, function () { $exploreBtn.html('&#9660;&nbsp; Explore the Compendium').attr('aria-expanded', 'false'); });
+    else openDatabase();
+  });
+  $('#btnExploreDbTop').on('click', function () { if ($db.is(':visible')) scrollToDatabase(); else openDatabase(); });
+
+  function val(id) { return $('#' + id).val(); }
+  function multi(id) { return $('#' + id).val() || []; }
+
+  function buildFilters() {
+    var groups = Object.keys(meta.groups);
+    $('#f-group').html('<option value="' + ALL + '">All respondents</option>' + groups.map(function (g) { return '<option value="' + g + '">' + escapeHtml(meta.groups[g]) + '</option>'; }).join(''));
+    $('#f-area').html(groups.map(function (g) {
+      var seen = []; respondents.forEach(function (r) { if (r.group === g && seen.indexOf(r.area) === -1) seen.push(r.area); });
+      return '<optgroup label="' + escapeHtml(meta.groups[g]) + '">' + seen.sort().map(function (a) { return '<option value="' + escapeHtml(g + '|' + a) + '">' + escapeHtml(a) + '</option>'; }).join('') + '</optgroup>';
+    }).join(''));
+    $('#f-respondent').html(groups.map(function (g) {
+      return '<optgroup label="' + escapeHtml(meta.groups[g]) + '">' + respondents.filter(function (r) { return r.group === g; })
+        .map(function (r) { return '<option value="' + escapeHtml(r.id) + '" data-subtext="' + escapeHtml(r.area) + '">' + escapeHtml(r.name) + '</option>'; }).join('') + '</optgroup>';
+    }).join(''));
+    $('#f-theme').html(meta.themes.map(function (t) { return '<option value="' + escapeHtml(t) + '">' + escapeHtml(t) + '</option>'; }).join(''));
+    function qOptions(keep) {
+      return meta.themes.map(function (t) {
+        var qs = questions.filter(function (q) { return q.theme === t && keep(q); });
+        return qs.length ? '<optgroup label="' + escapeHtml(t) + '">' + qs.map(function (q) {
+          return '<option value="' + q.code + '" title="' + codeLabel(q.code) + '">' + codeLabel(q.code) + ' · ' + escapeHtml(q.question) + '</option>';
+        }).join('') + '</optgroup>' : '';
+      }).join('');
+    }
+    $('#f-question').html(qOptions(function () { return true; }));
+    $('.filter-item .selectpicker').selectpicker('refresh');
+    $('#f-group').selectpicker('val', ALL);
+  }
+
+  function applyFilters() {
+    var group = val('f-group'), areas = multi('f-area'), ids = multi('f-respondent'), themes = multi('f-theme'), codes = multi('f-question');
+    var kw = keyword.toLowerCase();
+    shown = respondents.filter(function (r) {
+      if (group && group !== ALL && r.group !== group) return false;
+      if (areas.length && areas.indexOf(r.group + '|' + r.area) === -1) return false;
+      if (ids.length && ids.indexOf(r.id) === -1) return false;
+      if (kw && r.searchText.indexOf(kw) === -1) return false;
+      return true;
+    });
+    var groupsShown = {};
+    shown.forEach(function (r) { groupsShown[r.group] = true; });
+    visibleQs = questions.filter(function (q) {
+      return groupsShown[q.group] && (!themes.length || themes.indexOf(q.theme) !== -1) && (!codes.length || codes.indexOf(q.code) !== -1);
+    });
+    $('.filter-item .selectpicker').each(function () {
+      var v = $(this).val();
+      $(this).closest('.bootstrap-select').toggleClass('has-real-value', $.isArray(v) ? v.length > 0 : !!(v && v !== ALL));
+    });
+    var m = shown.filter(function (r) { return r.group === 'members'; }).length;
+    $('#stat-responses').text(shown.length);
+    $('#stat-members').text(m);
+    $('#stat-stakeholders').text(shown.length - m);
+    $('#stat-questions').text(visibleQs.length);
+    $('#resultsText').text(shown.length ? 'Showing ' + plural(shown.length, 'response', 'responses') + ' · ' + plural(visibleQs.length, 'question', 'questions') +
+      (shown.length !== respondents.length ? ' (of ' + respondents.length + ' responses)' : '') : 'No responses match the current search and filters');
+    render();
+  }
+
+  function bindFilters() {
+    $('.filter-item .selectpicker').on('changed.bs.select', applyFilters);
+    $('#keywordInput').on('input', function () { keyword = $.trim(this.value); applyFilters(); });
+    $('#btnClear').on('click', function () {
+      $('#f-area, #f-respondent, #f-theme, #f-question').selectpicker('val', []);
+      $('#f-group').selectpicker('val', ALL);
+      $('#keywordInput').val('');
+      keyword = '';
+      applyFilters();
+    });
+  }
+
+  /* Full answer to one question: options, free text, explanations with their prompts (all verbatim) */
+  function optionTags(a) {
+    return a.options.length ? '<div class="tags">' + a.options.map(function (o) { return '<span class="tag">' + highlight(escapeHtml(o)) + '</span>'; }).join('') + '</div>' : '';
+  }
+  function answerHtml(r, q, clamp) {
+    var a = answer(r, q.code), html = '';
+    if (!hasAnswer(a)) return '<span class="ans-empty">No answer</span>';
+    html += optionTags(a);
+    if ($.trim(a.main)) html += '<div class="ans-text' + (clamp ? ' clamped' : '') + '">' + richText(a.main) + '</div>';
+    a.notes.forEach(function (t, i) {
+      if (!$.trim(t)) return;
+      var prompt = q.prompts[i] || '';
+      html += '<div class="ans-note"><span class="ans-prompt" title="' + escapeHtml(prompt) + '">' + escapeHtml(prompt) + '</span><div class="ans-text' + (clamp ? ' clamped' : '') + '">' + richText(t) + '</div></div>';
+    });
+    return html;
+  }
+
+  /* View 1: Response view */
+  function renderResponseView() {
+    var $v = $('#view-response');
+    if (!shown.length) { $v.html('<div class="view-empty">No responses match the current search and filters.</div>'); return; }
+    if (!currentId || !byIdIn(shown, currentId)) currentId = shown[0].id;
+    var idx = 0; shown.forEach(function (r, i) { if (r.id === currentId) idx = i; });
+    var r = shown[idx], list = '', select = '';
+    Object.keys(meta.groups).forEach(function (g) {
+      var items = shown.filter(function (x) { return x.group === g; });
+      if (!items.length) return;
+      list += '<div class="rv-list-group">' + escapeHtml(meta.groups[g]) + ' (' + items.length + ')</div>' + items.map(function (x) {
+        return '<button type="button" class="rv-item' + (x.id === r.id ? ' active' : '') + '" data-id="' + escapeHtml(x.id) + '"><span class="rv-item-name">' + escapeHtml(x.name) + '</span><span class="rv-item-area">' + escapeHtml(x.area) + '</span></button>';
+      }).join('');
+      select += '<optgroup label="' + escapeHtml(meta.groups[g]) + '">' + items.map(function (x) {
+        return '<option value="' + escapeHtml(x.id) + '"' + (x.id === r.id ? ' selected' : '') + '>' + escapeHtml(x.name) + '</option>';
+      }).join('') + '</optgroup>';
+    });
+    var qs = visibleQs.filter(function (q) { return q.group === r.group; }), body = '';
+    meta.themes.forEach(function (t) {
+      var inTheme = qs.filter(function (q) { return q.theme === t; });
+      if (inTheme.length) body += '<div class="rv-theme">' + escapeHtml(t) + '</div>' + inTheme.map(function (q) {
+        return '<div class="rv-q" id="rq-' + q.code + '"><div class="rv-q-text"><span class="q-code">' + codeLabel(q.code) + '</span>' + escapeHtml(q.question) + '</div>' + answerHtml(r, q, false) + '</div>';
+      }).join('');
+    });
+    if (!qs.length) body = '<div class="view-empty">None of the chosen questions were asked to ' + escapeHtml(meta.groups[r.group]) + '.</div>';
+    $v.html('<div class="rv-wrap"><nav class="rv-list" aria-label="Respondents">' + list + '</nav><div class="rv-main">' +
+      '<div class="rv-select"><select aria-label="Choose a respondent">' + select + '</select></div>' +
+      '<div class="rv-nav"><button type="button" class="rv-nav-btn" data-step="-1"' + (idx === 0 ? ' disabled' : '') + '>&lsaquo; Previous</button><span class="rv-nav-pos">' + (idx + 1) + ' of ' + shown.length + '</span>' +
+      '<button type="button" class="rv-nav-btn" data-step="1"' + (idx === shown.length - 1 ? ' disabled' : '') + '>Next &rsaquo;</button></div>' +
+      '<div class="rv-head"><span class="tag tag-group">' + escapeHtml(meta.groups[r.group]) + '</span> <span class="tag tag-area">' + escapeHtml(r.area) + '</span>' +
+      '<h3 class="rv-name">' + escapeHtml(r.name) + '</h3><dl class="rv-info">' + r.info.map(function (f) { return '<dt>' + escapeHtml(f.label) + '</dt><dd>' + highlight(escapeHtml(f.value)) + '</dd>'; }).join('') + '</dl></div>' +
+      body + '</div></div>');
+  }
+  function byIdIn(list, id) { return list.some(function (r) { return r.id === id; }); }
+  function scrollIfBelow(sel) { var top = $(sel).offset().top - 20; if ($(window).scrollTop() > top) $('html, body').animate({ scrollTop: top }, 250); }
+  function showRespondent(id, code) {
+    currentId = id;
+    setView('response');
+    var $t = code ? $('#rq-' + code) : $('#view-response');
+    if ($t.length) { $('html, body').animate({ scrollTop: $t.offset().top - 20 }, 300); if (code) $t.addClass('flash'); }
+  }
+  $('#view-response').on('click', '.rv-item', function () { currentId = $(this).data('id'); renderResponseView(); scrollIfBelow('#view-response'); })
+    .on('change', '.rv-select select', function () { currentId = this.value; renderResponseView(); })
+    .on('click', '.rv-nav-btn', function () {
+      var idx = 0; shown.forEach(function (r, i) { if (r.id === currentId) idx = i; });
+      var next = shown[idx + (+$(this).data('step'))];
+      if (next) { currentId = next.id; renderResponseView(); scrollIfBelow('#view-response'); }
+    });
+
+  /* View 2: Question view */
+  function renderQuestionView() {
+    var $v = $('#view-question');
+    if (!shown.length || !visibleQs.length) { $v.html('<div class="view-empty">No responses or questions match the current search and filters.</div>'); return; }
+    $v.html('<div class="qv-list">' + visibleQs.map(function (q) {
+      var list = shown.filter(function (r) { return r.group === q.group; }), chart = '';
+      if (q.kind === 'options') {
+        chart = '<div class="qv-chart"><div class="qv-chart-note">Answers among the ' + plural(list.length, 'response', 'responses') + ' shown</div>' +
+          barChart(optionCounts(list, q.code).map(function (o) { return { label: o.value, values: [o.count] }; }), list.length, 'responses') + '</div>';
+      }
+      return '<div class="qv-card" data-code="' + q.code + '"><div class="qv-meta">' + escapeHtml(q.theme) + ' · ' + escapeHtml(meta.groups[q.group]) + '</div>' +
+        '<h3 class="qv-q"><span class="q-code">' + codeLabel(q.code) + '</span>' + escapeHtml(q.question) + '</h3>' + chart +
+        list.map(function (r, i) {
+          return '<div class="qv-row' + (i >= ROWS_COLLAPSED ? ' is-hidden' : '') + '"><button type="button" class="qv-who" data-id="' + escapeHtml(r.id) + '" data-code="' + q.code + '">' + escapeHtml(r.name) + '<small>' + escapeHtml(r.area) + '</small></button>' +
+            '<div class="qv-body">' + answerHtml(r, q, true) + '</div></div>';
+        }).join('') + (list.length > ROWS_COLLAPSED ? '<button type="button" class="qv-all">Show all ' + list.length + ' responses</button>' : '') + '</div>';
+    }).join('') + '</div>');
+    addReadMore($v.find('.qv-row:not(.is-hidden)'));
+  }
+  function addReadMore($rows) {
+    $rows.find('.ans-text.clamped').each(function () {
+      if (this.scrollHeight > this.clientHeight + 2 && !$(this).next('.qv-more').length) $(this).after('<button type="button" class="qv-more">Read more</button>');
+    });
+  }
+  $('#view-question')
+    .on('click', '.qv-all', function () {
+      var $card = $(this).closest('.qv-card'), open = $card.toggleClass('all-open').hasClass('all-open');
+      $card.find('.qv-row').slice(ROWS_COLLAPSED).toggleClass('is-hidden', !open);
+      $(this).text(open ? 'Show fewer' : 'Show all ' + $card.find('.qv-row').length + ' responses');
+      if (open) addReadMore($card.find('.qv-row'));
+    })
+    .on('click', '.qv-more', function () { var c = $(this).prev('.ans-text').toggleClass('clamped').hasClass('clamped'); $(this).text(c ? 'Read more' : 'Show less'); })
+    .on('click', '.qv-who', function () { showRespondent($(this).data('id'), $(this).data('code')); });
+
+  /* View 3: Matrix view */
+  function renderMatrixView() {
+    var $v = $('#view-matrix');
+    if (!shown.length || !visibleQs.length) { $v.html('<div class="view-empty">No responses or questions match the current search and filters.</div>'); return; }
+    var html = '';
+    Object.keys(meta.groups).forEach(function (g) {
+      var rows = shown.filter(function (r) { return r.group === g; }), qs = visibleQs.filter(function (q) { return q.group === g; });
+      if (!rows.length || !qs.length) return;
+      html += '<div class="mx-group">' + escapeHtml(meta.groups[g]) + ' · ' + plural(rows.length, 'response', 'responses') + ' × ' + plural(qs.length, 'question', 'questions') + '</div>' +
+        '<div class="mx-wrap"><table class="mx-table"><thead><tr><th class="mx-name">' + escapeHtml(meta.groups[g]) + '</th>' + qs.map(function (q) {
+          return '<th title="' + escapeHtml(q.question) + '"><span class="q-code">' + codeLabel(q.code) + '</span><span class="mx-qtext">' + escapeHtml(q.question) + '</span></th>';
+        }).join('') + '</tr></thead><tbody>' + rows.map(function (r) {
+          return '<tr><th class="mx-name" scope="row">' + escapeHtml(r.name) + '<small>' + escapeHtml(r.area) + '</small></th>' + qs.map(function (q) {
+            var a = answer(r, q.code), inner, preview = '';
+            if (!hasAnswer(a)) inner = '<span class="ans-empty">No answer</span>';
+            else if (q.kind === 'options') inner = optionTags(a) + (a.notes.some(function (t) { return $.trim(t); }) ? '<span class="mx-has-note">&para; Explanation</span>' : '');
+            else inner = '<div class="mx-excerpt">' + highlight(escapeHtml($.trim(a.main))) + '</div>';
+            if (hasAnswer(a)) {
+              preview = $.trim(a.notes.filter(function (t) { return $.trim(t); })[0] || a.main || '');
+              if (preview.length > 320) preview = preview.slice(0, 320) + '…';
+            }
+            return '<td class="mx-cell" tabindex="0" role="button" data-id="' + escapeHtml(r.id) + '" data-code="' + q.code + '"' +
+              (preview ? ' data-tip-title="' + escapeHtml(r.name + ' · ' + codeLabel(q.code)) + '" data-tip="' + escapeHtml(preview) + '"' : '') + '><div class="mx-inner">' + inner + '</div></td>';
+          }).join('') + '</tr>';
+        }).join('') + '</tbody></table></div>';
+    });
+    $v.html(html);
+    $v.find('.mx-inner').each(function () {
+      if (this.scrollHeight > this.clientHeight + 2) $(this).addClass('is-cut').after('<span class="mx-cut-hint">Click to see all</span>');
+    });
+  }
+  var modalTarget = null;
+  $('#view-matrix').on('click keydown', '.mx-cell', function (e) {
+    if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+    e.preventDefault();
+    var r = byId[$(this).data('id')], q = qByCode[$(this).data('code')];
+    modalTarget = { id: r.id, code: q.code };
+    $tip.removeClass('show');
+    $('#detailModalTitle').html(escapeHtml(r.name) + '<small>' + escapeHtml(meta.groups[r.group]) + ' · ' + escapeHtml(r.area) + '</small>');
+    $('#detailModalBody').html('<div class="dm-q"><span class="q-code">' + codeLabel(q.code) + '</span>' + escapeHtml(q.question) + '</div>' + answerHtml(r, q, false));
+    $('#detailModal').modal('show');
+  });
+  $('#detailOpenResponse').on('click', function () {
+    var t = modalTarget;
+    $('#detailModal').one('hidden.bs.modal', function () { if (t) showRespondent(t.id, t.code); }).modal('hide');
+  });
+
+  function render() { if (view === 'response') renderResponseView(); else if (view === 'question') renderQuestionView(); else renderMatrixView(); }
+  function setView(v) {
+    view = v;
+    $('.view-tab').each(function () { var on = $(this).data('view') === v; $(this).toggleClass('active', on).attr('aria-selected', String(on)); });
+    $('.db-view').hide();
+    $('#view-' + v).show();
+    $('#viewHint').text(HINTS[v]);
+    render();
+  }
+  $('.view-tab').on('click', function () { setView($(this).data('view')); });
+
+  /* ---------- D. Loading the data and start-up ----------
+     The data is read from data/digitalization_data.json (written by tools/excel_to_json.py from the Excel file).
+     Browsers do not let a page opened straight from disk (file://) read a JSON file, so in that case the page
+     loads data/digitalization_data.js instead: the same data, written by the same tool as a script that sets
+     window.DIGITALIZATION_COMPENDIUM_DATA. On a web server only the JSON file is used. */
+  var DATA_JSON = 'data/digitalization_data.json', DATA_SCRIPT = 'data/digitalization_data.js', DATA_VARIABLE = 'DIGITALIZATION_COMPENDIUM_DATA';
+
+  function loadData(done) {
+    function fromScript() {
+      var s = document.createElement('script');
+      s.src = DATA_SCRIPT;
+      s.onload = function () { done(window[DATA_VARIABLE]); };
+      s.onerror = function () { done(null); };
+      document.body.appendChild(s);
+    }
+    if (window.location.protocol === 'file:') fromScript();
+    else $.getJSON(DATA_JSON).done(done).fail(fromScript);
+  }
+
+  loadData(function (source) {
+    if (source && source.meta && Array.isArray(source.respondents)) {
+      meta = source.meta;
+      questions = meta.questions;
+      questions.forEach(function (q) { qByCode[q.code] = q; });
+      respondents = source.respondents;
+      respondents.forEach(function (r) {
+        byId[r.id] = r;
+        groupCounts[r.group] = (groupCounts[r.group] || 0) + 1;
+        var parts = [r.name, r.area].concat(r.info.map(function (f) { return f.value; }));
+        Object.keys(r.answers).forEach(function (c) { parts = parts.concat(r.answers[c].options, [r.answers[c].main], r.answers[c].notes); });
+        r.searchText = parts.join(' \n ').toLowerCase();
+      });
+      fillCover();
+      buildFilters();
+      bindFilters();
+      $('#viewHint').text(HINTS.response);
+      applyFilters();
+    } else {
+      $('#db-ui, #statsBar, .results-bar, #viewHint').hide();
+      $('#db-error').show();
+      console.error('Digitalisation Compendium: data/digitalization_data.json is missing or invalid. Run tools/excel_to_json.py to rebuild it.');
+    }
+  });
+})(jQuery);
+</script>
+</body>
+</html>
