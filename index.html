@@ -913,7 +913,6 @@ mark { padding: 0 1px; background: #ffe08a; }
     var asked = questions.filter(function (q) { return q.group === r.group; });
     var qs = visibleQs.filter(function (q) { return q.group === r.group; });
     var logo = new URL(LOGO, document.baseURI).href;
-    var today = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
     var body = '';
     meta.themes.forEach(function (t) {
       var inTheme = qs.filter(function (q) { return q.theme === t; });
@@ -964,7 +963,6 @@ mark { padding: 0 1px; background: #ffe08a; }
       '.text { margin: 0 0 1mm 11mm; white-space: pre-line; overflow-wrap: anywhere; }' +
       '.none { margin: 0 0 1mm 11mm; font-style: italic; color: #6b7c8d; }' +
       'a { color: #00667e; }' +
-      '.foot { margin-top: 8mm; padding-top: 2.5mm; font-size: 7pt; line-height: 1.5; color: #6b7c8d; border-top: 0.5pt solid #d5dde6; }' +
       '</style></head><body>' +
       '<div class="head"><img src="' + logo + '" alt="WTO OMC – Trade for Women"><div class="org"><b>' + PDF_TITLE + '</b>' +
         'Informal Working Group on Trade and Gender<br>Informal Working Group on MSMEs</div></div>' +
@@ -972,8 +970,6 @@ mark { padding: 0 1px; background: #ffe08a; }
       '<p class="type">' + escapeHtml(meta.groups[r.group]) + ' · ' + escapeHtml(r.area) + '</p>' +
       '<table class="info">' + r.info.map(function (f) { return '<tr><th>' + escapeHtml(f.label) + '</th><td>' + escapeHtml(f.value) + '</td></tr>'; }).join('') + '</table>' +
       extract + (body || '<p class="none">None of the questions selected on the Compendium page were asked to ' + escapeHtml(meta.groups[r.group]) + '.</p>') +
-      '<div class="foot">Answers and explanations are reproduced verbatim, as submitted, in the language of the respondent. Personal data has been removed.<br>' +
-        'Source: ' + PDF_TITLE + ', WTO. Document generated on ' + today + '.</div>' +
       '</body></html>';
   }
 
