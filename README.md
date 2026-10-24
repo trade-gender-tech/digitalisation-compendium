@@ -19,10 +19,10 @@ The WTO site header, footer and breadcrumbs are shown as on the GitHub preview p
 
 | Section | Content | Source |
 |---|---|---|
-| Hero | Title as in the joint proposal (*Empowering Women to Trade through Digitalisation: Policy Insights*); responses, WTO Members, other stakeholders, regions; Excel download | figures counted from the data |
-| About the Compendium | Launch at MC14 (Yaoundé, side event of 25 March 2026), the joint proposal and its Co-Chairs/Coordinator, the work plans it supports, four objective cards, the two lines of work; respondents panel (total, one row per region with one dot per respondent and names, one row for other stakeholders) | text from the joint communication WT/MIN(26)/4 • INF/TGE/COM/13/Rev.1 • INF/MSME/W/68/Rev.1 (27 February 2026); panel from the data |
+| Hero | Title as in the joint proposal (*Empowering Women to Trade through Digitalisation: Policy Insights*); four tiles naming what the Compendium covers (strategies, programmes, skills, data); Excel download | text in `index.html` |
+| About the Compendium | Launch at MC14 (Yaoundé, side event of 25 March 2026), the joint proposal and its Co-Chairs/Coordinator, the work plans it supports, four objective cards, the two lines of work; Contributions panel (the regions and other stakeholders that responded, with names; no counts) | text from the joint communication WT/MIN(26)/4 • INF/TGE/COM/13/Rev.1 • INF/MSME/W/68/Rev.1 (27 February 2026); panel from the data |
 | Survey Themes | The six themes of the Members survey, with their question ranges | text in `index.html`; ranges from the data |
-| What the Responses Show | Six findings (strategies, dedicated programmes, top policy objective, sectors, investment support, sex-disaggregated data), each with a figure, one sentence and 18 dots (one per Member) | counted from the data (`FINDINGS` in the script); answers quoted verbatim |
+| What the Responses Show | Six messages in words, not numbers (strategies, programmes, instruments, sectors, skills, data), each with an illustration and chips quoting the most frequent answers verbatim. Words such as "most" or "some" are worked out from the data (`amount()` in the script), so the wording stays true if responses change | data (`FINDINGS` in the script) |
 | Insights from Other Stakeholders | Four verbatim quotes | data (`QUOTES` in the script) |
 | How to Use, Database | See below | |
 
@@ -81,7 +81,7 @@ All paths in `index.html` are relative, so the folder works wherever it is copie
 4. **Font.** If `wto.css` already provides Open Sans, remove the `vendor/open-sans/open-sans.css` link.
 5. **CSS and script** can be moved into their own files unchanged. The script must load after the libraries. It loads the data itself (see **Data loading** below).
 6. **Style scope.** Page styles are scoped to `main.digi-compendium` or to class names used only on this page. A few names are generic (`.tag`, `.tags`, `.page-wrap`, `.filter-panel`, `.stats-bar`); prefix them if `wto.css` uses the same names.
-7. **Element IDs used by the script:** `hero-responses`, `hero-members`, `hero-stakeholders`, `hero-regions`, `reach`, `cs-theme-count-1`…`6`, `fd-grid`, `sh-quotes`, `btnExploreDb`, `btnExploreDbTop`, `dbCollapse`, `db-error`, `db-ui`, `keywordInput`, `f-group`, `f-area`, `f-respondent`, `f-theme`, `f-question`, `btnClear`, `statsBar`, `stat-responses`, `stat-members`, `stat-stakeholders`, `stat-questions`, `resultsText`, `viewHint`, `view-response`, `view-question`, `view-matrix`, `detailModal`, `detailModalTitle`, `detailModalBody`, `detailOpenResponse`, `vizTip`.
+7. **Element IDs used by the script:** `reach`, `cs-theme-count-1`…`6`, `fd-grid`, `sh-quotes`, `btnExploreDb`, `btnExploreDbTop`, `dbCollapse`, `db-error`, `db-ui`, `keywordInput`, `f-group`, `f-area`, `f-respondent`, `f-theme`, `f-question`, `btnClear`, `resultsText`, `viewHint`, `view-response`, `view-question`, `view-matrix`, `detailModal`, `detailModalTitle`, `detailModalBody`, `detailOpenResponse`, `vizTip`.
 
 ---
 

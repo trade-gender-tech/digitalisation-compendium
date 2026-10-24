@@ -95,6 +95,7 @@ body { margin: 0; background: #f5f5f5; }
 .cs-stats    { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 30px; }
 .cs-stat     { flex: 1; min-width: 110px; padding: 16px 12px; text-align: center; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; }
 .cs-stat-num { display: block; font-size: 34px; font-weight: 700; line-height: 1; color: #fff; }
+.cs-stat-word { display: block; font-size: 17px; font-weight: 700; line-height: 1.25; color: #fff; }  /* hero tiles: what the Compendium covers */
 .cs-stat-lbl { display: block; margin-top: 7px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: rgba(255,255,255,0.68); }
 .cs-dl-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 24px; }
 .cs-dl-explore { padding: 11px 20px; font-size: 13px; font-weight: 700; background: var(--gold); color: #10202a; border: none; border-radius: 4px; cursor: pointer; box-shadow: 0 4px 16px rgba(0,0,0,0.18); }
@@ -112,27 +113,23 @@ body { margin: 0; background: #f5f5f5; }
 .cs-lead    { margin: 14px 0 0; font-size: 15px; line-height: 1.7; color: var(--body); }
 .cs-sub { display: block; margin: 26px 0 13px; padding-bottom: 7px; border-bottom: 1px solid #e0e0e0; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--teal-600); }
 
-/* ---------- Who responded ---------- */
+/* ---------- Contributions panel (About section) ---------- */
 /* Respondents panel: total on the left; one row per region (and one for other stakeholders)
    with one dot per respondent and their names */
-.reach { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 28px; margin-top: 24px; padding: 26px 30px; color: #fff;
+.reach { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 28px; margin-top: 24px; padding: 26px 30px; color: #fff;
          background: linear-gradient(120deg, rgba(0,52,62,0.97) 0%, rgba(0,78,90,0.94) 55%, rgba(0,110,124,0.90) 100%), url('images/hero.png') right center/cover no-repeat;
          border-radius: 12px; box-shadow: 0 8px 28px rgba(0,52,62,0.18); }
-.reach-total { display: flex; flex-direction: column; justify-content: center; padding-right: 24px; border-right: 1px solid rgba(255,255,255,0.18); }
-.reach-num   { font-size: 64px; font-weight: 800; line-height: 1; letter-spacing: -2px; }
-.reach-lbl   { margin-top: 4px; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.85); }
-.reach-sub   { margin-top: 14px; font-size: 12.5px; line-height: 1.7; color: rgba(255,255,255,0.72); }
-.reach-sub b { color: #fff; }
+.reach-intro { display: flex; flex-direction: column; justify-content: center; padding-right: 24px; border-right: 1px solid rgba(255,255,255,0.18); }
+.reach-title { font-size: 22px; font-weight: 800; line-height: 1.2; color: #fff; }
+.reach-text  { margin: 10px 0 0; font-size: 13px; line-height: 1.65; color: rgba(255,255,255,0.8); }
 .reach-rows  { display: flex; flex-direction: column; }
-.reach-row   { display: grid; grid-template-columns: 200px 132px minmax(0, 1fr); align-items: center; gap: 16px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.12); }
+.reach-row   { display: grid; grid-template-columns: 220px minmax(0, 1fr); align-items: center; gap: 16px; padding: 11px 0; border-bottom: 1px solid rgba(255,255,255,0.12); }
 .reach-row:last-child { border-bottom: none; }
-.reach-region { font-size: 13px; font-weight: 700; line-height: 1.3; }
-.reach-region small { display: block; margin-top: 1px; font-size: 11px; font-weight: 400; color: rgba(255,255,255,0.65); }
-.reach-dots  { display: flex; flex-wrap: wrap; gap: 5px; }
-.reach-dot   { width: 13px; height: 13px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 2px rgba(255,255,255,0.15); }
-.reach-row.is-other .reach-dot { background: var(--gold); }
-.reach-row.is-other { margin-top: 6px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.3); }
 .reach-row > * { min-width: 0; }
+.reach-region { display: flex; align-items: center; gap: 9px; font-size: 13px; font-weight: 700; line-height: 1.3; }
+.reach-region::before { content: ""; width: 9px; height: 9px; flex-shrink: 0; border-radius: 50%; background: #fff; }
+.reach-row.is-other .reach-region::before { background: var(--gold); }
+.reach-row.is-other { margin-top: 6px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.3); }
 .reach-names { display: flex; flex-wrap: wrap; gap: 2px 0; font-size: 13px; line-height: 1.55; color: rgba(255,255,255,0.92); }
 .reach-names span:not(:last-child)::after { content: "·"; margin: 0 7px; color: rgba(255,255,255,0.45); } /* separator stays at line ends */
 
@@ -154,19 +151,19 @@ body { margin: 0; background: #f5f5f5; }
 .obj-text  { margin: 0; font-size: 12.5px; line-height: 1.6; color: var(--body); }
 .cs-lead.is-after { margin-top: 22px; }
 
-/* ---------- What the responses show: one card per finding, 18 dots = 18 WTO Members ---------- */
-.fd-grid   { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 20px; }
-.fd-card   { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 4px 18px; padding: 20px 22px; background: #fff; border: 1px solid #e0e6ed; border-left: 4px solid var(--teal-500); border-radius: 8px; }
-.fd-figure { grid-row: span 3; display: flex; flex-direction: column; align-items: flex-start; }
-.fd-num    { font-size: 44px; font-weight: 800; line-height: 1; letter-spacing: -1px; color: var(--teal-700); }
-.fd-of     { margin-top: 4px; font-size: 11px; font-weight: 600; line-height: 1.35; text-transform: uppercase; letter-spacing: 0.05em; color: #7a8a99; }
-.fd-head   { margin: 0; font-size: 15px; font-weight: 700; line-height: 1.45; color: var(--navy); }
-.fd-sub    { margin: 2px 0 0; font-size: 12.5px; line-height: 1.55; color: var(--body); }
-.fd-dots   { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 10px; }
-.fd-dot    { width: 12px; height: 12px; border-radius: 50%; }
-.fd-legend { display: flex; flex-wrap: wrap; gap: 3px 14px; margin-top: 6px; font-size: 11.5px; color: #5a6e7f; }
-.fd-legend span { display: inline-flex; align-items: center; gap: 5px; }
-.fd-legend i { width: 9px; height: 9px; border-radius: 50%; }
+/* ---------- What the responses show: one card per message, in words; chips quote the top answers ---------- */
+.fd-grid    { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 20px; }
+.fd-card    { display: flex; flex-direction: column; gap: 10px; padding: 20px 20px 18px; background: #fff; border: 1px solid #e0e6ed; border-top: 4px solid var(--teal-500); border-radius: 8px; box-shadow: 0 2px 10px rgba(0,52,62,0.06); }
+.fd-top     { display: flex; align-items: center; gap: 12px; }
+.fd-top img { width: 52px; height: 52px; flex-shrink: 0; object-fit: contain; }
+.fd-kicker  { font-size: 10px; font-weight: 800; line-height: 1.4; text-transform: uppercase; letter-spacing: 0.08em; color: var(--teal-600); }
+.fd-head    { margin: 0; font-size: 15.5px; font-weight: 700; line-height: 1.45; color: var(--navy); }
+.fd-sub     { margin: 0; font-size: 12.5px; line-height: 1.55; color: var(--body); }
+.fd-chips   { margin-top: auto; padding-top: 10px; border-top: 1px solid #eef0f3; }
+.fd-chips + .fd-chips { margin-top: 0; padding-top: 4px; border-top: none; }
+.fd-chips-label { display: block; margin-bottom: 6px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: #7a8a99; }
+.fd-chip    { display: inline-block; margin: 0 5px 5px 0; padding: 4px 10px; font-size: 11.5px; font-weight: 600; line-height: 1.35; color: var(--teal-ink); background: var(--teal-100); border-radius: 12px; }
+.fd-chip.is-warm { color: #5a4413; background: #fcedd2; }
 
 /* ---------- Bar chart (Question view) and tooltip ---------- */
 .hb-row   { display: grid; grid-template-columns: minmax(0, 42%) minmax(0, 1fr); align-items: center; gap: 4px 12px; padding: 5px 0; }
@@ -237,10 +234,6 @@ body { margin: 0; background: #f5f5f5; }
 .info-icon:hover::after, .info-icon:focus::after { opacity: 1; visibility: visible; }
 
 /* ---------- Database: stats, results bar, tabs ---------- */
-.stats-bar { display: flex; gap: 1px; background: #e0e0e0; border-bottom: 1px solid #e0e0e0; }
-.stat-box  { flex: 1; padding: 14px 20px; text-align: center; background: #fff; }
-.stat-num  { display: block; font-size: 28px; font-weight: 700; line-height: 1; color: var(--teal); }
-.stat-lbl  { display: block; margin-top: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: #888; }
 .results-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 14px 8px 24px; color: #fff; background: linear-gradient(135deg, var(--teal-700) 0%, var(--teal) 100%); }
 .results-text { font-size: 14px; font-weight: 700; }
 .view-tabs { display: flex; gap: 4px; }
@@ -341,9 +334,9 @@ mark { padding: 0 1px; background: #ffe08a; }
   .sh-band { margin: 18px -28px 0; padding: 26px 28px 28px; }
   .cs-pillars, .filter-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .rv-wrap { grid-template-columns: 220px minmax(0, 1fr); }
-  .reach { grid-template-columns: 180px minmax(0, 1fr); gap: 22px; }
-  .reach-row { grid-template-columns: minmax(0, 1fr) auto; gap: 6px 16px; }
-  .reach-names { grid-column: 1 / -1; }
+  .reach { grid-template-columns: 200px minmax(0, 1fr); gap: 22px; }
+  .reach-row { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  .fd-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .filter-item label { position: relative; } .info-icon { position: static; }
   .info-icon::after { left: 0; right: 0; width: auto; transform: none; }
 }
@@ -355,13 +348,11 @@ mark { padding: 0 1px; background: #ffe08a; }
   .cs-section { padding: 24px 20px; }
   .sh-quotes, .obj-grid, .fd-grid { grid-template-columns: minmax(0, 1fr); }
   .reach { grid-template-columns: minmax(0, 1fr); gap: 16px; padding: 22px 20px; }
-  .reach-total { flex-direction: row; flex-wrap: wrap; justify-content: flex-start; align-items: baseline; gap: 4px 12px; padding: 0 0 14px; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.18); }
-  .reach-num { font-size: 44px; } .reach-sub { width: 100%; margin-top: 2px; }
+  .reach-intro { padding: 0 0 14px; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.18); }
 
   .sh-band { margin: 18px -20px 0; padding: 22px 20px 24px; }
   .sh-quote blockquote { font-size: 15px; }
   .cs-howto { flex-direction: column; gap: 10px; } .cs-howto-arr { display: none; }
-  .stats-bar { flex-wrap: wrap; } .stat-box { flex: 1 1 calc(50% - 1px); }
   .rv-wrap { grid-template-columns: minmax(0, 1fr); }
   .rv-list { display: none; } .rv-select { display: block; }
   .rv-main { padding: 16px; }
@@ -372,13 +363,13 @@ mark { padding: 0 1px; background: #ffe08a; }
   .page-wrap { padding: 0 0 24px; }
   .cs-hero { padding: 20px 16px 24px; } .cs-hero h1 { font-size: 20px; }
   .cs-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
-  .cs-stat-num { font-size: 22px; }
+  .cs-stat-num { font-size: 22px; } .cs-stat-word { font-size: 14px; }
   .cs-dl-row { grid-template-columns: minmax(0, 1fr); }
   .cs-section { padding: 20px 16px; }
   .cs-pillars, .filter-grid { grid-template-columns: minmax(0, 1fr); }
   .obj-card { flex-direction: column; gap: 10px; } .obj-card img { width: 56px; height: 56px; }
   .fd-card { grid-template-columns: minmax(0, 1fr); padding: 16px; } .fd-figure { grid-row: auto; flex-direction: row; align-items: baseline; gap: 8px; }
-  .reach { padding: 18px 16px; } .reach-row { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .reach { padding: 18px 16px; }
   .sh-band { margin: 18px -16px 0; padding: 20px 16px 22px; }
   .hb-row, .hb-scale { grid-template-columns: minmax(0, 1fr); gap: 3px; }
   .btn-explore { width: 100%; padding: 13px 28px; }
@@ -413,10 +404,11 @@ mark { padding: 0 1px; background: #ffe08a; }
       <h1>Empowering Women to Trade through Digitalisation: Policy Insights</h1>
       <p class="cs-tagline">Trade policies, initiatives and programmes that support women, including women-led MSMEs, in all trade-related aspects of digitalisation</p>
       <div class="cs-stats">
-        <div class="cs-stat"><span class="cs-stat-num" id="hero-responses">–</span><span class="cs-stat-lbl">Responses</span></div>
-        <div class="cs-stat"><span class="cs-stat-num" id="hero-members">–</span><span class="cs-stat-lbl">WTO Members</span></div>
-        <div class="cs-stat"><span class="cs-stat-num" id="hero-stakeholders">–</span><span class="cs-stat-lbl">Other Stakeholders</span></div>
-        <div class="cs-stat"><span class="cs-stat-num" id="hero-regions">–</span><span class="cs-stat-lbl">Regions</span></div>
+        <!-- What the Compendium covers (the survey themes) -->
+        <div class="cs-stat"><span class="cs-stat-word">Strategies</span><span class="cs-stat-lbl">&amp; priorities</span></div>
+        <div class="cs-stat"><span class="cs-stat-word">Programmes</span><span class="cs-stat-lbl">&amp; instruments</span></div>
+        <div class="cs-stat"><span class="cs-stat-word">Skills</span><span class="cs-stat-lbl">&amp; capacity building</span></div>
+        <div class="cs-stat"><span class="cs-stat-word">Data</span><span class="cs-stat-lbl">&amp; evaluation</span></div>
       </div>
       <div class="cs-dl-row">
         <button type="button" class="cs-dl-explore" id="btnExploreDbTop">Explore Compendium &rarr;</button>
@@ -469,7 +461,7 @@ mark { padding: 0 1px; background: #ffe08a; }
   <!-- WHAT THE RESPONSES SHOW — six findings, counted from the data -->
   <section class="cs-section">
     <div class="cs-head"><div class="cs-bar"></div><h2>What the Responses Show</h2></div>
-    <p class="cs-lead">Six findings from the responses of WTO Members. Each dot is one Member; the figures are counted directly from the answers, which are quoted as worded in the survey. Open the Compendium to read the explanations, examples and references behind them.</p>
+    <p class="cs-lead">Six messages from the responses of WTO Members, each drawn directly from their answers, which are quoted as worded in the survey. Open the Compendium to read the explanations, examples and references behind them.</p>
     <div class="fd-grid" id="fd-grid"></div>
   </section>
 
@@ -526,12 +518,6 @@ mark { padding: 0 1px; background: #ffe08a; }
         <div class="filter-actions"><button type="button" class="btn-clear" id="btnClear">Clear Filters</button></div>
       </div>
 
-      <div class="stats-bar" id="statsBar">
-        <div class="stat-box"><span class="stat-num" id="stat-responses">–</span><span class="stat-lbl">Responses</span></div>
-        <div class="stat-box"><span class="stat-num" id="stat-members">–</span><span class="stat-lbl">WTO Members</span></div>
-        <div class="stat-box"><span class="stat-num" id="stat-stakeholders">–</span><span class="stat-lbl">Other Stakeholders</span></div>
-        <div class="stat-box"><span class="stat-num" id="stat-questions">–</span><span class="stat-lbl">Questions Shown</span></div>
-      </div>
       <div class="results-bar">
         <span class="results-text" id="resultsText"></span>
         <div class="view-tabs" role="tablist" aria-label="View">
@@ -575,42 +561,52 @@ mark { padding: 0 1px; background: #ffe08a; }
 
   /* ---------- A. Settings ---------- */
   var ALL = '__all__', ROWS_COLLAPSED = 5;
-  var DARK = '#00566a', LIGHT = '#62b3bd', NEUTRAL = '#e0e3e6';   /* validated for colour-vision deficiency */
-
-  /* "What the responses show": six findings among WTO Members. Each returns the headline figure, a sentence
-     and the dots (dark = the finding, light = a partial answer, grey = the rest). Answers are quoted verbatim. */
+  /* "What the responses show": six messages among WTO Members, in words rather than numbers.
+     amount() turns a share of Members into a word ("most", "some"…), so the wording stays true if the data
+     changes. Chips quote the most frequent answers verbatim. */
   function q(s) { return '“' + escapeHtml(s) + '”'; }
+  function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+  function amount(count, n) {
+    var f = n ? count / n : 0;
+    return f >= 0.85 ? 'almost all' : f >= 0.65 ? 'most' : f > 0.5 ? 'more than half of the' : f >= 0.4 ? 'many' : f >= 0.2 ? 'some' : f > 0 ? 'a few' : 'no';
+  }
   var FINDINGS = [
     function (c) {
       var a = c.count('Q1', ['Yes, explicitly included']), b = c.count('Q1', ['Included indirectly']);
-      return { num: a, head: 'explicitly include women in their national digital economy, e-commerce or digital trade strategies',
-               sub: b + ' more include women indirectly.', dots: [[a, DARK, 'explicitly'], [b, LIGHT, 'indirectly']] };
+      return { img: 'images/pillar-1.png', kicker: 'Strategies and priorities',
+               head: cap(amount(a, c.n)) + ' Members explicitly include women in their national digital economy, e-commerce or digital trade strategies.',
+               sub: b ? 'Others include women indirectly.' : '', chips: [['Top policy objectives', c.top('Q5', 3)]] };
     },
     function (c) {
       var a = c.count('Q7', ['Yes, dedicated programmes specifically targeting women in digital trade']), b = c.count('Q7', ['Yes, general programmes including women']);
-      return { num: a, head: 'run programmes dedicated to women in digital trade',
-               sub: b + ' more include women in general programmes.', dots: [[a, DARK, 'dedicated'], [b, LIGHT, 'general']] };
+      return { img: 'images/pillar-2.png', kicker: 'Initiatives and programmes',
+               head: cap(amount(a, c.n)) + ' Members run programmes dedicated to women in digital trade.',
+               sub: b ? 'Others include women in general programmes.' : '', chips: [['Areas most often covered', c.top('Q8', 3)]] };
     },
     function (c) {
-      var t = c.top('Q5');
-      return { num: t.count, head: 'prioritise ' + t.values.map(q).join(' and ') + ' to support women in digital trade',
-               sub: 'The most common policy objective among the ' + c.n + ' Members.', dots: [[t.count, DARK, 'chose it']] };
+      var t = c.top('Q10', 1);
+      return { img: 'images/purpose-policy.png', kicker: 'Support instruments',
+               head: 'Members rely above all on ' + t.map(q).join(' and ') + ' to support women in digital trade.',
+               sub: '', chips: [['Other instruments widely used', c.top('Q10', 3, t)]] };
     },
     function (c) {
-      var o = c.top('Q3'), ch = c.top('Q4');
-      return { num: o.count, head: 'see the greatest opportunities for women in ' + o.values.map(q).join(' and '),
-               sub: 'The greatest challenges: ' + ch.values.map(q).join(' and ') + ' (' + ch.count + ' Members' + (ch.values.length > 1 ? ' each' : '') + ').',
-               dots: [[o.count, DARK, 'chose it']] };
+      var o = c.top('Q3', 1), ch = c.top('Q4', 1);
+      return { img: 'images/purpose-knowledge.png', kicker: 'Opportunities and challenges',
+               head: 'Members see the greatest opportunities for women in ' + o.map(q).join(' and ') + '.',
+               sub: 'The greatest challenges are seen in ' + ch.map(q).join(' and ') + '.',
+               chips: [['Sectors of greatest opportunity', c.top('Q3', 3)], ['Sectors of greatest challenge', c.top('Q4', 3), true]] };
     },
     function (c) {
-      var a = c.count('Q28', ['Yes, targeted support']), b = c.count('Q28', ['Yes, general support']);
-      return { num: a + b, head: 'support women entrepreneurs in accessing investment, start-up funding, incubators, accelerators or investor networks',
-               sub: a + ' with targeted support, ' + b + ' with general support.', dots: [[a, DARK, 'targeted'], [b, LIGHT, 'general']] };
+      var t = c.top('Q14', 1);
+      return { img: 'images/pillar-3.png', kicker: 'Skills and capacity building',
+               head: 'Training for women most often covers ' + t.map(q).join(' and ') + '.',
+               sub: '', chips: [['Other skills covered', c.top('Q14', 3, t)]] };
     },
     function (c) {
-      var a = c.count('Q20', ['Yes, regularly', 'Yes, occasionally']), dev = c.count('Q20', ['Data collection under development']), no = c.count('Q20', ['No']);
-      return { num: a, head: 'collect sex-disaggregated data on digital trade, regularly or occasionally',
-               sub: no + ' do not, and ' + dev + ' are developing data collection.', dots: [[a, DARK, 'collect'], [dev, LIGHT, 'under development']] };
+      var a = c.count('Q20', ['Yes, regularly', 'Yes, occasionally']), low = a / c.n < 0.4;
+      return { img: 'images/purpose-capacity.png', kicker: 'Data, monitoring and evaluation',
+               head: (low ? 'Only ' + amount(a, c.n) : cap(amount(a, c.n))) + ' Members collect sex-disaggregated data on digital trade.',
+               sub: 'Others are developing data collection or do not yet collect it.', chips: [['How programmes are most often monitored', c.top('Q25', 3)]] };
     }
   ];
 
@@ -680,31 +676,28 @@ mark { padding: 0 1px; background: #ffe08a; }
   function barChart(rows, max, unit, series) {
     return rows.map(function (row) {
       return '<div class="hb-row"><div class="hb-label">' + escapeHtml(row.label) + '</div><div class="hb-bars">' + row.values.map(function (v, i) {
-        return '<div class="hb-line" tabindex="0" data-tip-title="' + v + ' of ' + max + ' ' + unit + '" data-tip="' + escapeHtml((series ? series[i] + ': ' : '') + row.label) + '">' +
+        return '<div class="hb-line" tabindex="0" data-tip-title="' + v + ' ' + unit + '" data-tip="' + escapeHtml((series ? series[i] + ': ' : '') + row.label) + '">' +
           '<div class="hb-track"><div class="hb-bar" style="width:' + (max ? v / max * 100 : 0).toFixed(2) + '%"></div></div><span class="hb-val">' + v + '</span></div>';
       }).join('') + '</div></div>';
-    }).join('') + '<div class="hb-scale"><div></div><div>Number of ' + unit + ' (of ' + max + ')</div></div>';
+    }).join('') + '<div class="hb-scale"><div></div><div>Number of ' + unit + '</div></div>';
   }
 
   function fillCover() {
-    $('#hero-responses').text(respondents.length);
-    $('#hero-members').text(groupCounts.members);
-    $('#hero-stakeholders').text(groupCounts.stakeholders);
 
-    /* Respondents panel: total, then one row per region (largest first) and one for the other stakeholders */
+    /* Contributions panel: one row per region (names only) and one for the other stakeholders */
     var regions = {};
     members().forEach(function (r) { (regions[r.area] = regions[r.area] || []).push(r.name); });
-    function reachRow(title, sub, names, other) {
-      return '<div class="reach-row' + (other ? ' is-other' : '') + '"><div class="reach-region">' + escapeHtml(title) + '<small>' + escapeHtml(sub) + '</small></div>' +
-        '<div class="reach-dots" role="img" aria-label="' + names.length + '">' + names.map(function () { return '<i class="reach-dot"></i>'; }).join('') + '</div>' +
-        '<div class="reach-names">' + names.sort().map(function (n) { return '<span>' + escapeHtml(n) + '</span>'; }).join('') + '</div></div>';
+    var regionKeys = Object.keys(regions).sort();
+    function reachRow(title, names, other) {
+      return '<div class="reach-row' + (other ? ' is-other' : '') + '"><div class="reach-region">' + escapeHtml(title) + '</div>' +
+        '<div class="reach-names">' + names.sort().map(function (nm) { return '<span>' + escapeHtml(nm) + '</span>'; }).join('') + '</div></div>';
     }
-    var regionKeys = Object.keys(regions).sort(function (a, b) { return regions[b].length - regions[a].length || a.localeCompare(b); });
+    function listWords(items) { return items.length > 1 ? items.slice(0, -1).join(', ') + (items.length > 2 ? ', and ' : ' and ') + items[items.length - 1] : items.join(''); }
     $('#reach').html(
-      '<div class="reach-total"><span class="reach-num">' + respondents.length + '</span><span class="reach-lbl">Responses</span>' +
-      '<div class="reach-sub"><b>' + groupCounts.members + '</b> WTO Members from <b>' + regionKeys.length + '</b> regions<br><b>' + groupCounts.stakeholders + '</b> other stakeholders</div></div>' +
-      '<div class="reach-rows">' + regionKeys.map(function (k) { return reachRow(k, plural(regions[k].length, 'WTO Member', 'WTO Members'), regions[k], false); }).join('') +
-      reachRow('Other stakeholders', 'International organizations and academia', others().map(function (r) { return r.name; }), true) + '</div>');
+      '<div class="reach-intro"><span class="reach-title">Contributions</span>' +
+      '<p class="reach-text">Responses from WTO Members in ' + escapeHtml(listWords(regionKeys)) + ', and from international organizations and academia.</p></div>' +
+      '<div class="reach-rows">' + regionKeys.map(function (k) { return reachRow(k, regions[k], false); }).join('') +
+      reachRow('Other stakeholders', others().map(function (r) { return r.name; }), true) + '</div>');
 
     /* Theme cards: question range and count */
     meta.themes.slice(0, 6).forEach(function (t, i) {
@@ -713,7 +706,6 @@ mark { padding: 0 1px; background: #ffe08a; }
     });
 
     var list = members(), n = list.length;
-    $('#hero-regions').text(regionKeys.length);
 
     /* What the responses show */
     var c = {
@@ -721,24 +713,22 @@ mark { padding: 0 1px; background: #ffe08a; }
       count: function (code, answers) {
         return list.filter(function (r) { return answer(r, code).options.some(function (o) { return answers.indexOf(o) !== -1; }); }).length;
       },
-      top: function (code) {
-        var counts = optionCounts(list, code).filter(function (o) { return !isNA(o.value); });
-        var best = counts.length ? counts[0].count : 0;
-        return { count: best, values: counts.filter(function (o) { return o.count === best; }).map(function (o) { return o.value; }) };
+      /* The `max` most frequent answers, plus any tied with the last one; NA/Other and `except` left out */
+      top: function (code, max, except) {
+        var counts = optionCounts(list, code).filter(function (o) { return !isNA(o.value) && (except || []).indexOf(o.value) === -1; });
+        var out = counts.slice(0, max);
+        for (var i = max; i < counts.length && out.length && counts[i].count === out[out.length - 1].count; i++) out.push(counts[i]);
+        return out.map(function (o) { return o.value; });
       }
     };
     $('#fd-grid').html(FINDINGS.map(function (make) {
-      var f = make(c), dots = '', used = 0, legend = '';
-      f.dots.forEach(function (d) {
-        for (var i = 0; i < d[0]; i++) dots += '<i class="fd-dot" style="background:' + d[1] + '"></i>';
-        used += d[0];
-        legend += '<span><i style="background:' + d[1] + '"></i>' + d[0] + ' ' + escapeHtml(d[2]) + '</span>';
-      });
-      for (var k = used; k < n; k++) dots += '<i class="fd-dot" style="background:' + NEUTRAL + '"></i>';
-      legend += '<span><i style="background:' + NEUTRAL + '"></i>' + (n - used) + ' other' + (n - used === 1 ? '' : 's') + '</span>';
-      return '<div class="fd-card"><div class="fd-figure"><span class="fd-num">' + f.num + '</span><span class="fd-of">of ' + n + ' WTO Members</span></div>' +
-        '<p class="fd-head">' + f.head + '</p><p class="fd-sub">' + f.sub + '</p>' +
-        '<div><div class="fd-dots" role="img" aria-label="' + f.num + ' of ' + n + '">' + dots + '</div><div class="fd-legend">' + legend + '</div></div></div>';
+      var f = make(c);
+      return '<div class="fd-card"><div class="fd-top"><img src="' + f.img + '" alt=""><span class="fd-kicker">' + escapeHtml(f.kicker) + '</span></div>' +
+        '<p class="fd-head">' + f.head + '</p>' + (f.sub ? '<p class="fd-sub">' + f.sub + '</p>' : '') +
+        f.chips.filter(function (g) { return g[1].length; }).map(function (g) {
+          return '<div class="fd-chips"><span class="fd-chips-label">' + escapeHtml(g[0]) + '</span>' +
+            g[1].map(function (v) { return '<span class="fd-chip' + (g[2] ? ' is-warm' : '') + '">' + escapeHtml(v) + '</span>'; }).join('') + '</div>';
+        }).join('') + '</div>';
     }).join(''));
 
     /* Other stakeholders: verbatim quotes */
@@ -810,13 +800,10 @@ mark { padding: 0 1px; background: #ffe08a; }
       var v = $(this).val();
       $(this).closest('.bootstrap-select').toggleClass('has-real-value', $.isArray(v) ? v.length > 0 : !!(v && v !== ALL));
     });
-    var m = shown.filter(function (r) { return r.group === 'members'; }).length;
-    $('#stat-responses').text(shown.length);
-    $('#stat-members').text(m);
-    $('#stat-stakeholders').text(shown.length - m);
-    $('#stat-questions').text(visibleQs.length);
-    $('#resultsText').text(shown.length ? 'Showing ' + plural(shown.length, 'response', 'responses') + ' · ' + plural(visibleQs.length, 'question', 'questions') +
-      (shown.length !== respondents.length ? ' (of ' + respondents.length + ' responses)' : '') : 'No responses match the current search and filters');
+    var everything = shown.length === respondents.length && visibleQs.length === questions.length;
+    $('#resultsText').text(!shown.length ? 'No responses match the current search and filters'
+      : everything ? 'Showing all responses and questions'
+      : 'Showing ' + plural(shown.length, 'response', 'responses') + ' · ' + plural(visibleQs.length, 'question', 'questions'));
     render();
   }
 
@@ -859,7 +846,7 @@ mark { padding: 0 1px; background: #ffe08a; }
     Object.keys(meta.groups).forEach(function (g) {
       var items = shown.filter(function (x) { return x.group === g; });
       if (!items.length) return;
-      list += '<div class="rv-list-group">' + escapeHtml(meta.groups[g]) + ' (' + items.length + ')</div>' + items.map(function (x) {
+      list += '<div class="rv-list-group">' + escapeHtml(meta.groups[g]) + '</div>' + items.map(function (x) {
         return '<button type="button" class="rv-item' + (x.id === r.id ? ' active' : '') + '" data-id="' + escapeHtml(x.id) + '"><span class="rv-item-name">' + escapeHtml(x.name) + '</span><span class="rv-item-area">' + escapeHtml(x.area) + '</span></button>';
       }).join('');
       select += '<optgroup label="' + escapeHtml(meta.groups[g]) + '">' + items.map(function (x) {
@@ -876,7 +863,7 @@ mark { padding: 0 1px; background: #ffe08a; }
     if (!qs.length) body = '<div class="view-empty">None of the chosen questions were asked to ' + escapeHtml(meta.groups[r.group]) + '.</div>';
     $v.html('<div class="rv-wrap"><nav class="rv-list" aria-label="Respondents">' + list + '</nav><div class="rv-main">' +
       '<div class="rv-select"><select aria-label="Choose a respondent">' + select + '</select></div>' +
-      '<div class="rv-nav"><button type="button" class="rv-nav-btn" data-step="-1"' + (idx === 0 ? ' disabled' : '') + '>&lsaquo; Previous</button><span class="rv-nav-pos">' + (idx + 1) + ' of ' + shown.length + '</span>' +
+      '<div class="rv-nav"><button type="button" class="rv-nav-btn" data-step="-1"' + (idx === 0 ? ' disabled' : '') + '>&lsaquo; Previous</button><span class="rv-nav-pos"></span>' +
       '<button type="button" class="rv-nav-btn" data-step="1"' + (idx === shown.length - 1 ? ' disabled' : '') + '>Next &rsaquo;</button></div>' +
       '<div class="rv-head"><span class="tag tag-group">' + escapeHtml(meta.groups[r.group]) + '</span> <span class="tag tag-area">' + escapeHtml(r.area) + '</span>' +
       '<h3 class="rv-name">' + escapeHtml(r.name) + '</h3><dl class="rv-info">' + r.info.map(function (f) { return '<dt>' + escapeHtml(f.label) + '</dt><dd>' + highlight(escapeHtml(f.value)) + '</dd>'; }).join('') + '</dl></div>' +
@@ -905,7 +892,7 @@ mark { padding: 0 1px; background: #ffe08a; }
     $v.html('<div class="qv-list">' + visibleQs.map(function (q) {
       var list = shown.filter(function (r) { return r.group === q.group; }), chart = '';
       if (q.kind === 'options') {
-        chart = '<div class="qv-chart"><div class="qv-chart-note">Answers among the ' + plural(list.length, 'response', 'responses') + ' shown</div>' +
+        chart = '<div class="qv-chart"><div class="qv-chart-note">Answers among the responses shown</div>' +
           barChart(optionCounts(list, q.code).map(function (o) { return { label: o.value, values: [o.count] }; }), list.length, 'responses') + '</div>';
       }
       return '<div class="qv-card" data-code="' + q.code + '"><div class="qv-meta">' + escapeHtml(q.theme) + ' · ' + escapeHtml(meta.groups[q.group]) + '</div>' +
@@ -940,7 +927,7 @@ mark { padding: 0 1px; background: #ffe08a; }
     Object.keys(meta.groups).forEach(function (g) {
       var rows = shown.filter(function (r) { return r.group === g; }), qs = visibleQs.filter(function (q) { return q.group === g; });
       if (!rows.length || !qs.length) return;
-      html += '<div class="mx-group">' + escapeHtml(meta.groups[g]) + ' · ' + plural(rows.length, 'response', 'responses') + ' × ' + plural(qs.length, 'question', 'questions') + '</div>' +
+      html += '<div class="mx-group">' + escapeHtml(meta.groups[g]) + '</div>' +
         '<div class="mx-wrap"><table class="mx-table"><thead><tr><th class="mx-name">' + escapeHtml(meta.groups[g]) + '</th>' + qs.map(function (q) {
           return '<th title="' + escapeHtml(q.question) + '"><span class="q-code">' + codeLabel(q.code) + '</span><span class="mx-qtext">' + escapeHtml(q.question) + '</span></th>';
         }).join('') + '</tr></thead><tbody>' + rows.map(function (r) {
@@ -1028,7 +1015,7 @@ mark { padding: 0 1px; background: #ffe08a; }
       $('#viewHint').text(HINTS.response);
       applyFilters();
     } else {
-      $('#db-ui, #statsBar, .results-bar, #viewHint').hide();
+      $('#db-ui, .results-bar, #viewHint').hide();
       $('#db-error').show();
       console.error('Digitalisation Compendium: data/digitalization_data.json is missing or invalid. Run tools/excel_to_json.py to rebuild it.');
     }
