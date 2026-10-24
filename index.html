@@ -91,12 +91,7 @@ body { margin: 0; background: #f5f5f5; }
 .cs-hero-content { max-width: 56%; }
 .cs-kicker  { display: block; margin-bottom: 12px; padding-left: 10px; border-left: 3px solid var(--gold); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.72); }
 .cs-hero h1 { margin-bottom: 8px; font-size: 31px; font-weight: 700; line-height: 1.25; color: #fff; }
-.cs-tagline { margin-bottom: 30px; font-size: 15px; color: rgba(255,255,255,0.78); }
-.cs-stats    { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 30px; }
-.cs-stat     { flex: 1; min-width: 110px; padding: 16px 12px; text-align: center; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; }
-.cs-stat-num { display: block; font-size: 34px; font-weight: 700; line-height: 1; color: #fff; }
-.cs-stat-word { display: block; font-size: 17px; font-weight: 700; line-height: 1.25; color: #fff; }  /* hero tiles: what the Compendium covers */
-.cs-stat-lbl { display: block; margin-top: 7px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: rgba(255,255,255,0.68); }
+.cs-tagline { margin-bottom: 6px; font-size: 15px; color: rgba(255,255,255,0.78); }
 .cs-dl-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 24px; }
 .cs-dl-explore { padding: 11px 20px; font-size: 13px; font-weight: 700; background: var(--gold); color: #10202a; border: none; border-radius: 4px; cursor: pointer; box-shadow: 0 4px 16px rgba(0,0,0,0.18); }
 .cs-dl-explore:hover { background: var(--gold-600); }
@@ -151,18 +146,26 @@ body { margin: 0; background: #f5f5f5; }
 .obj-text  { margin: 0; font-size: 12.5px; line-height: 1.6; color: var(--body); }
 .cs-lead.is-after { margin-top: 22px; }
 
-/* ---------- What the responses show: one card per message, in words; chips quote the top answers ---------- */
-.fd-grid    { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 20px; }
-.fd-card    { display: flex; flex-direction: column; gap: 10px; padding: 20px 20px 18px; background: #fff; border: 1px solid #e0e6ed; border-top: 4px solid var(--teal-500); border-radius: 8px; box-shadow: 0 2px 10px rgba(0,52,62,0.06); }
-.fd-top     { display: flex; align-items: center; gap: 12px; }
-.fd-top img { width: 52px; height: 52px; flex-shrink: 0; object-fit: contain; }
-.fd-kicker  { font-size: 10px; font-weight: 800; line-height: 1.4; text-transform: uppercase; letter-spacing: 0.08em; color: var(--teal-600); }
-.fd-head    { margin: 0; font-size: 15.5px; font-weight: 700; line-height: 1.45; color: var(--navy); }
-.fd-sub     { margin: 0; font-size: 12.5px; line-height: 1.55; color: var(--body); }
-.fd-chips   { margin-top: auto; padding-top: 10px; border-top: 1px solid #eef0f3; }
-.fd-chips + .fd-chips { margin-top: 0; padding-top: 4px; border-top: none; }
+/* ---------- What the responses show: soft teal band; wide cards with an icon tile, a gold tab and a watermark ---------- */
+.fd-section { background: linear-gradient(180deg, #e6f4f5 0%, #f2f9f9 60%, #ffffff 100%); }
+.fd-grid    { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin-top: 22px; }
+.fd-card    { position: relative; overflow: hidden; display: grid; grid-template-columns: 58px minmax(0, 1fr); gap: 18px; padding: 24px 24px 20px;
+              background: #fff; border: 1px solid rgba(0,96,114,0.12); border-radius: 14px; box-shadow: 0 6px 20px rgba(0,78,96,0.08);
+              transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.fd-card:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,78,96,0.15); }
+.fd-card::before { content: ""; position: absolute; top: 0; left: 24px; width: 46px; height: 4px; background: var(--gold); border-radius: 0 0 4px 4px; } /* gold tab */
+.fd-icon    { display: flex; align-items: center; justify-content: center; width: 58px; height: 58px; border-radius: 16px;
+              background: linear-gradient(135deg, var(--teal-700) 0%, var(--teal) 55%, var(--teal-500) 100%); box-shadow: 0 8px 16px rgba(0,96,114,0.28); }
+.fd-icon svg { width: 28px; height: 28px; fill: none; stroke: #fff; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.fd-mark    { position: absolute; right: -22px; bottom: -22px; width: 130px; height: 130px; fill: none; stroke: var(--teal-500); stroke-width: 1.2; opacity: 0.07; pointer-events: none; } /* watermark */
+.fd-body    { position: relative; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.fd-kicker  { display: inline-flex; align-items: center; gap: 7px; font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.09em; color: var(--teal-600); }
+.fd-kicker::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--gold); }
+.fd-head    { margin: 0; font-size: 16.5px; font-weight: 700; line-height: 1.45; color: var(--navy); }
+.fd-sub     { margin: 0; font-size: 13px; line-height: 1.55; color: var(--body); }
+.fd-chips   { margin-top: 6px; }
 .fd-chips-label { display: block; margin-bottom: 6px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: #7a8a99; }
-.fd-chip    { display: inline-block; margin: 0 5px 5px 0; padding: 4px 10px; font-size: 11.5px; font-weight: 600; line-height: 1.35; color: var(--teal-ink); background: var(--teal-100); border-radius: 12px; }
+.fd-chip    { display: inline-block; margin: 0 5px 5px 0; padding: 4px 11px; font-size: 11.5px; font-weight: 600; line-height: 1.35; color: var(--teal-ink); background: var(--teal-100); border-radius: 12px; }
 .fd-chip.is-warm { color: #5a4413; background: #fcedd2; }
 
 /* ---------- Bar chart (Question view) and tooltip ---------- */
@@ -271,6 +274,9 @@ mark { padding: 0 1px; background: #ffe08a; }
 .rv-nav-btn { padding: 6px 14px; font-size: 12.5px; font-weight: 600; color: var(--teal-700); background: #fff; border: 1px solid #c9d6e4; cursor: pointer; }
 .rv-nav-btn:disabled { color: #aab4be; cursor: default; }
 .rv-nav-pos { font-size: 12px; color: #7a8a99; }
+.rv-pdf-btn { display: inline-flex; align-items: center; gap: 7px; padding: 7px 16px; font-size: 12.5px; font-weight: 700; font-family: inherit; color: #fff; background: var(--teal); border: none; border-radius: 4px; cursor: pointer; }
+.rv-pdf-btn:hover { background: var(--teal-700); }
+.rv-pdf-btn svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .rv-head  { padding-bottom: 14px; border-bottom: 2px solid var(--teal-500); }
 .rv-name  { margin: 6px 0 8px; font-size: 24px; font-weight: 700; color: var(--navy); }
 .rv-info  { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 3px 14px; margin: 0; font-size: 12.5px; }
@@ -336,7 +342,6 @@ mark { padding: 0 1px; background: #ffe08a; }
   .rv-wrap { grid-template-columns: 220px minmax(0, 1fr); }
   .reach { grid-template-columns: 200px minmax(0, 1fr); gap: 22px; }
   .reach-row { grid-template-columns: minmax(0, 1fr); gap: 4px; }
-  .fd-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .filter-item label { position: relative; } .info-icon { position: static; }
   .info-icon::after { left: 0; right: 0; width: auto; transform: none; }
 }
@@ -362,13 +367,12 @@ mark { padding: 0 1px; background: #ffe08a; }
 @media (max-width: 480px) {
   .page-wrap { padding: 0 0 24px; }
   .cs-hero { padding: 20px 16px 24px; } .cs-hero h1 { font-size: 20px; }
-  .cs-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
-  .cs-stat-num { font-size: 22px; } .cs-stat-word { font-size: 14px; }
   .cs-dl-row { grid-template-columns: minmax(0, 1fr); }
   .cs-section { padding: 20px 16px; }
   .cs-pillars, .filter-grid { grid-template-columns: minmax(0, 1fr); }
   .obj-card { flex-direction: column; gap: 10px; } .obj-card img { width: 56px; height: 56px; }
-  .fd-card { grid-template-columns: minmax(0, 1fr); padding: 16px; } .fd-figure { grid-row: auto; flex-direction: row; align-items: baseline; gap: 8px; }
+  .fd-card { grid-template-columns: 46px minmax(0, 1fr); gap: 14px; padding: 20px 16px 16px; }
+  .fd-icon { width: 46px; height: 46px; border-radius: 13px; } .fd-icon svg { width: 22px; height: 22px; }
   .reach { padding: 18px 16px; }
   .sh-band { margin: 18px -16px 0; padding: 20px 16px 22px; }
   .hb-row, .hb-scale { grid-template-columns: minmax(0, 1fr); gap: 3px; }
@@ -403,13 +407,6 @@ mark { padding: 0 1px; background: #ffe08a; }
       <span class="cs-kicker">Informal Working Group on Trade and Gender &middot; Informal Working Group on MSMEs</span>
       <h1>Empowering Women to Trade through Digitalisation: Policy Insights</h1>
       <p class="cs-tagline">Trade policies, initiatives and programmes that support women, including women-led MSMEs, in all trade-related aspects of digitalisation</p>
-      <div class="cs-stats">
-        <!-- What the Compendium covers (the survey themes) -->
-        <div class="cs-stat"><span class="cs-stat-word">Strategies</span><span class="cs-stat-lbl">&amp; priorities</span></div>
-        <div class="cs-stat"><span class="cs-stat-word">Programmes</span><span class="cs-stat-lbl">&amp; instruments</span></div>
-        <div class="cs-stat"><span class="cs-stat-word">Skills</span><span class="cs-stat-lbl">&amp; capacity building</span></div>
-        <div class="cs-stat"><span class="cs-stat-word">Data</span><span class="cs-stat-lbl">&amp; evaluation</span></div>
-      </div>
       <div class="cs-dl-row">
         <button type="button" class="cs-dl-explore" id="btnExploreDbTop">Explore Compendium &rarr;</button>
         <a href="downloads/digitalization-compendium.xlsx" class="cs-dl" download>Download Compendium (Excel)</a>
@@ -458,8 +455,8 @@ mark { padding: 0 1px; background: #ffe08a; }
     </div>
   </section>
 
-  <!-- WHAT THE RESPONSES SHOW — six findings, counted from the data -->
-  <section class="cs-section">
+  <!-- WHAT THE RESPONSES SHOW — six messages drawn from the data -->
+  <section class="cs-section fd-section">
     <div class="cs-head"><div class="cs-bar"></div><h2>What the Responses Show</h2></div>
     <p class="cs-lead">Six messages from the responses of WTO Members, each drawn directly from their answers, which are quoted as worded in the survey. Open the Compendium to read the explanations, examples and references behind them.</p>
     <div class="fd-grid" id="fd-grid"></div>
@@ -570,41 +567,52 @@ mark { padding: 0 1px; background: #ffe08a; }
     var f = n ? count / n : 0;
     return f >= 0.85 ? 'almost all' : f >= 0.65 ? 'most' : f > 0.5 ? 'more than half of the' : f >= 0.4 ? 'many' : f >= 0.2 ? 'some' : f > 0 ? 'a few' : 'no';
   }
+  /* Line icons for the six messages (24×24, drawn with strokes; colour set in the CSS) */
+  var ICONS = {
+    strategy:   '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2"/><path d="M12 3v2M21 12h-2"/>',
+    programmes: '<path d="M12 3 2.5 8 12 13l9.5-5L12 3z"/><path d="M2.5 12.5 12 17.5l9.5-5"/><path d="M2.5 17 12 22l9.5-5"/>',
+    tools:      '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8.5 7V5.2A2.2 2.2 0 0 1 10.7 3h2.6a2.2 2.2 0 0 1 2.2 2.2V7"/><path d="M3 13h18M12 12v2.5"/>',
+    sectors:    '<path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/><path d="M3 21h18"/>',
+    skills:     '<path d="M2 9.5 12 4.5l10 5-10 5-10-5z"/><path d="M6 11.5v4.5c0 1.6 2.7 3 6 3s6-1.4 6-3v-4.5"/><path d="M22 9.5v5.5"/>',
+    data:       '<path d="M4 20V11M10 20V5M16 20v-6M21 20H3"/><circle cx="16" cy="9.5" r="1.6"/>'
+  };
+  function icon(name, cls) { return '<svg class="' + cls + '" viewBox="0 0 24 24" aria-hidden="true">' + ICONS[name] + '</svg>'; }
+
   var FINDINGS = [
     function (c) {
       var a = c.count('Q1', ['Yes, explicitly included']), b = c.count('Q1', ['Included indirectly']);
-      return { img: 'images/pillar-1.png', kicker: 'Strategies and priorities',
+      return { icon: 'strategy', kicker: 'Strategies and priorities',
                head: cap(amount(a, c.n)) + ' Members explicitly include women in their national digital economy, e-commerce or digital trade strategies.',
                sub: b ? 'Others include women indirectly.' : '', chips: [['Top policy objectives', c.top('Q5', 3)]] };
     },
     function (c) {
       var a = c.count('Q7', ['Yes, dedicated programmes specifically targeting women in digital trade']), b = c.count('Q7', ['Yes, general programmes including women']);
-      return { img: 'images/pillar-2.png', kicker: 'Initiatives and programmes',
+      return { icon: 'programmes', kicker: 'Initiatives and programmes',
                head: cap(amount(a, c.n)) + ' Members run programmes dedicated to women in digital trade.',
                sub: b ? 'Others include women in general programmes.' : '', chips: [['Areas most often covered', c.top('Q8', 3)]] };
     },
     function (c) {
       var t = c.top('Q10', 1);
-      return { img: 'images/purpose-policy.png', kicker: 'Support instruments',
+      return { icon: 'tools', kicker: 'Support instruments',
                head: 'Members rely above all on ' + t.map(q).join(' and ') + ' to support women in digital trade.',
                sub: '', chips: [['Other instruments widely used', c.top('Q10', 3, t)]] };
     },
     function (c) {
       var o = c.top('Q3', 1), ch = c.top('Q4', 1);
-      return { img: 'images/purpose-knowledge.png', kicker: 'Opportunities and challenges',
+      return { icon: 'sectors', kicker: 'Opportunities and challenges',
                head: 'Members see the greatest opportunities for women in ' + o.map(q).join(' and ') + '.',
                sub: 'The greatest challenges are seen in ' + ch.map(q).join(' and ') + '.',
                chips: [['Sectors of greatest opportunity', c.top('Q3', 3)], ['Sectors of greatest challenge', c.top('Q4', 3), true]] };
     },
     function (c) {
       var t = c.top('Q14', 1);
-      return { img: 'images/pillar-3.png', kicker: 'Skills and capacity building',
+      return { icon: 'skills', kicker: 'Skills and capacity building',
                head: 'Training for women most often covers ' + t.map(q).join(' and ') + '.',
                sub: '', chips: [['Other skills covered', c.top('Q14', 3, t)]] };
     },
     function (c) {
       var a = c.count('Q20', ['Yes, regularly', 'Yes, occasionally']), low = a / c.n < 0.4;
-      return { img: 'images/purpose-capacity.png', kicker: 'Data, monitoring and evaluation',
+      return { icon: 'data', kicker: 'Data, monitoring and evaluation',
                head: (low ? 'Only ' + amount(a, c.n) : cap(amount(a, c.n))) + ' Members collect sex-disaggregated data on digital trade.',
                sub: 'Others are developing data collection or do not yet collect it.', chips: [['How programmes are most often monitored', c.top('Q25', 3)]] };
     }
@@ -723,12 +731,13 @@ mark { padding: 0 1px; background: #ffe08a; }
     };
     $('#fd-grid').html(FINDINGS.map(function (make) {
       var f = make(c);
-      return '<div class="fd-card"><div class="fd-top"><img src="' + f.img + '" alt=""><span class="fd-kicker">' + escapeHtml(f.kicker) + '</span></div>' +
+      return '<div class="fd-card"><div class="fd-icon">' + icon(f.icon, 'fd-svg') + '</div>' +
+        '<div class="fd-body"><span class="fd-kicker">' + escapeHtml(f.kicker) + '</span>' +
         '<p class="fd-head">' + f.head + '</p>' + (f.sub ? '<p class="fd-sub">' + f.sub + '</p>' : '') +
         f.chips.filter(function (g) { return g[1].length; }).map(function (g) {
           return '<div class="fd-chips"><span class="fd-chips-label">' + escapeHtml(g[0]) + '</span>' +
             g[1].map(function (v) { return '<span class="fd-chip' + (g[2] ? ' is-warm' : '') + '">' + escapeHtml(v) + '</span>'; }).join('') + '</div>';
-        }).join('') + '</div>';
+        }).join('') + '</div>' + icon(f.icon, 'fd-mark') + '</div>';
     }).join(''));
 
     /* Other stakeholders: verbatim quotes */
@@ -863,7 +872,9 @@ mark { padding: 0 1px; background: #ffe08a; }
     if (!qs.length) body = '<div class="view-empty">None of the chosen questions were asked to ' + escapeHtml(meta.groups[r.group]) + '.</div>';
     $v.html('<div class="rv-wrap"><nav class="rv-list" aria-label="Respondents">' + list + '</nav><div class="rv-main">' +
       '<div class="rv-select"><select aria-label="Choose a respondent">' + select + '</select></div>' +
-      '<div class="rv-nav"><button type="button" class="rv-nav-btn" data-step="-1"' + (idx === 0 ? ' disabled' : '') + '>&lsaquo; Previous</button><span class="rv-nav-pos"></span>' +
+      '<div class="rv-nav"><button type="button" class="rv-nav-btn" data-step="-1"' + (idx === 0 ? ' disabled' : '') + '>&lsaquo; Previous</button>' +
+      '<button type="button" class="rv-pdf-btn" title="Save this response as a PDF. It contains the questions currently shown." aria-label="Download this response as PDF">' +
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M4 20h16"/></svg>Download PDF</button>' +
       '<button type="button" class="rv-nav-btn" data-step="1"' + (idx === shown.length - 1 ? ' disabled' : '') + '>Next &rsaquo;</button></div>' +
       '<div class="rv-head"><span class="tag tag-group">' + escapeHtml(meta.groups[r.group]) + '</span> <span class="tag tag-area">' + escapeHtml(r.area) + '</span>' +
       '<h3 class="rv-name">' + escapeHtml(r.name) + '</h3><dl class="rv-info">' + r.info.map(function (f) { return '<dt>' + escapeHtml(f.label) + '</dt><dd>' + highlight(escapeHtml(f.value)) + '</dd>'; }).join('') + '</dl></div>' +
@@ -883,7 +894,113 @@ mark { padding: 0 1px; background: #ffe08a; }
       var idx = 0; shown.forEach(function (r, i) { if (r.id === currentId) idx = i; });
       var next = shown[idx + (+$(this).data('step'))];
       if (next) { currentId = next.id; renderResponseView(); scrollIfBelow('#view-response'); }
+    })
+    .on('click', '.rv-pdf-btn', function () { printResponse(byId[currentId]); });
+
+  /* ---------- PDF of one response (Response view only) ----------
+     Builds an A4 document of the response, with only the questions currently shown (the Themes and
+     Questions filters apply), and opens the browser's print dialog, where "Save as PDF" creates the file.
+     The browser's own PDF engine keeps the text selectable and the links clickable, and uses the Verdana
+     font installed on the computer (the font itself cannot be shipped with the page). */
+  var LOGO = 'images/wto-trade-for-women-logo.png';
+  var PDF_TITLE = 'Empowering Women to Trade through Digitalisation: Policy Insights';
+
+  function plainText(s) {     /* escaped, links clickable, no keyword highlight */
+    return escapeHtml($.trim(s)).replace(/https?:\/\/[^\s<>"]+[^\s<>".,;:)\]]/g, function (u) { return '<a href="' + u + '">' + u + '</a>'; });
+  }
+
+  function responseDocument(r) {
+    var asked = questions.filter(function (q) { return q.group === r.group; });
+    var qs = visibleQs.filter(function (q) { return q.group === r.group; });
+    var logo = new URL(LOGO, document.baseURI).href;
+    var today = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    var body = '';
+    meta.themes.forEach(function (t) {
+      var inTheme = qs.filter(function (q) { return q.theme === t; });
+      if (!inTheme.length) return;
+      body += '<h2>' + escapeHtml(t) + '</h2>' + inTheme.map(function (q) {
+        /* the question, its answer options and the start of the explanation stay on one page (.keep) */
+        var a = answer(r, q.code), keep = '', rest = '';
+        if (!hasAnswer(a)) keep = '<p class="none">No answer</p>';
+        if (a.options.length) keep += '<div class="label">Answer</div><ul>' + a.options.map(function (o) { return '<li>' + escapeHtml(o) + '</li>'; }).join('') + '</ul>';
+        var texts = [];
+        if ($.trim(a.main)) texts.push(['Answer', a.main]);
+        a.notes.forEach(function (n, i) { if ($.trim(n)) texts.push([q.prompts[i] || 'Explanation', n]); });
+        texts.forEach(function (t, i) {
+          var block = '<div class="label">' + escapeHtml(t[0]) + '</div><p class="text">' + plainText(t[1]) + '</p>';
+          if (i === 0) keep += '<div class="label">' + escapeHtml(t[0]) + '</div>'; else rest += block;
+          if (i === 0) rest = '<p class="text">' + plainText(t[1]) + '</p>' + rest;
+        });
+        return '<section class="q"><div class="keep"><h3><span class="code">' + codeLabel(q.code) + '</span>' + escapeHtml(q.question) + '</h3>' + keep + '</div>' + rest + '</section>';
+      }).join('');
     });
+    var extract = qs.length < asked.length
+      ? '<p class="extract">Extract: this document contains ' + plural(qs.length, 'question', 'questions') + ' of this response, as selected with the filters on the Compendium page. The full response is available in the Compendium.</p>' : '';
+    return '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>' + escapeHtml('Digitalisation Compendium – ' + r.name) + '</title><style>' +
+      '@page { size: A4; margin: 20mm 18mm 22mm;' +
+      '  @bottom-left { content: "' + PDF_TITLE + '"; font: 7pt Verdana, Geneva, sans-serif; color: #6b7c8d; }' +
+      '  @bottom-right { content: "Page " counter(page) " of " counter(pages); font: 7pt Verdana, Geneva, sans-serif; color: #6b7c8d; } }' +
+      'html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }' +
+      'body { margin: 0; font-family: Verdana, Geneva, "DejaVu Sans", sans-serif; font-size: 9pt; line-height: 1.55; color: #1f2a37; }' +
+      '.head { display: flex; align-items: center; justify-content: space-between; gap: 10mm; padding-bottom: 4mm; border-bottom: 1.5pt solid #006072; }' +
+      '.head img { height: 15mm; }' +
+      '.head .org { text-align: right; font-size: 7pt; line-height: 1.5; color: #4b5e80; }' +
+      '.head .org b { display: block; font-size: 8pt; color: #00187b; }' +
+      '.kicker { margin: 7mm 0 1mm; font-size: 7.5pt; font-weight: bold; letter-spacing: 0.08em; text-transform: uppercase; color: #00667e; }' +
+      'h1 { margin: 0 0 1.5mm; font-size: 18pt; line-height: 1.25; color: #00187b; }' +
+      '.type { margin: 0 0 4mm; font-size: 8.5pt; color: #4b5e80; }' +
+      'table.info { width: 100%; border-collapse: collapse; margin-bottom: 4mm; font-size: 8.5pt; }' +
+      'table.info th { width: 62mm; padding: 1.6mm 3mm 1.6mm 0; text-align: left; vertical-align: top; font-weight: bold; color: #4b5e80; border-bottom: 0.5pt solid #d5dde6; }' +
+      'table.info td { padding: 1.6mm 0; vertical-align: top; border-bottom: 0.5pt solid #d5dde6; }' +
+      '.extract { margin: 0 0 4mm; padding: 2.5mm 3.5mm; font-size: 8pt; color: #185870; background: #e6f3f4; border-left: 2pt solid #0f9099; }' +
+      'h2 { margin: 7mm 0 2mm; padding-bottom: 1.2mm; font-size: 8pt; letter-spacing: 0.08em; text-transform: uppercase; color: #00667e; border-bottom: 0.75pt solid #9fd3d8; break-after: avoid; }' +
+      '.q { margin: 0 0 4mm; }' +
+      'h3 { margin: 0 0 1.5mm; font-size: 9pt; line-height: 1.45; color: #00187b; }' +
+      '.keep { break-inside: avoid; break-after: avoid; }' +
+      '.text { orphans: 4; widows: 3; }' +
+      'h3 .code { display: inline-block; min-width: 11mm; color: #00667e; }' +
+      '.label { margin: 1.5mm 0 0.5mm 11mm; font-size: 7pt; font-style: italic; color: #6b7c8d; break-after: avoid; }' +
+      'ul { margin: 0 0 1mm 11mm; padding-left: 4mm; } li { margin: 0.3mm 0; }' +
+      '.text { margin: 0 0 1mm 11mm; white-space: pre-line; overflow-wrap: anywhere; }' +
+      '.none { margin: 0 0 1mm 11mm; font-style: italic; color: #6b7c8d; }' +
+      'a { color: #00667e; }' +
+      '.foot { margin-top: 8mm; padding-top: 2.5mm; font-size: 7pt; line-height: 1.5; color: #6b7c8d; border-top: 0.5pt solid #d5dde6; }' +
+      '</style></head><body>' +
+      '<div class="head"><img src="' + logo + '" alt="WTO OMC – Trade for Women"><div class="org"><b>' + PDF_TITLE + '</b>' +
+        'Informal Working Group on Trade and Gender<br>Informal Working Group on MSMEs</div></div>' +
+      '<div class="kicker">Survey response</div><h1>' + escapeHtml(r.name) + '</h1>' +
+      '<p class="type">' + escapeHtml(meta.groups[r.group]) + ' · ' + escapeHtml(r.area) + '</p>' +
+      '<table class="info">' + r.info.map(function (f) { return '<tr><th>' + escapeHtml(f.label) + '</th><td>' + escapeHtml(f.value) + '</td></tr>'; }).join('') + '</table>' +
+      extract + (body || '<p class="none">None of the questions selected on the Compendium page were asked to ' + escapeHtml(meta.groups[r.group]) + '.</p>') +
+      '<div class="foot">Answers and explanations are reproduced verbatim, as submitted, in the language of the respondent. Personal data has been removed.<br>' +
+        'Source: ' + PDF_TITLE + ', WTO. Document generated on ' + today + '.</div>' +
+      '</body></html>';
+  }
+
+  function printResponse(r) {
+    if (!r) return;
+    var frame = document.getElementById('pdfFrame');
+    if (!frame) {
+      frame = document.createElement('iframe');
+      frame.id = 'pdfFrame';
+      frame.title = 'PDF of the response';
+      frame.setAttribute('aria-hidden', 'true');
+      frame.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0;';
+      document.body.appendChild(frame);
+    }
+    var doc = frame.contentWindow.document;
+    doc.open(); doc.write(responseDocument(r)); doc.close();
+    var img = doc.querySelector('img'), done = false;
+    function go() {
+      if (done) return; done = true;
+      var pageTitle = document.title;
+      document.title = 'Digitalisation Compendium – ' + r.name;   /* suggested file name */
+      frame.contentWindow.focus();
+      frame.contentWindow.print();
+      document.title = pageTitle;
+    }
+    if (img && !img.complete) { img.onload = img.onerror = go; setTimeout(go, 1500); } else go();
+  }
 
   /* View 2: Question view */
   function renderQuestionView() {

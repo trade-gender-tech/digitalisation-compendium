@@ -19,10 +19,10 @@ The WTO site header, footer and breadcrumbs are shown as on the GitHub preview p
 
 | Section | Content | Source |
 |---|---|---|
-| Hero | Title as in the joint proposal (*Empowering Women to Trade through Digitalisation: Policy Insights*); four tiles naming what the Compendium covers (strategies, programmes, skills, data); Excel download | text in `index.html` |
+| Hero | Title as in the joint proposal (*Empowering Women to Trade through Digitalisation: Policy Insights*), the two Informal Working Groups, a one-line description; Explore and Excel download buttons | text in `index.html` |
 | About the Compendium | Launch at MC14 (Yaoundé, side event of 25 March 2026), the joint proposal and its Co-Chairs/Coordinator, the work plans it supports, four objective cards, the two lines of work; Contributions panel (the regions and other stakeholders that responded, with names; no counts) | text from the joint communication WT/MIN(26)/4 • INF/TGE/COM/13/Rev.1 • INF/MSME/W/68/Rev.1 (27 February 2026); panel from the data |
 | Survey Themes | The six themes of the Members survey, with their question ranges | text in `index.html`; ranges from the data |
-| What the Responses Show | Six messages in words, not numbers (strategies, programmes, instruments, sectors, skills, data), each with an illustration and chips quoting the most frequent answers verbatim. Words such as "most" or "some" are worked out from the data (`amount()` in the script), so the wording stays true if responses change | data (`FINDINGS` in the script) |
+| What the Responses Show | Six messages in words, not numbers (strategies, programmes, instruments, sectors, skills, data), each in a wide card with a line icon (drawn inline in the script, `ICONS`) and chips quoting the most frequent answers verbatim. Words such as "most" or "some" are worked out from the data (`amount()` in the script), so the wording stays true if responses change | data (`FINDINGS` in the script) |
 | Insights from Other Stakeholders | Four verbatim quotes | data (`QUOTES` in the script) |
 | How to Use, Database | See below | |
 
@@ -43,6 +43,7 @@ The joint communication itself is not part of the package (it is kept with the s
 
 **Three views:**
 1. **Response view** (default): one full response at a time: the respondent's identification fields as submitted (Time, WTO Member/Observer Government, Ministry/Institution), then every question with the answer options and the explanation, grouped by theme. A list of respondents on the left (a dropdown on phones) and Previous / Next.
+   **Download PDF** (Response view only): creates an A4 document of the response shown, in Verdana, with the WTO OMC | Trade for Women logo (`images/wto-trade-for-women-logo.png`), the respondent's details, every question shown with its answer and explanation verbatim, and "Page X of Y" in the footer. It contains only the questions currently shown: if the Themes or Questions filters are used, the PDF is an extract and says so. The button opens the browser's print dialog, where **Save as PDF** creates the file (suggested name: "Digitalisation Compendium – *respondent*"). This keeps the text selectable and the links clickable, and uses the Verdana font installed on the computer: the font itself is licensed by Microsoft and cannot be shipped with the page.
 2. **Question view:** one card per question with a bar chart of the answers among the responses shown, and every respondent's answer and explanation (5 shown, "Show all" for the rest; long explanations have "Read more"). Clicking a name opens that response at that question.
 3. **Matrix view:** all responses side by side (WTO Members 18 × 30, other stakeholders 4 × 12). Cells show the answer options; "¶ Explanation" marks an explanation. Hover shows a preview; click opens the full answer in a pop-up, with a button to open the full response.
 
@@ -59,6 +60,7 @@ data/
 images/
   site-header.png, site-footer.png  WTO site header and footer (stand-ins for the wto.org template)
   favicon.png                       Browser tab icon
+  wto-trade-for-women-logo.png      WTO OMC | Trade for Women logo, used on the PDF of a response
   hero.png, pillar-*.png, purpose-*.png   Hero and illustrations, reused from the IWG Compendium for now
 downloads/
   digitalization-compendium.xlsx    The compendium in Excel; also the source of the data files
@@ -81,7 +83,7 @@ All paths in `index.html` are relative, so the folder works wherever it is copie
 4. **Font.** If `wto.css` already provides Open Sans, remove the `vendor/open-sans/open-sans.css` link.
 5. **CSS and script** can be moved into their own files unchanged. The script must load after the libraries. It loads the data itself (see **Data loading** below).
 6. **Style scope.** Page styles are scoped to `main.digi-compendium` or to class names used only on this page. A few names are generic (`.tag`, `.tags`, `.page-wrap`, `.filter-panel`, `.stats-bar`); prefix them if `wto.css` uses the same names.
-7. **Element IDs used by the script:** `reach`, `cs-theme-count-1`…`6`, `fd-grid`, `sh-quotes`, `btnExploreDb`, `btnExploreDbTop`, `dbCollapse`, `db-error`, `db-ui`, `keywordInput`, `f-group`, `f-area`, `f-respondent`, `f-theme`, `f-question`, `btnClear`, `resultsText`, `viewHint`, `view-response`, `view-question`, `view-matrix`, `detailModal`, `detailModalTitle`, `detailModalBody`, `detailOpenResponse`, `vizTip`.
+7. **Element IDs used by the script:** `reach`, `cs-theme-count-1`…`6`, `fd-grid`, `sh-quotes`, `btnExploreDb`, `btnExploreDbTop`, `dbCollapse`, `db-error`, `db-ui`, `keywordInput`, `f-group`, `f-area`, `f-respondent`, `f-theme`, `f-question`, `btnClear`, `resultsText`, `viewHint`, `view-response`, `view-question`, `view-matrix`, `detailModal`, `detailModalTitle`, `detailModalBody`, `detailOpenResponse`, `vizTip`, `pdfFrame` (created by the script for the PDF).
 
 ---
 
