@@ -6,7 +6,7 @@ window.DIGITALIZATION_COMPENDIUM_DATA = {
   "generated_at": "2026-10-23",
   "groups": {
    "members": "WTO Members",
-   "stakeholders": "Other stakeholders"
+   "stakeholders": "WTO stakeholders"
   },
   "themes": [
    "Strategies and priorities",

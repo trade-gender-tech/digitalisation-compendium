@@ -145,7 +145,7 @@ def main():
         "meta": {
             "title": TITLE,
             "generated_at": date.today().isoformat(),
-            "groups": {"members": "WTO Members", "stakeholders": "Other stakeholders"},
+            "groups": {"members": "WTO Members", "stakeholders": "WTO stakeholders"},
             "themes": themes,
             "questions": questions,
         },

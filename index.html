@@ -31,8 +31,7 @@
 
   Page layout:
     site header (image)   →  replaced by the WTO site header on wto.org
-    main.digi-compendium  →  breadcrumbs, hero, Background & respondents panel, Questionnaire Themes,
-                             Key Findings, Insights from Other Stakeholders,
+    main.digi-compendium  →  breadcrumbs, hero, Background, Questionnaire Themes,
                              How to Use, database (Response / Question / Matrix views)
     site footer (image)   →  replaced by the WTO site footer on wto.org
   =============================================================================
@@ -108,26 +107,6 @@ body { margin: 0; background: #f5f5f5; }
 .cs-lead    { margin: 14px 0 0; font-size: 15px; line-height: 1.7; color: var(--body); }
 .cs-sub { display: block; margin: 26px 0 13px; padding-bottom: 7px; border-bottom: 1px solid #e0e0e0; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--teal-600); }
 
-/* ---------- Contributions panel (About section) ---------- */
-/* Respondents panel: total on the left; one row per region (and one for other stakeholders)
-   with one dot per respondent and their names */
-.reach { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: 28px; margin-top: 24px; padding: 26px 30px; color: #fff;
-         background: linear-gradient(120deg, rgba(0,52,62,0.97) 0%, rgba(0,78,90,0.94) 55%, rgba(0,110,124,0.90) 100%), url('images/hero.png') right center/cover no-repeat;
-         border-radius: 12px; box-shadow: 0 8px 28px rgba(0,52,62,0.18); }
-.reach-intro { display: flex; flex-direction: column; justify-content: center; padding-right: 24px; border-right: 1px solid rgba(255,255,255,0.18); }
-.reach-title { font-size: 22px; font-weight: 800; line-height: 1.2; color: #fff; }
-.reach-text  { margin: 10px 0 0; font-size: 13px; line-height: 1.65; color: rgba(255,255,255,0.8); }
-.reach-rows  { display: flex; flex-direction: column; }
-.reach-row   { display: grid; grid-template-columns: 220px minmax(0, 1fr); align-items: center; gap: 16px; padding: 11px 0; border-bottom: 1px solid rgba(255,255,255,0.12); }
-.reach-row:last-child { border-bottom: none; }
-.reach-row > * { min-width: 0; }
-.reach-region { display: flex; align-items: center; gap: 9px; font-size: 13px; font-weight: 700; line-height: 1.3; }
-.reach-region::before { content: ""; width: 9px; height: 9px; flex-shrink: 0; border-radius: 50%; background: #fff; }
-.reach-row.is-other .reach-region::before { background: var(--gold); }
-.reach-row.is-other { margin-top: 6px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.3); }
-.reach-names { display: flex; flex-wrap: wrap; gap: 2px 0; font-size: 13px; line-height: 1.55; color: rgba(255,255,255,0.92); }
-.reach-names span:not(:last-child)::after { content: "·"; margin: 0 7px; color: rgba(255,255,255,0.45); } /* separator stays at line ends */
-
 /* ---------- Questionnaire themes (always shown) ---------- */
 .cs-pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 16px; }
 .cs-pillar { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 22px 16px; text-align: center; background: #fff; border: 1px solid #e0e0e0; border-top: 4px solid var(--teal-500); border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
@@ -135,7 +114,6 @@ body { margin: 0; background: #f5f5f5; }
 .cs-pillar-top  { display: flex; flex-direction: column; align-items: center; gap: 8px; }
 .cs-pillar-n    { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 50%; background: linear-gradient(135deg, var(--teal-700) 0%, var(--teal-600) 100%); color: #fff; font-size: 13px; font-weight: 800; }
 .cs-pillar-text { font-size: 14px; font-weight: 600; color: var(--navy); }
-.cs-pillar-count { padding: 2px 8px; font-size: 11px; font-weight: 700; color: var(--teal); background: rgba(0,96,114,0.08); border: 1px solid rgba(0,96,114,0.2); border-radius: 10px; }
 .cs-pillar-desc { width: 100%; padding-top: 10px; border-top: 1px solid rgba(0,0,0,0.07); font-size: 12px; line-height: 1.6; text-align: left; color: var(--body); }
 
 /* ---------- About: objectives ---------- */
@@ -145,27 +123,6 @@ body { margin: 0; background: #f5f5f5; }
 .obj-title { margin: 0 0 5px; font-size: 14px; font-weight: 700; color: var(--navy); }
 .obj-text  { margin: 0; font-size: 12.5px; line-height: 1.6; color: var(--body); }
 .cs-lead.is-after { margin-top: 22px; }
-
-/* ---------- What the responses show: soft teal band; wide cards with an icon tile and a gold tab ---------- */
-.fd-section { background: linear-gradient(180deg, #e6f4f5 0%, #f2f9f9 60%, #ffffff 100%); }
-.fd-grid    { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin-top: 22px; }
-.fd-card    { position: relative; overflow: hidden; display: grid; grid-template-columns: 58px minmax(0, 1fr); gap: 18px; padding: 24px 24px 20px;
-              background: #fff; border: 1px solid rgba(0,96,114,0.12); border-radius: 14px; box-shadow: 0 6px 20px rgba(0,78,96,0.08);
-              transition: transform 0.2s ease, box-shadow 0.2s ease; }
-.fd-card:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,78,96,0.15); }
-.fd-card::before { content: ""; position: absolute; top: 0; left: 24px; width: 46px; height: 4px; background: var(--gold); border-radius: 0 0 4px 4px; } /* gold tab */
-.fd-icon    { display: flex; align-items: center; justify-content: center; width: 58px; height: 58px; border-radius: 16px;
-              background: linear-gradient(135deg, var(--teal-700) 0%, var(--teal) 55%, var(--teal-500) 100%); box-shadow: 0 8px 16px rgba(0,96,114,0.28); }
-.fd-icon svg { width: 28px; height: 28px; fill: none; stroke: #fff; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-.fd-body    { position: relative; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
-.fd-kicker  { display: inline-flex; align-items: center; gap: 7px; font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.09em; color: var(--teal-600); }
-.fd-kicker::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--gold); }
-.fd-head    { margin: 0; font-size: 16.5px; font-weight: 700; line-height: 1.45; color: var(--navy); }
-.fd-sub     { margin: 0; font-size: 13px; line-height: 1.55; color: var(--body); }
-.fd-chips   { margin-top: 6px; }
-.fd-chips-label { display: block; margin-bottom: 6px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: #7a8a99; }
-.fd-chip    { display: inline-block; margin: 0 5px 5px 0; padding: 4px 11px; font-size: 11.5px; font-weight: 600; line-height: 1.35; color: var(--teal-ink); background: var(--teal-100); border-radius: 12px; }
-.fd-chip.is-warm { color: #5a4413; background: #fcedd2; }
 
 /* ---------- Bar chart (Question view) and tooltip ---------- */
 .hb-row   { display: grid; grid-template-columns: minmax(0, 42%) minmax(0, 1fr); align-items: center; gap: 4px 12px; padding: 5px 0; }
@@ -182,15 +139,6 @@ body { margin: 0; background: #f5f5f5; }
 #vizTip.show { opacity: 1; }
 #vizTip b { display: block; font-size: 14px; }
 
-/* ---------- Other stakeholders ---------- */
-.sh-band   { margin: 18px -36px 0; padding: 30px 36px 32px; background: linear-gradient(130deg, var(--teal-900) 0%, var(--teal) 55%, var(--teal-600) 100%); }
-.sh-quotes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
-.sh-quote  { display: flex; flex-direction: column; gap: 12px; margin: 0; padding: 22px 24px 20px; color: #fff; background: rgba(255,255,255,0.09); border: 1px solid rgba(255,255,255,0.18); border-radius: 10px; }
-.sh-quote-topic { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gold); }
-.sh-quote blockquote { position: relative; margin: 0; padding: 0 0 0 30px; border: none; font-size: 17px; font-weight: 600; line-height: 1.5; color: #fff; }
-.sh-quote blockquote::before { content: "\201C"; position: absolute; left: 0; top: -10px; font-size: 48px; font-weight: 700; line-height: 1; color: var(--gold); }
-.sh-quote figcaption { margin-top: auto; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.18); font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.85); }
-.sh-quote figcaption small { display: block; font-weight: 400; color: rgba(255,255,255,0.6); }
 /* ---------- How to use + Explore ---------- */
 .cs-howto       { display: flex; align-items: stretch; margin-top: 18px; }
 .cs-howto-step  { display: flex; flex-direction: column; align-items: center; flex: 1; gap: 10px; padding: 22px 14px; text-align: center; background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; }
@@ -336,11 +284,8 @@ mark { padding: 0 1px; background: #ffe08a; }
 @media (max-width: 1024px) {
   .cs-hero-content { max-width: 66%; }
   .cs-section { padding: 28px; }
-  .sh-band { margin: 18px -28px 0; padding: 26px 28px 28px; }
   .cs-pillars, .filter-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .rv-wrap { grid-template-columns: 220px minmax(0, 1fr); }
-  .reach { grid-template-columns: 200px minmax(0, 1fr); gap: 22px; }
-  .reach-row { grid-template-columns: minmax(0, 1fr); gap: 4px; }
   .filter-item label { position: relative; } .info-icon { position: static; }
   .info-icon::after { left: 0; right: 0; width: auto; transform: none; }
 }
@@ -350,12 +295,7 @@ mark { padding: 0 1px; background: #ffe08a; }
   .cs-hero-content { max-width: 100%; }
   .cs-hero h1 { font-size: 24px; }
   .cs-section { padding: 24px 20px; }
-  .sh-quotes, .obj-grid, .fd-grid { grid-template-columns: minmax(0, 1fr); }
-  .reach { grid-template-columns: minmax(0, 1fr); gap: 16px; padding: 22px 20px; }
-  .reach-intro { padding: 0 0 14px; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.18); }
-
-  .sh-band { margin: 18px -20px 0; padding: 22px 20px 24px; }
-  .sh-quote blockquote { font-size: 15px; }
+  .obj-grid { grid-template-columns: minmax(0, 1fr); }
   .cs-howto { flex-direction: column; gap: 10px; } .cs-howto-arr { display: none; }
   .rv-wrap { grid-template-columns: minmax(0, 1fr); }
   .rv-list { display: none; } .rv-select { display: block; }
@@ -370,10 +310,6 @@ mark { padding: 0 1px; background: #ffe08a; }
   .cs-section { padding: 20px 16px; }
   .cs-pillars, .filter-grid { grid-template-columns: minmax(0, 1fr); }
   .obj-card { flex-direction: column; gap: 10px; } .obj-card img { width: 56px; height: 56px; }
-  .fd-card { grid-template-columns: 46px minmax(0, 1fr); gap: 14px; padding: 20px 16px 16px; }
-  .fd-icon { width: 46px; height: 46px; border-radius: 13px; } .fd-icon svg { width: 22px; height: 22px; }
-  .reach { padding: 18px 16px; }
-  .sh-band { margin: 18px -16px 0; padding: 20px 16px 22px; }
   .hb-row, .hb-scale { grid-template-columns: minmax(0, 1fr); gap: 3px; }
   .btn-explore { width: 100%; padding: 13px 28px; }
   .view-tabs { width: 100%; } .view-tab { flex: 1; justify-content: center; padding: 7px 4px; font-size: 12px; }
@@ -436,36 +372,20 @@ mark { padding: 0 1px; background: #ffe08a; }
     </div>
 
     <p class="cs-lead is-after">The Compendium draws on two lines of work: information already collected by Members and WTO stakeholders, such as the International Trade Centre, the International Telecommunication Union, the World Intellectual Property Organization, the Universal Postal Union and the Global Alliance for Trade Facilitation; and new information collected through a survey of WTO Members, Observer Governments and other WTO stakeholders. This database presents the survey responses, received between June and October 2026, verbatim.</p>
-    <!-- Respondents panel (filled from the data) -->
-    <div class="reach" id="reach"></div>
   </section>
 
-  <!-- SURVEY THEMES (always shown; question ranges filled from the data) -->
+  <!-- SURVEY THEMES (always shown; question ranges computed from the data but not displayed) -->
   <section class="cs-section cs-alt">
     <div class="cs-head"><div class="cs-bar"></div><h2>Survey Themes</h2></div>
-    <p class="cs-lead">The survey for WTO Members covers six themes, plus a final question for additional comments, good practices and references. Other stakeholders answered a dedicated survey of twelve questions.</p>
+    <p class="cs-lead">The survey for WTO Members covers six themes, plus a final question for additional comments, good practices and references. WTO stakeholders answered a dedicated survey of twelve questions.</p>
     <div class="cs-pillars">
-      <div class="cs-pillar"><img src="images/pillar-1.png" alt=""><div class="cs-pillar-top"><span class="cs-pillar-n">1</span><span class="cs-pillar-text">Strategies and Priorities</span><span class="cs-pillar-count" id="cs-theme-count-1"></span></div><div class="cs-pillar-desc">Whether women are included in national digital strategies, the dimensions of digitalisation that most influence their participation, the sectors offering the greatest opportunities and challenges, and Members' priority objectives and actions.</div></div>
-      <div class="cs-pillar"><img src="images/pillar-2.png" alt=""><div class="cs-pillar-top"><span class="cs-pillar-n">2</span><span class="cs-pillar-text">Initiatives, Instruments and Market Access</span><span class="cs-pillar-count" id="cs-theme-count-2"></span></div><div class="cs-pillar-desc">Programmes supporting women in digital trade, the areas of intervention they cover, trade policies with digitalisation-related components, the instruments used and the market access support available to women entrepreneurs.</div></div>
-      <div class="cs-pillar"><img src="images/pillar-3.png" alt=""><div class="cs-pillar-top"><span class="cs-pillar-n">3</span><span class="cs-pillar-text">Skills and Capacity Building</span><span class="cs-pillar-count" id="cs-theme-count-3"></span></div><div class="cs-pillar-desc">Training on digital entrepreneurship, e-commerce and artificial intelligence, the skills covered, train-the-trainer approaches and their impact, and capacity building with international or regional organizations.</div></div>
-      <div class="cs-pillar"><img src="images/pillar-4.png" alt=""><div class="cs-pillar-top"><span class="cs-pillar-n">4</span><span class="cs-pillar-text">Coordination and Actors</span><span class="cs-pillar-count" id="cs-theme-count-4"></span></div><div class="cs-pillar-desc">How policies on women, trade and digitalisation are coordinated across government, the governance mechanisms in place and the actors involved in supporting women in digital trade.</div></div>
-      <div class="cs-pillar"><img src="images/purpose-knowledge.png" alt=""><div class="cs-pillar-top"><span class="cs-pillar-n">5</span><span class="cs-pillar-text">Data, Monitoring and Evaluation</span><span class="cs-pillar-count" id="cs-theme-count-5"></span></div><div class="cs-pillar-desc">Collection of sex-disaggregated data on digital trade, the types of data and institutions involved, data on barriers and market access, and how programmes are monitored and evaluated.</div></div>
-      <div class="cs-pillar"><img src="images/purpose-policy.png" alt=""><div class="cs-pillar-top"><span class="cs-pillar-n">6</span><span class="cs-pillar-text">Trade Facilitation, Innovation and Finance</span><span class="cs-pillar-count" id="cs-theme-count-6"></span></div><div class="cs-pillar-desc">Initiatives linking digital infrastructure with trade facilitation, the inclusion of women in innovation-driven trade initiatives, and support for investment, start-up funding, incubators and accelerators.</div></div>
+      <div class="cs-pillar"><img src="images/pillar-1.png" alt=""><div class="cs-pillar-top"><span class="cs-pillar-n">1</span><span class="cs-pillar-text">Strategies and Priorities</span></div><div class="cs-pillar-desc">Whether women are included in national digital strategies, the dimensions of digitalisation that most influence their participation, the sectors offering the greatest opportunities and challenges, and Members' priority objectives and actions.</div></div>
+      <div class="cs-pillar"><img src="images/pillar-2.png" alt=""><div class="cs-pillar-top"><span class="cs-pillar-n">2</span><span class="cs-pillar-text">Initiatives, Instruments and Market Access</span></div><div class="cs-pillar-desc">Programmes supporting women in digital trade, the areas of intervention they cover, trade policies with digitalisation-related components, the instruments used and the market access support available to women entrepreneurs.</div></div>
+      <div class="cs-pillar"><img src="images/pillar-3.png" alt=""><div class="cs-pillar-top"><span class="cs-pillar-n">3</span><span class="cs-pillar-text">Skills and Capacity Building</span></div><div class="cs-pillar-desc">Training on digital entrepreneurship, e-commerce and artificial intelligence, the skills covered, train-the-trainer approaches and their impact, and capacity building with international or regional organizations.</div></div>
+      <div class="cs-pillar"><img src="images/pillar-4.png" alt=""><div class="cs-pillar-top"><span class="cs-pillar-n">4</span><span class="cs-pillar-text">Coordination and Actors</span></div><div class="cs-pillar-desc">How policies on women, trade and digitalisation are coordinated across government, the governance mechanisms in place and the actors involved in supporting women in digital trade.</div></div>
+      <div class="cs-pillar"><img src="images/purpose-knowledge.png" alt=""><div class="cs-pillar-top"><span class="cs-pillar-n">5</span><span class="cs-pillar-text">Data, Monitoring and Evaluation</span></div><div class="cs-pillar-desc">Collection of sex-disaggregated data on digital trade, the types of data and institutions involved, data on barriers and market access, and how programmes are monitored and evaluated.</div></div>
+      <div class="cs-pillar"><img src="images/purpose-policy.png" alt=""><div class="cs-pillar-top"><span class="cs-pillar-n">6</span><span class="cs-pillar-text">Trade Facilitation, Innovation and Finance</span></div><div class="cs-pillar-desc">Initiatives linking digital infrastructure with trade facilitation, the inclusion of women in innovation-driven trade initiatives, and support for investment, start-up funding, incubators and accelerators.</div></div>
     </div>
-  </section>
-
-  <!-- WHAT THE RESPONSES SHOW — six messages drawn from the data -->
-  <section class="cs-section fd-section">
-    <div class="cs-head"><div class="cs-bar"></div><h2>What the Responses Show</h2></div>
-    <p class="cs-lead">Six messages from the responses of WTO Members, each drawn directly from their answers, which are quoted as worded in the survey. Open the Compendium to read the explanations, examples and references behind them.</p>
-    <div class="fd-grid" id="fd-grid"></div>
-  </section>
-
-  <!-- OTHER STAKEHOLDERS (verbatim quotes + answers; full text is in the database) -->
-  <section class="cs-section">
-    <div class="cs-head"><div class="cs-bar"></div><h2>Insights from Other Stakeholders</h2></div>
-    <p class="cs-lead">Other WTO stakeholders were invited to share what they know about Members' policies, initiatives and programmes, and their own work to support women in digitalisation. International organizations and academia answered a dedicated survey on the measures governments have implemented, the partnerships, challenges and outcomes involved, and the lessons learned. In their own words:</p>
-    <div class="sh-band"><div class="sh-quotes" id="sh-quotes"></div></div>
   </section>
 
   <!-- HOW TO USE -->
@@ -499,9 +419,9 @@ mark { padding: 0 1px; background: #ffe08a; }
         </div>
         <div class="filter-grid">
           <div class="filter-group-title">Responses</div>
-          <div class="filter-item"><label for="f-group">Respondent Type <span class="info-icon" tabindex="0" data-tooltip="WTO Members, or other stakeholders (international organizations and academia), who answered a separate questionnaire.">i</span></label>
+          <div class="filter-item"><label for="f-group">Respondent Type <span class="info-icon" tabindex="0" data-tooltip="WTO Members, or WTO stakeholders (international organizations and academia), who answered a separate questionnaire.">i</span></label>
             <select id="f-group" class="selectpicker" data-width="100%"></select></div>
-          <div class="filter-item"><label for="f-area">Region / Category <span class="info-icon" tabindex="0" data-tooltip="Region of the WTO Member, or category of the other stakeholder. Choose one or several.">i</span></label>
+          <div class="filter-item"><label for="f-area">Region / Category <span class="info-icon" tabindex="0" data-tooltip="Region of the WTO Member, or category of the WTO stakeholder. Choose one or several.">i</span></label>
             <select id="f-area" class="selectpicker" multiple data-width="100%" data-actions-box="true" data-selected-text-format="count > 2" title="All"></select></div>
           <div class="filter-item"><label for="f-respondent">Respondents <span class="info-icon" tabindex="0" data-tooltip="Pick one or several WTO Members or organizations to see only their responses.">i</span></label>
             <select id="f-respondent" class="selectpicker" multiple data-live-search="true" data-width="100%" data-actions-box="true" data-selected-text-format="count > 2" title="All"></select></div>
@@ -557,73 +477,6 @@ mark { padding: 0 1px; background: #ffe08a; }
 
   /* ---------- A. Settings ---------- */
   var ALL = '__all__', ROWS_COLLAPSED = 5;
-  /* "What the responses show": six messages among WTO Members, in words rather than numbers.
-     amount() turns a share of Members into a word ("most", "some"…), so the wording stays true if the data
-     changes. Chips quote the most frequent answers verbatim. */
-  function q(s) { return '“' + escapeHtml(s) + '”'; }
-  function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
-  function amount(count, n) {
-    var f = n ? count / n : 0;
-    return f >= 0.85 ? 'almost all' : f >= 0.65 ? 'most' : f > 0.5 ? 'more than half of the' : f >= 0.4 ? 'many' : f >= 0.2 ? 'some' : f > 0 ? 'a few' : 'no';
-  }
-  /* Line icons for the six messages (24×24, drawn with strokes; colour set in the CSS) */
-  var ICONS = {
-    strategy:   '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2"/><path d="M12 3v2M21 12h-2"/>',
-    programmes: '<path d="M12 3 2.5 8 12 13l9.5-5L12 3z"/><path d="M2.5 12.5 12 17.5l9.5-5"/><path d="M2.5 17 12 22l9.5-5"/>',
-    tools:      '<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8.5 7V5.2A2.2 2.2 0 0 1 10.7 3h2.6a2.2 2.2 0 0 1 2.2 2.2V7"/><path d="M3 13h18M12 12v2.5"/>',
-    sectors:    '<path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/><path d="M3 21h18"/>',
-    skills:     '<path d="M2 9.5 12 4.5l10 5-10 5-10-5z"/><path d="M6 11.5v4.5c0 1.6 2.7 3 6 3s6-1.4 6-3v-4.5"/><path d="M22 9.5v5.5"/>',
-    data:       '<path d="M4 20V11M10 20V5M16 20v-6M21 20H3"/><circle cx="16" cy="9.5" r="1.6"/>'
-  };
-  function icon(name, cls) { return '<svg class="' + cls + '" viewBox="0 0 24 24" aria-hidden="true">' + ICONS[name] + '</svg>'; }
-
-  var FINDINGS = [
-    function (c) {
-      var a = c.count('Q1', ['Yes, explicitly included']), b = c.count('Q1', ['Included indirectly']);
-      return { icon: 'strategy', kicker: 'Strategies and priorities',
-               head: cap(amount(a, c.n)) + ' Members explicitly include women in their national digital economy, e-commerce or digital trade strategies.',
-               sub: b ? 'Others include women indirectly.' : '', chips: [['Top policy objectives', c.top('Q5', 3)]] };
-    },
-    function (c) {
-      var a = c.count('Q7', ['Yes, dedicated programmes specifically targeting women in digital trade']), b = c.count('Q7', ['Yes, general programmes including women']);
-      return { icon: 'programmes', kicker: 'Initiatives and programmes',
-               head: cap(amount(a, c.n)) + ' Members run programmes dedicated to women in digital trade.',
-               sub: b ? 'Others include women in general programmes.' : '', chips: [['Areas most often covered', c.top('Q8', 3)]] };
-    },
-    function (c) {
-      var t = c.top('Q10', 1);
-      return { icon: 'tools', kicker: 'Support instruments',
-               head: 'Members rely above all on ' + t.map(q).join(' and ') + ' to support women in digital trade.',
-               sub: '', chips: [['Other instruments widely used', c.top('Q10', 3, t)]] };
-    },
-    function (c) {
-      var o = c.top('Q3', 1), ch = c.top('Q4', 1);
-      return { icon: 'sectors', kicker: 'Opportunities and challenges',
-               head: 'Members see the greatest opportunities for women in ' + o.map(q).join(' and ') + '.',
-               sub: 'The greatest challenges are seen in ' + ch.map(q).join(' and ') + '.',
-               chips: [['Sectors of greatest opportunity', c.top('Q3', 3)], ['Sectors of greatest challenge', c.top('Q4', 3), true]] };
-    },
-    function (c) {
-      var t = c.top('Q14', 1);
-      return { icon: 'skills', kicker: 'Skills and capacity building',
-               head: 'Training for women most often covers ' + t.map(q).join(' and ') + '.',
-               sub: '', chips: [['Other skills covered', c.top('Q14', 3, t)]] };
-    },
-    function (c) {
-      var a = c.count('Q20', ['Yes, regularly', 'Yes, occasionally']), low = a / c.n < 0.4;
-      return { icon: 'data', kicker: 'Data, monitoring and evaluation',
-               head: (low ? 'Only ' + amount(a, c.n) : cap(amount(a, c.n))) + ' Members collect sex-disaggregated data on digital trade.',
-               sub: 'Others are developing data collection or do not yet collect it.', chips: [['How programmes are most often monitored', c.top('Q25', 3)]] };
-    }
-  ];
-
-  /* Stakeholder quotes: exact sentences, shown only if found word for word in the data */
-  var QUOTES = [
-    { name: 'UN Trade and Development (UNCTAD)', code: 'S12', topic: 'What would help most', text: 'No single institution can address all barriers faced by women entrepreneurs.' },
-    { name: 'International Labour Organization (ILO)', code: 'S4', topic: 'Challenges encountered', text: 'A further challenge is that government support is often fragmented, which can lead to siloed initiatives rather than coordinated support for women entrepreneurs.' },
-    { name: 'Universal Postal Union (UPU)', code: 'S6', topic: 'Good practice', text: 'The GRIT is about meeting women where they are.' },
-    { name: 'Institute of International Studies, University of Chile', code: 'S11', topic: 'Remaining gaps', text: 'There are huge gaps. Many more women-led MSMEs need to be reached' }
-  ];
   var HINTS = {
     response: 'One full response at a time. Choose a respondent from the list, or use Previous / Next.',
     question: 'Every answer to each question, with the number of respondents who chose each answer. Click a name to open the full response.',
@@ -653,8 +506,6 @@ mark { padding: 0 1px; background: #ffe08a; }
   function isNA(o) { return /^NA\/?\s*do not know/i.test(o) || /^Other\b/.test(o); }
   function codeLabel(c) { return c.replace('bis', ' bis'); }
   function plural(n, one, many) { return n + ' ' + (n === 1 ? one : many); }
-  function members() { return respondents.filter(function (r) { return r.group === 'members'; }); }
-  function others() { return respondents.filter(function (r) { return r.group === 'stakeholders'; }); }
   function optionCounts(list, code) {   /* most frequent first, NA/Other last */
     var counts = {}, order = [];
     list.forEach(function (r) { answer(r, code).options.forEach(function (o) { if (!counts[o]) { counts[o] = 0; order.push(o); } counts[o]++; }); });
@@ -687,68 +538,6 @@ mark { padding: 0 1px; background: #ffe08a; }
           '<div class="hb-track"><div class="hb-bar" style="width:' + (max ? v / max * 100 : 0).toFixed(2) + '%"></div></div><span class="hb-val">' + v + '</span></div>';
       }).join('') + '</div></div>';
     }).join('') + '<div class="hb-scale"><div></div><div>Number of ' + unit + '</div></div>';
-  }
-
-  function fillCover() {
-
-    /* Contributions panel: one row per region (names only) and one for the other stakeholders */
-    var regions = {};
-    members().forEach(function (r) { (regions[r.area] = regions[r.area] || []).push(r.name); });
-    var regionKeys = Object.keys(regions).sort();
-    function reachRow(title, names, other) {
-      return '<div class="reach-row' + (other ? ' is-other' : '') + '"><div class="reach-region">' + escapeHtml(title) + '</div>' +
-        '<div class="reach-names">' + names.sort().map(function (nm) { return '<span>' + escapeHtml(nm) + '</span>'; }).join('') + '</div></div>';
-    }
-    function listWords(items) { return items.length > 1 ? items.slice(0, -1).join(', ') + (items.length > 2 ? ', and ' : ' and ') + items[items.length - 1] : items.join(''); }
-    $('#reach').html(
-      '<div class="reach-intro"><span class="reach-title">Contributions</span>' +
-      '<p class="reach-text">Responses from WTO Members in ' + escapeHtml(listWords(regionKeys)) + ', and from international organizations and academia.</p></div>' +
-      '<div class="reach-rows">' + regionKeys.map(function (k) { return reachRow(k, regions[k], false); }).join('') +
-      reachRow('Other stakeholders', others().map(function (r) { return r.name; }), true) + '</div>');
-
-    /* Theme cards: question range and count */
-    meta.themes.slice(0, 6).forEach(function (t, i) {
-      var qs = questions.filter(function (q) { return q.theme === t; });
-      if (qs.length) $('#cs-theme-count-' + (i + 1)).text(codeLabel(qs[0].code) + '–' + codeLabel(qs[qs.length - 1].code) + ' · ' + plural(qs.length, 'question', 'questions'));
-    });
-
-    var list = members(), n = list.length;
-
-    /* What the responses show */
-    var c = {
-      n: n,
-      count: function (code, answers) {
-        return list.filter(function (r) { return answer(r, code).options.some(function (o) { return answers.indexOf(o) !== -1; }); }).length;
-      },
-      /* The `max` most frequent answers, plus any tied with the last one; NA/Other and `except` left out */
-      top: function (code, max, except) {
-        var counts = optionCounts(list, code).filter(function (o) { return !isNA(o.value) && (except || []).indexOf(o.value) === -1; });
-        var out = counts.slice(0, max);
-        for (var i = max; i < counts.length && out.length && counts[i].count === out[out.length - 1].count; i++) out.push(counts[i]);
-        return out.map(function (o) { return o.value; });
-      }
-    };
-    $('#fd-grid').html(FINDINGS.map(function (make) {
-      var f = make(c);
-      return '<div class="fd-card"><div class="fd-icon">' + icon(f.icon, 'fd-svg') + '</div>' +
-        '<div class="fd-body"><span class="fd-kicker">' + escapeHtml(f.kicker) + '</span>' +
-        '<p class="fd-head">' + f.head + '</p>' + (f.sub ? '<p class="fd-sub">' + f.sub + '</p>' : '') +
-        f.chips.filter(function (g) { return g[1].length; }).map(function (g) {
-          return '<div class="fd-chips"><span class="fd-chips-label">' + escapeHtml(g[0]) + '</span>' +
-            g[1].map(function (v) { return '<span class="fd-chip' + (g[2] ? ' is-warm' : '') + '">' + escapeHtml(v) + '</span>'; }).join('') + '</div>';
-        }).join('') + '</div></div>';
-    }).join(''));
-
-    /* Other stakeholders: verbatim quotes */
-    function squash(s) { return s.replace(/\s+/g, ' ').trim(); }
-    $('#sh-quotes').html(QUOTES.map(function (q) {
-      var r = others().filter(function (x) { return x.name === q.name; })[0];
-      if (!r) return '';
-      var a = answer(r, q.code);
-      if (squash([a.main].concat(a.notes).join(' ')).indexOf(squash(q.text)) === -1) return '';
-      return '<figure class="sh-quote"><span class="sh-quote-topic">' + escapeHtml(q.topic) + '</span><blockquote>' + escapeHtml(q.text) + '</blockquote>' +
-        '<figcaption>' + escapeHtml(r.name) + '<small>' + escapeHtml(r.area) + '</small></figcaption></figure>';
-    }).join(''));
   }
 
   /* ---------- C. Database ---------- */
@@ -1121,7 +910,6 @@ mark { padding: 0 1px; background: #ffe08a; }
         Object.keys(r.answers).forEach(function (c) { parts = parts.concat(r.answers[c].options, [r.answers[c].main], r.answers[c].notes); });
         r.searchText = parts.join(' \n ').toLowerCase();
       });
-      fillCover();
       buildFilters();
       bindFilters();
       $('#viewHint').text(HINTS.response);
