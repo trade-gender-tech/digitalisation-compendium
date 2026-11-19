@@ -18,7 +18,7 @@
     data/digitalization_policies.json the Policy view catalogue (tools/build_policies.py); .js twin for file://
     images/                           site header/footer, hero background, illustrations
     vendor/                           third-party libraries and fonts
-    downloads/                        the compendium in Excel, offered in the hero
+    downloads/                        the compendium in Excel (hero) and the policy catalogue in Excel (Policy view)
     tools/                            questionnaire_to_excel.py and excel_to_json.py (see README.md)
 
   Works when opened straight from disk (file://) and from any web server.
@@ -266,6 +266,8 @@ mark { padding: 0 1px; background: #ffe08a; }
 .pv-row-type.t-DAT, .pv-row-type.t-NET { color: #45525e; background: #e8ecf0; }
 .pv-row-body { display: flex; flex-direction: column; gap: 9px; padding: 4px 16px 14px 40px; background: var(--teal-50); }
 .pv-meta   { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--teal-600); }
+.pv-dl     { margin-left: auto; padding: 5px 12px; font-size: 12px; font-weight: 700; color: var(--teal-700); background: var(--gold); border-radius: 4px; text-decoration: none; white-space: nowrap; }
+.pv-dl:hover { color: var(--teal-900); background: var(--gold-600); text-decoration: none; }
 .pv-expand-all { padding: 0; font-family: inherit; font-size: 12.5px; font-weight: 600; color: var(--teal); background: none; border: none; cursor: pointer; text-decoration: underline; }
 .pv-src    { align-self: flex-start; }
 .pv-tags   { display: flex; flex-wrap: wrap; gap: 4px; }
@@ -1099,6 +1101,7 @@ mark { padding: 0 1px; background: #ffe08a; }
       (anyFacet ? '<button type="button" class="pv-reset">Clear policy filters</button>' : '') + '</div></aside>' +
       '<div class="pv-main"><div class="pv-bar"><span class="pv-count"><b>' + plural(list.length, 'policy', 'policies') + '</b> from ' + plural(Object.keys(nResp).length, 'respondent', 'respondents') +
       ' &middot; <button type="button" class="pv-expand-all">' + (list.length && list.every(function (p) { return pvOpen[p.id]; }) ? 'Collapse all' : 'Expand all') + '</button></span>' +
+      '<a class="pv-dl" href="downloads/digitalization-policies.xlsx" download title="All policies, with each source question and the full answer, verbatim">&#8595; Download policies (Excel)</a>' +
       '<span class="pv-groupby">Group by ' + [['areas', 'Policy area'], ['type', 'Instrument'], ['country', 'WTO Member']].map(function (o) {
         return '<button type="button" class="pv-gb' + (pvGroupBy === o[0] ? ' on' : '') + '" data-gb="' + o[0] + '">' + o[1] + '</button>';
       }).join('') + '</span></div>' + body + note + '</div></div>');
