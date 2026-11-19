@@ -163,7 +163,7 @@ body { margin: 0; background: #f5f5f5; }
 .search-icon-btn { display: flex; align-items: center; justify-content: center; width: 42px; height: 38px; background: var(--teal); border: none; }
 .search-icon-btn svg { width: 18px; height: 18px; }
 .filter-group-title { grid-column: 1 / -1; margin: 4px 0 -4px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--teal-600); }
-.filter-grid  { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px 20px; margin-bottom: 16px; }
+.filter-grid  { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px 20px; margin-bottom: 16px; }
 .filter-item  { min-width: 0; }
 .filter-item label { display: block; margin-bottom: 5px; font-size: 13px; font-weight: 700; color: #222; }
 .filter-actions { display: flex; justify-content: center; }
@@ -231,29 +231,50 @@ mark { padding: 0 1px; background: #ffe08a; }
 .pv-group  { margin-top: 18px; }
 .pv-group:first-of-type { margin-top: 0; }
 .pv-group-h { display: flex; align-items: baseline; gap: 10px; margin: 0 0 10px; padding-bottom: 6px; font-size: 15px; font-weight: 700; color: var(--navy); border-bottom: 2px solid var(--teal-100); }
-.pv-group-h small { font-size: 12px; font-weight: 400; color: #8a97a4; }
-.pv-grid   { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
-.pv-card   { display: flex; flex-direction: column; gap: 8px; min-width: 0; padding: 14px 16px 12px; background: #fff; border: 1px solid #e3e8ee; border-top: 3px solid var(--teal-500); border-radius: 6px; }
-.pv-card-top { display: flex; flex-wrap: wrap; gap: 6px; }
-.pv-type   { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.07em; color: var(--teal-600); }
-.pv-scope  { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: #8a6a1f; }
-.pv-scope::before { content: "·"; margin-right: 6px; color: #b9c4cf; }
-.pv-name   { margin: 0; font-size: 15px; font-weight: 700; line-height: 1.35; color: var(--navy); overflow-wrap: anywhere; }
-.pv-who    { font-size: 12.5px; font-weight: 600; color: var(--ink); }
-.pv-who span { font-weight: 400; color: #8a97a4; }
-.pv-desc   { position: relative; margin: 0; padding-left: 12px; font-size: 13px; line-height: 1.6; color: #33475b; border-left: 3px solid var(--teal-100); overflow-wrap: anywhere; }
-.pv-desc.clamped { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
-.pv-items  { margin: 0; padding: 0 0 0 28px; font-size: 12.5px; line-height: 1.55; color: #33475b; }
-.pv-items li { margin-bottom: 3px; }
+.pv-group-h small { margin-left: auto; font-size: 12px; font-weight: 400; color: #8a97a4; }
+/* Policy landscape: one tile per policy area */
+.pv-land   { padding: 16px 22px 18px; background: linear-gradient(180deg, #eef6f7 0%, #f8fbfb 100%); border-bottom: 1px solid #e3e8ee; }
+.pv-land-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin-bottom: 10px; }
+.pv-land-title { font-size: 15px; font-weight: 700; color: var(--navy); }
+.pv-land-sub { font-size: 12px; color: #6b7c8c; }
+.pv-land-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+.pv-tile   { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; min-width: 0; padding: 9px 11px 10px; text-align: left; font-family: inherit; background: #fff; border: 1px solid #d5e4e7; border-radius: 6px; cursor: pointer; transition: border-color 0.15s, box-shadow 0.15s; }
+.pv-tile:hover { border-color: var(--teal-500); box-shadow: 0 3px 10px rgba(0,78,96,0.12); }
+.pv-tile-n { font-size: 20px; font-weight: 800; line-height: 1; color: var(--teal); }
+.pv-tile-l { font-size: 11.5px; font-weight: 600; line-height: 1.3; color: #33475b; }
+.pv-tile-bar { display: block; width: 100%; height: 4px; margin-top: auto; background: #e6eef0; border-radius: 2px; }
+.pv-tile-bar span { display: block; height: 100%; background: var(--teal-500); border-radius: 2px; }
+.pv-tile.on { background: var(--teal); border-color: var(--teal); }
+.pv-tile.on .pv-tile-n, .pv-tile.on .pv-tile-l { color: #fff; }
+.pv-tile.on .pv-tile-bar { background: rgba(255,255,255,0.25); }
+.pv-tile.on .pv-tile-bar span { background: var(--gold); }
+.pv-tile.zero { opacity: 0.45; }
+/* Compact list: one line per policy, opens to show the quoted description */
+.pv-list   { background: #fff; border: 1px solid #e3e8ee; border-radius: 6px; }
+.pv-row + .pv-row { border-top: 1px solid #eef1f4; }
+.pv-row-head { display: grid; grid-template-columns: 16px minmax(0, 1fr) minmax(0, 190px) 112px; align-items: center; gap: 10px; width: 100%; padding: 9px 14px; text-align: left; font-family: inherit; background: none; border: none; cursor: pointer; }
+.pv-row-head:hover { background: var(--teal-50); }
+.pv-caret  { font-size: 11px; color: var(--teal-500); transition: transform 0.15s; }
+.pv-row.open .pv-caret { transform: rotate(90deg); }
+.pv-row.open .pv-row-head { background: var(--teal-50); }
+.pv-row-name { font-size: 13.5px; font-weight: 600; line-height: 1.35; color: var(--navy); overflow-wrap: anywhere; }
+.pv-row-who { font-size: 12.5px; color: #4b5e80; overflow-wrap: anywhere; }
+.pv-row-who span { color: #8a97a4; }
+.pv-row-type { justify-self: end; padding: 2px 8px; font-size: 10.5px; font-weight: 700; white-space: nowrap; color: var(--teal-ink); background: var(--teal-100); border-radius: 10px; }
+.pv-row-type.t-STR, .pv-row-type.t-LAW, .pv-row-type.t-FTA { color: #3d3a6b; background: #e6e4f5; }
+.pv-row-type.t-FIN { color: #5a4413; background: #fcedd2; }
+.pv-row-type.t-DAT, .pv-row-type.t-NET { color: #45525e; background: #e8ecf0; }
+.pv-row-body { display: flex; flex-direction: column; gap: 9px; padding: 4px 16px 14px 40px; background: var(--teal-50); }
+.pv-meta   { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--teal-600); }
+.pv-expand-all { padding: 0; font-family: inherit; font-size: 12.5px; font-weight: 600; color: var(--teal); background: none; border: none; cursor: pointer; text-decoration: underline; }
+.pv-src    { align-self: flex-start; }
 .pv-tags   { display: flex; flex-wrap: wrap; gap: 4px; }
 .pv-tag    { padding: 2px 8px; font-size: 11px; font-weight: 600; line-height: 1.45; color: var(--teal-ink); background: var(--teal-50); border-radius: 10px; }
 .pv-tag.grp { color: #5a4413; background: #fcf1dc; }
 .pv-links  { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 12px; }
 .pv-links a { color: var(--teal); text-decoration: underline; overflow-wrap: anywhere; }
-.pv-foot   { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-top: auto; padding-top: 8px; border-top: 1px solid #eef1f4; }
 .pv-src    { padding: 0; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--teal); background: none; border: none; cursor: pointer; }
 .pv-src:hover { text-decoration: underline; }
-.pv-more   { padding: 3px 10px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--teal-700); background: var(--teal-50); border: none; border-radius: 3px; cursor: pointer; }
 .pv-showall { display: block; margin: 12px auto 0; padding: 8px 18px; font-family: inherit; font-size: 12.5px; font-weight: 700; color: var(--teal); background: #fff; border: 1px solid var(--teal); border-radius: 4px; cursor: pointer; }
 .pv-showall:hover { color: #fff; background: var(--teal); }
 .pv-note   { margin-top: 22px; padding: 12px 14px; font-size: 12.5px; line-height: 1.6; color: #5a6e7f; background: #f6f8fa; border-left: 3px solid #c9d3dc; }
@@ -342,7 +363,9 @@ mark { padding: 0 1px; background: #ffe08a; }
   .cs-pillars, .filter-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .rv-wrap { grid-template-columns: 220px minmax(0, 1fr); }
   .pv-wrap { grid-template-columns: 210px minmax(0, 1fr); }
-  .pv-grid { grid-template-columns: minmax(0, 1fr); }
+  .pv-row-head { grid-template-columns: 16px minmax(0, 1fr) 100px; }
+  .pv-row-who { grid-column: 2; grid-row: 2; }
+  .pv-row-type { grid-column: 3; grid-row: 1; }
   .filter-item label { position: relative; } .info-icon { position: static; }
   .info-icon::after { left: 0; right: 0; width: auto; transform: none; }
 }
@@ -361,6 +384,11 @@ mark { padding: 0 1px; background: #ffe08a; }
   .pv-side-body { display: none; padding: 12px 0 14px; }
   .pv-side.open .pv-side-body { display: block; }
   .pv-main { padding: 14px 12px 22px; }
+  .pv-land { padding: 14px 12px 16px; }
+  .pv-land-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pv-row-head { grid-template-columns: 14px minmax(0, 1fr); padding: 9px 10px; }
+  .pv-row-type { grid-column: 2; grid-row: 3; justify-self: start; }
+  .pv-row-body { padding: 4px 12px 14px 30px; }
   .rv-list { display: none; } .rv-select { display: block; }
   .rv-main { padding: 16px; }
   .qv-list { padding: 12px 10px; } .qv-row { grid-template-columns: minmax(0, 1fr); }
@@ -474,6 +502,8 @@ mark { padding: 0 1px; background: #ffe08a; }
         </div>
         <div class="filter-grid">
           <div class="filter-group-title">Responses</div>
+          <div class="filter-item"><label for="f-country">Country <span class="info-icon" tabindex="0" data-tooltip="WTO Members, and the countries and regions where WTO stakeholders report policies. Choose one or several.">i</span></label>
+            <select id="f-country" class="selectpicker" multiple data-live-search="true" data-width="100%" data-actions-box="true" data-selected-text-format="count > 2" title="All"></select></div>
           <div class="filter-item"><label for="f-group">Respondent Type <span class="info-icon" tabindex="0" data-tooltip="WTO Members, or WTO stakeholders (international organizations and academia), who answered a separate questionnaire.">i</span></label>
             <select id="f-group" class="selectpicker" data-width="100%"></select></div>
           <div class="filter-item"><label for="f-area">Region / Category <span class="info-icon" tabindex="0" data-tooltip="Region of the WTO Member, or category of the WTO stakeholder. Choose one or several.">i</span></label>
@@ -535,14 +565,14 @@ mark { padding: 0 1px; background: #ffe08a; }
   /* ---------- A. Settings ---------- */
   var ALL = '__all__', ROWS_COLLAPSED = 5;
   var HINTS = {
-    policy:   'Policies, strategies, programmes and agreements named in the responses, grouped by policy area. Names and descriptions are quoted exactly as written by each respondent; open the source answer to read it in full.',
+    policy:   'Policies, strategies, programmes and agreements named in the responses, grouped by policy area. Click a policy to see its description, quoted exactly as written by the respondent, and to open the source answer.',
     response: 'One full response at a time. Choose a respondent from the list, or use Previous / Next.',
     question: 'Every answer to each question, with the number of respondents who chose each answer. Click a name to open the full response.',
     matrix:   'All responses side by side. Hover over a cell for a preview of the explanation; click it for the full answer.'
   };
 
   /* ---------- State ---------- */
-  var policyCat = null, pvFacets = { areas: [], type: [], scope: [], groups: [] }, pvGroupBy = 'areas', pvOpen = {}, pvShowAll = {}, PV_PER_GROUP = 6;
+  var policyCat = null, pvFacets = { areas: [], type: [], scope: [], groups: [] }, pvGroupBy = 'areas', pvOpen = {}, pvShowAll = {}, PV_PER_GROUP = 10;
   var meta = {}, questions = [], qByCode = {}, respondents = [], byId = {};
   var groupCounts = { members: 0, stakeholders: 0 };
   var view = 'policy', currentId = null, keyword = '', shown = [], visibleQs = [];
@@ -644,6 +674,7 @@ mark { padding: 0 1px; background: #ffe08a; }
       if (group && group !== ALL && r.group !== group) return false;
       if (areas.length && areas.indexOf(r.group + '|' + r.area) === -1) return false;
       if (ids.length && ids.indexOf(r.id) === -1) return false;
+      if (!countryPass(r)) return false;
       if (kw && r.searchText.indexOf(kw) === -1) return false;
       return true;
     });
@@ -667,7 +698,7 @@ mark { padding: 0 1px; background: #ffe08a; }
     $('.filter-item .selectpicker').on('changed.bs.select', applyFilters);
     $('#keywordInput').on('input', function () { keyword = $.trim(this.value); applyFilters(); });
     $('#btnClear').on('click', function () {
-      $('#f-area, #f-respondent, #f-theme, #f-question').selectpicker('val', []);
+      $('#f-country, #f-area, #f-respondent, #f-theme, #f-question').selectpicker('val', []);
       $('#f-group').selectpicker('val', ALL);
       $('#keywordInput').val('');
       keyword = '';
@@ -928,18 +959,25 @@ mark { padding: 0 1px; background: #ffe08a; }
 
   /* View 0: Policy view — the named policies catalogued in data/digitalization_policies.json.
      Names, descriptions and listed items are the respondents' own words (see tools/build_policies.py);
-     the instrument type, policy areas, scope and target groups are classification labels added for browsing. */
+     the instrument type, policy areas, scope and target groups are classification labels added for browsing.
+     Layout: a "policy landscape" strip (one tile per policy area), side filters, and a compact list in which
+     each policy is one line that opens to show its description. */
   var PV_FACETS = [
     ['areas', 'Policy area', 'areas'], ['type', 'Instrument type', 'types'],
     ['scope', 'Scope', 'scopes'], ['groups', 'Target group', 'groups']
   ];
+  var PV_SHORT = { STR: 'Strategy', LAW: 'Law / regulation', FTA: 'Trade agreement', PRG: 'Programme', TRN: 'Training',
+                   FIN: 'Finance', PLT: 'Platform', DAT: 'Data / research', NET: 'Network' };
+  var PV_INTL = 'International / multi-country';
   function pvValues(p, key) { return key === 'type' ? [p.type] : key === 'scope' ? [p.scope] : p[key]; }
   function pvLabel(key, code) { var m = policyCat.meta[PV_FACETS.filter(function (f) { return f[0] === key; })[0][2]]; return m[code] || code; }
   function pvDisplayName(n) {   /* drop quotation marks only when they wrap the whole name; capitalise the first letter */
     var m = /^(["'“‘])(.*)(["'”’])$/.exec(n);
     if (m && m[2].indexOf(m[1]) === -1 && m[2].indexOf(m[3]) === -1) n = m[2];
-    return n.charAt(0).toUpperCase() + n.slice(1);
+    return /^[a-z][a-z]/.test(n) ? n.charAt(0).toUpperCase() + n.slice(1) : n;   /* keeps names such as "eTrade" */
   }
+  /* Country where a policy applies: the WTO Member that reports it, or the country named in a stakeholder's answer */
+  function pvCountry(p) { var r = byId[p.respondent]; return p.country || (r.group === 'members' ? r.name : PV_INTL); }
   function pvRespondentPass(r) {   /* the response filters, without the keyword (it is applied to the policy text) */
     var group = val('f-group'), areas = multi('f-area'), ids = multi('f-respondent');
     if (group && group !== ALL && r.group !== group) return false;
@@ -947,14 +985,14 @@ mark { padding: 0 1px; background: #ffe08a; }
     if (ids.length && ids.indexOf(r.id) === -1) return false;
     return true;
   }
-  function pvBase() {               /* policies passing the main filters and keyword, before the policy facets */
-    var themes = multi('f-theme'), codes = multi('f-question'), kw = keyword.toLowerCase();
-    var qFilter = themes.length || codes.length;
-    var allowed = {};
+  function pvBase() {               /* policies passing the main filters and keyword, before the policy filters */
+    var themes = multi('f-theme'), codes = multi('f-question'), countries = multi('f-country'), kw = keyword.toLowerCase();
+    var qFilter = themes.length || codes.length, allowed = {};
     if (qFilter) questions.forEach(function (q) { if ((!themes.length || themes.indexOf(q.theme) !== -1) && (!codes.length || codes.indexOf(q.code) !== -1)) allowed[q.code] = true; });
     return policyCat.policies.filter(function (p) {
       var r = byId[p.respondent];
       if (!r || !pvRespondentPass(r)) return false;
+      if (countries.length && countries.indexOf(pvCountry(p)) === -1) return false;
       if (qFilter && !p.mentioned_in.some(function (c) { return allowed[c]; })) return false;
       if (kw && p.searchText.indexOf(kw) === -1) return false;
       return true;
@@ -967,32 +1005,51 @@ mark { padding: 0 1px; background: #ffe08a; }
       return pvValues(p, f[0]).some(function (v) { return sel.indexOf(v) !== -1; });
     });
   }
-  function pvCard(p) {
-    var r = byId[p.respondent], open = !!pvOpen[p.id];
-    var who = escapeHtml(r.name) + ' <span>· ' + escapeHtml(r.area) + '</span>' + (p.country ? ' <span>· in ' + escapeHtml(p.country) + '</span>' : '');
-    var tags = p.areas.map(function (a) { return '<span class="pv-tag">' + escapeHtml(pvLabel('areas', a)) + '</span>'; }).join('') +
-      p.groups.map(function (g) { return '<span class="pv-tag grp">' + escapeHtml(pvLabel('groups', g)) + '</span>'; }).join('');
-    var items = open && p.items.length ? '<ul class="pv-items">' + p.items.map(function (t) { return '<li>' + highlight(escapeHtml(t)) + '</li>'; }).join('') + '</ul>' : '';
-    var links = p.links.length ? '<div class="pv-links">' + p.links.map(function (u) {
-      var host = u.replace(/^https?:\/\//, '').split('/')[0].replace(/^www\./, '');
-      return '<a href="' + escapeHtml(u) + '" target="_blank" rel="noopener" title="' + escapeHtml(u) + '">' + escapeHtml(host) + ' &#8599;</a>';
-    }).join('') + '</div>' : '';
-    var canMore = p.description.length > 260 || p.items.length;
-    return '<article class="pv-card" data-id="' + escapeHtml(p.id) + '">' +
-      '<div class="pv-card-top"><span class="pv-type">' + escapeHtml(pvLabel('type', p.type)) + '</span><span class="pv-scope">' + escapeHtml(pvLabel('scope', p.scope)) + '</span></div>' +
-      '<h3 class="pv-name">' + highlight(escapeHtml(pvDisplayName(p.name))) + '</h3>' +
-      '<div class="pv-who">' + who + '</div>' +
-      '<p class="pv-desc' + (open ? '' : ' clamped') + '">' + highlight(escapeHtml(p.description)) + '</p>' + items +
-      '<div class="pv-tags">' + tags + '</div>' + links +
-      '<div class="pv-foot"><button type="button" class="pv-src" data-id="' + escapeHtml(r.id) + '" data-code="' + p.source + '">' + codeLabel(p.source) + ' · Read the full answer &rsaquo;</button>' +
-      (canMore ? '<button type="button" class="pv-more">' + (open ? 'Show less' : 'Read more' + (p.items.length ? ' (' + p.items.length + ' listed)' : '')) + '</button>' : '') + '</div>' +
-      '</article>';
+  function pvRow(p) {
+    var r = byId[p.respondent], open = !!pvOpen[p.id], c = pvCountry(p);
+    var who = escapeHtml(r.name) + (p.country ? ' <span>· in ' + escapeHtml(p.country) + '</span>' : '');
+    var body = '';
+    if (open) {
+      var tags = p.areas.map(function (a) { return '<span class="pv-tag">' + escapeHtml(pvLabel('areas', a)) + '</span>'; }).join('') +
+        p.groups.map(function (g) { return '<span class="pv-tag grp">' + escapeHtml(pvLabel('groups', g)) + '</span>'; }).join('');
+      var items = p.items.length ? '<ul class="pv-items">' + p.items.map(function (t) { return '<li>' + highlight(escapeHtml(t)) + '</li>'; }).join('') + '</ul>' : '';
+      var links = p.links.length ? '<div class="pv-links">' + p.links.map(function (u) {
+        var host = u.replace(/^https?:\/\//, '').split('/')[0].replace(/^www\./, '');
+        return '<a href="' + escapeHtml(u) + '" target="_blank" rel="noopener" title="' + escapeHtml(u) + '">' + escapeHtml(host) + ' &#8599;</a>';
+      }).join('') + '</div>' : '';
+      body = '<div class="pv-row-body">' +
+        '<div class="pv-meta">' + escapeHtml(pvLabel('type', p.type)) + ' · ' + escapeHtml(pvLabel('scope', p.scope)) + ' · ' + escapeHtml(r.name) + ', ' + escapeHtml(r.area) + '</div>' +
+        '<p class="pv-desc">' + highlight(escapeHtml(p.description)) + '</p>' + items +
+        '<div class="pv-tags">' + tags + '</div>' + links +
+        '<button type="button" class="pv-src" data-id="' + escapeHtml(r.id) + '" data-code="' + p.source + '">' + codeLabel(p.source) + ' · Read the full answer &rsaquo;</button></div>';
+    }
+    return '<div class="pv-row' + (open ? ' open' : '') + '" data-id="' + escapeHtml(p.id) + '">' +
+      '<button type="button" class="pv-row-head" aria-expanded="' + open + '">' +
+        '<span class="pv-caret" aria-hidden="true">&#9656;</span>' +
+        '<span class="pv-row-name">' + highlight(escapeHtml(pvDisplayName(p.name))) + '</span>' +
+        '<span class="pv-row-who">' + who + '</span>' +
+        '<span class="pv-row-type t-' + p.type + '">' + PV_SHORT[p.type] + '</span>' +
+      '</button>' + body + '</div>';
   }
   function renderPolicyView() {
     var $v = $('#view-policy');
     var base = pvBase();
     var list = base.filter(function (p) { return pvPassFacets(p); });
-    var facetsHtml = PV_FACETS.map(function (f) {
+
+    /* Policy landscape: one tile per policy area, sized by the number of policies */
+    var areaCounts = {}, maxArea = 0;
+    base.forEach(function (p) { if (pvPassFacets(p, 'areas')) p.areas.forEach(function (a) { areaCounts[a] = (areaCounts[a] || 0) + 1; }); });
+    Object.keys(areaCounts).forEach(function (a) { maxArea = Math.max(maxArea, areaCounts[a]); });
+    var landscape = '<div class="pv-land"><div class="pv-land-head"><span class="pv-land-title">Policy landscape</span>' +
+      '<span class="pv-land-sub">Choose one or several policy areas</span></div><div class="pv-land-grid">' +
+      Object.keys(policyCat.meta.areas).map(function (a) {
+        var on = pvFacets.areas.indexOf(a) !== -1, nA = areaCounts[a] || 0;
+        return '<button type="button" class="pv-tile' + (on ? ' on' : '') + (nA ? '' : ' zero') + '" data-facet="areas" data-code="' + a + '" aria-pressed="' + on + '">' +
+          '<span class="pv-tile-n">' + nA + '</span><span class="pv-tile-l">' + escapeHtml(policyCat.meta.areas[a]) + '</span>' +
+          '<span class="pv-tile-bar"><span style="width:' + (maxArea ? (nA / maxArea * 100).toFixed(1) : 0) + '%"></span></span></button>';
+      }).join('') + '</div></div>';
+
+    var facetsHtml = PV_FACETS.slice(1).map(function (f) {
       var key = f[0], counts = {};
       base.forEach(function (p) { if (pvPassFacets(p, key)) pvValues(p, key).forEach(function (v) { counts[v] = (counts[v] || 0) + 1; }); });
       var codes = Object.keys(policyCat.meta[f[2]]);
@@ -1004,70 +1061,103 @@ mark { padding: 0 1px; background: #ffe08a; }
       }).join('') + '</div>';
     }).join('');
     var anyFacet = PV_FACETS.some(function (f) { return pvFacets[f[0]].length; });
+
     var nResp = {}; list.forEach(function (p) { nResp[p.respondent] = 1; });
     var groups = [], byKey = {};
     function add(k, label, sort, p) { if (!byKey[k]) { byKey[k] = { label: label, sort: sort, items: [] }; groups.push(byKey[k]); } byKey[k].items.push(p); }
     list.forEach(function (p) {
-      var r = byId[p.respondent];
-      if (pvGroupBy === 'respondent') add(r.id, r.name, (r.group === 'members' ? '0' : '1') + r.name, p);
+      if (pvGroupBy === 'country') { var c = pvCountry(p); add(c, c, (c === PV_INTL ? '~' : '') + c, p); }
       else if (pvGroupBy === 'type') add(p.type, pvLabel('type', p.type), Object.keys(policyCat.meta.types).indexOf(p.type), p);
       else p.areas.forEach(function (a) {
         if (pvFacets.areas.length && pvFacets.areas.indexOf(a) === -1) return;
         add(a, pvLabel('areas', a), Object.keys(policyCat.meta.areas).indexOf(a), p);
       });
     });
-    groups.sort(function (a, b) { return a.sort < b.sort ? -1 : a.sort > b.sort ? 1 : 0; });
+    groups.sort(function (x, y) { return x.sort < y.sort ? -1 : x.sort > y.sort ? 1 : 0; });
     var body = groups.map(function (g) {
-      g.items.sort(function (a, b) { var ra = byId[a.respondent].name, rb = byId[b.respondent].name; return ra < rb ? -1 : ra > rb ? 1 : 0; });
+      g.items.sort(function (x, y) {   /* by policy name (by country when grouped by instrument) */
+        var k = function (p) { return ((pvGroupBy === 'type' ? pvCountry(p) + ' ' : '') + pvDisplayName(p.name)).replace(/^[^A-Za-z0-9À-ÿ]+/, '').toLowerCase(); };
+        var a1 = k(x), b1 = k(y); return a1 < b1 ? -1 : a1 > b1 ? 1 : 0;
+      });
       var gk = pvGroupBy + ':' + g.label, all = pvShowAll[gk] || keyword || g.items.length <= PV_PER_GROUP + 2;
-      var cards = all ? g.items : g.items.slice(0, PV_PER_GROUP);
-      return '<section class="pv-group"><h3 class="pv-group-h">' + escapeHtml(g.label) + '</h3><div class="pv-grid">' + cards.map(pvCard).join('') + '</div>' +
+      var rows = all ? g.items : g.items.slice(0, PV_PER_GROUP);
+      return '<section class="pv-group"><h3 class="pv-group-h">' + escapeHtml(g.label) + '<small>' + plural(g.items.length, 'policy', 'policies') + '</small></h3>' +
+        '<div class="pv-list">' + rows.map(pvRow).join('') + '</div>' +
         (g.items.length > PV_PER_GROUP + 2 && !keyword ? '<button type="button" class="pv-showall" data-gk="' + escapeHtml(gk) + '">' +
-          (all ? 'Show fewer' : 'Show all ' + g.items.length + ' in ' + escapeHtml(g.label)) + '</button>' : '') + '</section>';
+          (all ? 'Show fewer' : 'Show all ' + g.items.length) + '</button>' : '') + '</section>';
     }).join('');
     if (!list.length) body = '<div class="view-empty">No policies match the current search and filters.</div>';
+
     /* Respondents in the current selection whose answers do not name specific policies */
-    var named = {}; policyCat.policies.forEach(function (p) { named[p.respondent] = 1; });
-    var none = respondents.filter(function (r) { return pvRespondentPass(r) && !named[r.id]; });
+    var named = {}, countries = multi('f-country');
+    policyCat.policies.forEach(function (p) { named[p.respondent] = 1; });
+    var none = respondents.filter(function (r) { return pvRespondentPass(r) && !named[r.id] && (!countries.length || countries.indexOf(r.name) !== -1); });
     var note = !anyFacet && !keyword && none.length ? '<div class="pv-note">The responses of ' + listNames(none) +
       ' do not name specific policies or programmes in their explanations. Their full answers are available in the Response view.</div>' : '';
-    $v.html('<div class="pv-wrap"><aside class="pv-side"><button type="button" class="pv-side-toggle" aria-expanded="false">&#9776; Filter policies</button><div class="pv-side-body">' + facetsHtml +
+
+    $v.html(landscape + '<div class="pv-wrap"><aside class="pv-side"><button type="button" class="pv-side-toggle" aria-expanded="false">&#9776; More filters</button><div class="pv-side-body">' + facetsHtml +
       (anyFacet ? '<button type="button" class="pv-reset">Clear policy filters</button>' : '') + '</div></aside>' +
-      '<div class="pv-main"><div class="pv-bar"><span class="pv-count"><b>' + plural(list.length, 'policy', 'policies') + '</b> from ' + plural(Object.keys(nResp).length, 'respondent', 'respondents') + '</span>' +
-      '<span class="pv-groupby">Group by ' + [['areas', 'Policy area'], ['type', 'Instrument'], ['respondent', 'Respondent']].map(function (o) {
+      '<div class="pv-main"><div class="pv-bar"><span class="pv-count"><b>' + plural(list.length, 'policy', 'policies') + '</b> from ' + plural(Object.keys(nResp).length, 'respondent', 'respondents') +
+      ' &middot; <button type="button" class="pv-expand-all">' + (list.length && list.every(function (p) { return pvOpen[p.id]; }) ? 'Collapse all' : 'Expand all') + '</button></span>' +
+      '<span class="pv-groupby">Group by ' + [['areas', 'Policy area'], ['type', 'Instrument'], ['country', 'Country']].map(function (o) {
         return '<button type="button" class="pv-gb' + (pvGroupBy === o[0] ? ' on' : '') + '" data-gb="' + o[0] + '">' + o[1] + '</button>';
       }).join('') + '</span></div>' + body + note + '</div></div>');
     if (view === 'policy') $('#resultsText').text(list.length ? 'Showing ' + plural(list.length, 'policy', 'policies') : 'No policies match the current search and filters');
   }
   function listNames(rs) {
-    var n = rs.map(function (r) {
-      return '<button type="button" class="pv-goto" data-id="' + escapeHtml(r.id) + '">' + escapeHtml(r.name) + '</button>';
-    });
-    return n.length > 1 ? n.slice(0, -1).join(', ') + ' and ' + n[n.length - 1] : n.join('');
+    var nm = rs.map(function (r) { return '<button type="button" class="pv-goto" data-id="' + escapeHtml(r.id) + '">' + escapeHtml(r.name) + '</button>'; });
+    return nm.length > 1 ? nm.slice(0, -1).join(', ') + ' and ' + nm[nm.length - 1] : nm.join('');
   }
+  function pvFind(id) { return policyCat.policies.filter(function (x) { return x.id === id; })[0]; }
   $('#view-policy')
-    .on('click', '.pv-opt', function () {
+    .on('click', '.pv-opt, .pv-tile', function () {
       var k = $(this).data('facet'), c = String($(this).data('code')), sel = pvFacets[k], i = sel.indexOf(c);
       if (i === -1) sel.push(c); else sel.splice(i, 1);
       renderPolicyView();
     })
     .on('click', '.pv-reset', function () { pvFacets = { areas: [], type: [], scope: [], groups: [] }; renderPolicyView(); })
     .on('click', '.pv-gb', function () { pvGroupBy = $(this).data('gb'); renderPolicyView(); })
+    .on('click', '.pv-row-head', function () {
+      var $row = $(this).closest('.pv-row'), id = $row.data('id');
+      pvOpen[id] = !pvOpen[id];
+      $('#view-policy .pv-row').filter(function () { return $(this).data('id') === id; }).each(function () { $(this).replaceWith(pvRow(pvFind(id))); });
+    })
+    .on('click', '.pv-expand-all', function () {
+      var ids = $('#view-policy .pv-row').map(function () { return $(this).data('id'); }).get();
+      var openAll = !ids.every(function (id) { return pvOpen[id]; });
+      ids.forEach(function (id) { pvOpen[id] = openAll; });
+      renderPolicyView();
+    })
     .on('click', '.pv-showall', function () {
-      var gk = $(this).data('gk'), $g = $(this).closest('.pv-group');
+      var gk = $(this).data('gk');
       pvShowAll[gk] = !pvShowAll[gk];
       renderPolicyView();
-      if (!pvShowAll[gk]) { var $h = $('#view-policy .pv-showall').filter(function () { return $(this).data('gk') === gk; }).closest('.pv-group'); if ($h.length) $('html, body').scrollTop($h.offset().top - 20); }
-    })
-    .on('click', '.pv-more', function () {
-      var id = $(this).closest('.pv-card').data('id');
-      pvOpen[id] = !pvOpen[id];
-      var p = policyCat.policies.filter(function (x) { return x.id === id; })[0];
-      $('#view-policy .pv-card').filter(function () { return $(this).data('id') === id; }).replaceWith(pvCard(p));
+      if (!pvShowAll[gk]) { var $g = $('#view-policy .pv-showall').filter(function () { return $(this).data('gk') === gk; }).closest('.pv-group'); if ($g.length) $('html, body').scrollTop($g.offset().top - 20); }
     })
     .on('click', '.pv-src', function () { showRespondent($(this).data('id'), $(this).data('code')); })
     .on('click', '.pv-goto', function () { showRespondent($(this).data('id')); })
     .on('click', '.pv-side-toggle', function () { var $s = $(this).closest('.pv-side').toggleClass('open'); $(this).attr('aria-expanded', String($s.hasClass('open'))); });
+
+  /* Country filter (all views): WTO Members, plus the countries and regions named in stakeholders' policies */
+  function buildCountryFilter() {
+    var members = respondents.filter(function (r) { return r.group === 'members'; }).map(function (r) { return r.name; }).sort();
+    var other = [], intl = false;
+    if (policyCat) policyCat.policies.forEach(function (p) {
+      var c = pvCountry(p);
+      if (c === PV_INTL) intl = true; else if (members.indexOf(c) === -1 && other.indexOf(c) === -1) other.push(c);
+    });
+    other.sort();
+    function opts(list) { return list.map(function (c) { return '<option value="' + escapeHtml(c) + '">' + escapeHtml(c) + '</option>'; }).join(''); }
+    $('#f-country').html('<optgroup label="WTO Members">' + opts(members) + '</optgroup>' +
+      (other.length ? '<optgroup label="Named in WTO stakeholders\' answers">' + opts(other) + '</optgroup>' : '') +
+      (intl ? '<optgroup label="Other">' + opts([PV_INTL]) + '</optgroup>' : '')).selectpicker('refresh');
+  }
+  function countryPass(r) {   /* a response matches if it comes from, or names a policy in, one of the chosen countries */
+    var cs = multi('f-country');
+    if (!cs.length) return true;
+    if (r.group === 'members' && cs.indexOf(r.name) !== -1) return true;
+    return !!policyCat && policyCat.policies.some(function (p) { return p.respondent === r.id && cs.indexOf(pvCountry(p)) !== -1; });
+  }
 
   function render() { if (view === 'policy') renderPolicyView(); else if (view === 'response') renderResponseView(); else if (view === 'question') renderQuestionView(); else renderMatrixView(); }
   function setView(v) {
@@ -1141,6 +1231,7 @@ mark { padding: 0 1px; background: #ffe08a; }
           $('.view-tab[data-view="response"]').addClass('active').attr('aria-selected', 'true');
           $('#view-policy').hide(); $('#view-response').show();
         }
+        buildCountryFilter();
         $('#viewHint').text(HINTS[view]);
         applyFilters();
       });
