@@ -502,7 +502,7 @@ mark { padding: 0 1px; background: #ffe08a; }
         </div>
         <div class="filter-grid">
           <div class="filter-group-title">Responses</div>
-          <div class="filter-item"><label for="f-country">Country <span class="info-icon" tabindex="0" data-tooltip="WTO Members, and the countries and regions where WTO stakeholders report policies. Choose one or several.">i</span></label>
+          <div class="filter-item"><label for="f-country">WTO Member <span class="info-icon" tabindex="0" data-tooltip="Choose one or several WTO Members. The list also includes the places where WTO stakeholders report policies, such as Ghana or Cambodia.">i</span></label>
             <select id="f-country" class="selectpicker" multiple data-live-search="true" data-width="100%" data-actions-box="true" data-selected-text-format="count > 2" title="All"></select></div>
           <div class="filter-item"><label for="f-group">Respondent Type <span class="info-icon" tabindex="0" data-tooltip="WTO Members, or WTO stakeholders (international organizations and academia), who answered a separate questionnaire.">i</span></label>
             <select id="f-group" class="selectpicker" data-width="100%"></select></div>
@@ -1099,7 +1099,7 @@ mark { padding: 0 1px; background: #ffe08a; }
       (anyFacet ? '<button type="button" class="pv-reset">Clear policy filters</button>' : '') + '</div></aside>' +
       '<div class="pv-main"><div class="pv-bar"><span class="pv-count"><b>' + plural(list.length, 'policy', 'policies') + '</b> from ' + plural(Object.keys(nResp).length, 'respondent', 'respondents') +
       ' &middot; <button type="button" class="pv-expand-all">' + (list.length && list.every(function (p) { return pvOpen[p.id]; }) ? 'Collapse all' : 'Expand all') + '</button></span>' +
-      '<span class="pv-groupby">Group by ' + [['areas', 'Policy area'], ['type', 'Instrument'], ['country', 'Country']].map(function (o) {
+      '<span class="pv-groupby">Group by ' + [['areas', 'Policy area'], ['type', 'Instrument'], ['country', 'WTO Member']].map(function (o) {
         return '<button type="button" class="pv-gb' + (pvGroupBy === o[0] ? ' on' : '') + '" data-gb="' + o[0] + '">' + o[1] + '</button>';
       }).join('') + '</span></div>' + body + note + '</div></div>');
     if (view === 'policy') $('#resultsText').text(list.length ? 'Showing ' + plural(list.length, 'policy', 'policies') : 'No policies match the current search and filters');
@@ -1138,7 +1138,7 @@ mark { padding: 0 1px; background: #ffe08a; }
     .on('click', '.pv-goto', function () { showRespondent($(this).data('id')); })
     .on('click', '.pv-side-toggle', function () { var $s = $(this).closest('.pv-side').toggleClass('open'); $(this).attr('aria-expanded', String($s.hasClass('open'))); });
 
-  /* Country filter (all views): WTO Members, plus the countries and regions named in stakeholders' policies */
+  /* WTO Member filter (#f-country, all views): WTO Members, plus the countries and regions named in stakeholders' policies */
   function buildCountryFilter() {
     var members = respondents.filter(function (r) { return r.group === 'members'; }).map(function (r) { return r.name; }).sort();
     var other = [], intl = false;
