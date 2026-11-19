@@ -15,6 +15,7 @@
     index.html                        this page
     data/digitalization_data.json     the questionnaire responses (verbatim), loaded by this page
     data/digitalization_data.js       the same data as a script, used only when the page is opened from disk
+    data/digitalization_policies.json the Policy view catalogue (tools/build_policies.py); .js twin for file://
     images/                           site header/footer, hero background, illustrations
     vendor/                           third-party libraries and fonts
     downloads/                        the compendium in Excel, offered in the hero
@@ -32,7 +33,7 @@
   Page layout:
     site header (image)   →  replaced by the WTO site header on wto.org
     main.digi-compendium  →  breadcrumbs, hero, Background, Questionnaire Themes,
-                             How to Use, database (Response / Question / Matrix views)
+                             How to Use, database (Policy / Response / Question / Matrix views)
     site footer (image)   →  replaced by the WTO site footer on wto.org
   =============================================================================
 -->
@@ -207,6 +208,58 @@ body { margin: 0; background: #f5f5f5; }
 mark { padding: 0 1px; background: #ffe08a; }
 .q-code { display: inline-block; min-width: 34px; margin-right: 6px; font-size: 11px; font-weight: 800; color: var(--teal-600); }
 
+/* ---------- Policy view: named policies quoted from the responses ---------- */
+.pv-wrap   { display: grid; grid-template-columns: 250px minmax(0, 1fr); min-height: 420px; }
+.pv-side   { position: sticky; top: 0; align-self: start; max-height: 92vh; overflow-y: auto; padding: 14px 0 18px; background: #f8f9fb; border-right: 1px solid #e3e8ee; }
+.pv-facet  { padding: 0 14px 12px; }
+.pv-facet + .pv-facet { padding-top: 10px; border-top: 1px solid #e3e8ee; }
+.pv-facet-title { margin: 0 0 6px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--teal-600); }
+.pv-opt    { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; width: 100%; padding: 5px 8px; text-align: left; font-family: inherit; font-size: 12.5px; line-height: 1.35; color: #33475b; background: transparent; border: 1px solid transparent; border-radius: 4px; cursor: pointer; }
+.pv-opt:hover { background: var(--teal-50); }
+.pv-opt.on { color: #fff; background: var(--teal); border-color: var(--teal); }
+.pv-opt.zero { opacity: 0.45; }
+.pv-opt-n  { flex-shrink: 0; min-width: 22px; padding: 0 5px; font-size: 11px; font-weight: 700; text-align: center; color: var(--teal-700); background: #e4eef0; border-radius: 9px; }
+.pv-opt.on .pv-opt-n { color: var(--teal-700); background: #fff; }
+.pv-reset  { margin: 4px 14px 0; padding: 6px 10px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--teal); background: #fff; border: 1px solid var(--teal); border-radius: 4px; cursor: pointer; }
+.pv-main   { min-width: 0; padding: 16px 22px 26px; }
+.pv-bar    { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+.pv-count  { font-size: 13px; color: #5a6e7f; }
+.pv-count b { color: var(--ink); }
+.pv-groupby { display: flex; align-items: center; gap: 4px; font-size: 12px; color: #5a6e7f; }
+.pv-gb     { padding: 5px 11px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--teal); background: #fff; border: 1px solid #c9dde1; cursor: pointer; }
+.pv-gb.on  { color: #fff; background: var(--teal); border-color: var(--teal); }
+.pv-group  { margin-top: 18px; }
+.pv-group:first-of-type { margin-top: 0; }
+.pv-group-h { display: flex; align-items: baseline; gap: 10px; margin: 0 0 10px; padding-bottom: 6px; font-size: 15px; font-weight: 700; color: var(--navy); border-bottom: 2px solid var(--teal-100); }
+.pv-group-h small { font-size: 12px; font-weight: 400; color: #8a97a4; }
+.pv-grid   { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.pv-card   { display: flex; flex-direction: column; gap: 8px; min-width: 0; padding: 14px 16px 12px; background: #fff; border: 1px solid #e3e8ee; border-top: 3px solid var(--teal-500); border-radius: 6px; }
+.pv-card-top { display: flex; flex-wrap: wrap; gap: 6px; }
+.pv-type   { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.07em; color: var(--teal-600); }
+.pv-scope  { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: #8a6a1f; }
+.pv-scope::before { content: "·"; margin-right: 6px; color: #b9c4cf; }
+.pv-name   { margin: 0; font-size: 15px; font-weight: 700; line-height: 1.35; color: var(--navy); overflow-wrap: anywhere; }
+.pv-who    { font-size: 12.5px; font-weight: 600; color: var(--ink); }
+.pv-who span { font-weight: 400; color: #8a97a4; }
+.pv-desc   { position: relative; margin: 0; padding-left: 12px; font-size: 13px; line-height: 1.6; color: #33475b; border-left: 3px solid var(--teal-100); overflow-wrap: anywhere; }
+.pv-desc.clamped { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+.pv-items  { margin: 0; padding: 0 0 0 28px; font-size: 12.5px; line-height: 1.55; color: #33475b; }
+.pv-items li { margin-bottom: 3px; }
+.pv-tags   { display: flex; flex-wrap: wrap; gap: 4px; }
+.pv-tag    { padding: 2px 8px; font-size: 11px; font-weight: 600; line-height: 1.45; color: var(--teal-ink); background: var(--teal-50); border-radius: 10px; }
+.pv-tag.grp { color: #5a4413; background: #fcf1dc; }
+.pv-links  { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 12px; }
+.pv-links a { color: var(--teal); text-decoration: underline; overflow-wrap: anywhere; }
+.pv-foot   { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-top: auto; padding-top: 8px; border-top: 1px solid #eef1f4; }
+.pv-src    { padding: 0; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--teal); background: none; border: none; cursor: pointer; }
+.pv-src:hover { text-decoration: underline; }
+.pv-more   { padding: 3px 10px; font-family: inherit; font-size: 12px; font-weight: 600; color: var(--teal-700); background: var(--teal-50); border: none; border-radius: 3px; cursor: pointer; }
+.pv-showall { display: block; margin: 12px auto 0; padding: 8px 18px; font-family: inherit; font-size: 12.5px; font-weight: 700; color: var(--teal); background: #fff; border: 1px solid var(--teal); border-radius: 4px; cursor: pointer; }
+.pv-showall:hover { color: #fff; background: var(--teal); }
+.pv-note   { margin-top: 22px; padding: 12px 14px; font-size: 12.5px; line-height: 1.6; color: #5a6e7f; background: #f6f8fa; border-left: 3px solid #c9d3dc; }
+.pv-note button { padding: 0; font-family: inherit; font-size: inherit; font-weight: 600; color: var(--teal); background: none; border: none; cursor: pointer; text-decoration: underline; }
+.pv-side-toggle { display: none; }
+
 /* ---------- Response view ---------- */
 .rv-wrap  { display: grid; grid-template-columns: 270px minmax(0, 1fr); min-height: 420px; }
 .rv-list  { position: sticky; top: 0; align-self: start; max-height: 85vh; overflow-y: auto; background: #f8f9fb; border-right: 1px solid #e3e8ee; }
@@ -288,6 +341,8 @@ mark { padding: 0 1px; background: #ffe08a; }
   .cs-section { padding: 28px; }
   .cs-pillars, .filter-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .rv-wrap { grid-template-columns: 220px minmax(0, 1fr); }
+  .pv-wrap { grid-template-columns: 210px minmax(0, 1fr); }
+  .pv-grid { grid-template-columns: minmax(0, 1fr); }
   .filter-item label { position: relative; } .info-icon { position: static; }
   .info-icon::after { left: 0; right: 0; width: auto; transform: none; }
 }
@@ -300,6 +355,12 @@ mark { padding: 0 1px; background: #ffe08a; }
   .obj-grid { grid-template-columns: minmax(0, 1fr); }
   .cs-howto { flex-direction: column; gap: 10px; } .cs-howto-arr { display: none; }
   .rv-wrap { grid-template-columns: minmax(0, 1fr); }
+  .pv-wrap { grid-template-columns: minmax(0, 1fr); }
+  .pv-side { position: static; max-height: none; padding: 0; border-right: none; border-bottom: 1px solid #e3e8ee; }
+  .pv-side-toggle { display: block; width: 100%; padding: 10px 16px; text-align: left; font-family: inherit; font-size: 13px; font-weight: 700; color: var(--teal); background: #f0f6f7; border: none; cursor: pointer; }
+  .pv-side-body { display: none; padding: 12px 0 14px; }
+  .pv-side.open .pv-side-body { display: block; }
+  .pv-main { padding: 14px 12px 22px; }
   .rv-list { display: none; } .rv-select { display: block; }
   .rv-main { padding: 16px; }
   .qv-list { padding: 12px 10px; } .qv-row { grid-template-columns: minmax(0, 1fr); }
@@ -390,9 +451,9 @@ mark { padding: 0 1px; background: #ffe08a; }
       <div class="cs-howto-arr">&#8594;</div>
       <div class="cs-howto-step"><div class="cs-howto-n">2</div><div><div class="cs-howto-title">Choose questions</div><div class="cs-howto-desc">Show all questions, or only some themes or questions. Keyword matches are highlighted in every answer and explanation.</div></div></div>
       <div class="cs-howto-arr">&#8594;</div>
-      <div class="cs-howto-step"><div class="cs-howto-n">3</div><div><div class="cs-howto-title">Pick a view</div><div class="cs-howto-desc"><strong>Response view</strong> reads one full response at a time. <strong>Question view</strong> compares every answer to a question. <strong>Matrix view</strong> shows all responses side by side.</div></div></div>
+      <div class="cs-howto-step"><div class="cs-howto-n">3</div><div><div class="cs-howto-title">Pick a view</div><div class="cs-howto-desc"><strong>Policy view</strong> lists the policies and programmes named in the responses, by policy area. <strong>Response view</strong> reads one full response at a time. <strong>Question view</strong> compares every answer to a question. <strong>Matrix view</strong> shows all responses side by side.</div></div></div>
       <div class="cs-howto-arr">&#8594;</div>
-      <div class="cs-howto-step"><div class="cs-howto-n">4</div><div><div class="cs-howto-title">Open the details</div><div class="cs-howto-desc">In the matrix, hover over a cell for a preview and click it for the full answer and explanation. Click a respondent's name in Question view to open their full response.</div></div></div>
+      <div class="cs-howto-step"><div class="cs-howto-n">4</div><div><div class="cs-howto-title">Open the details</div><div class="cs-howto-desc">Narrow the policies by area, instrument, scope or target group, and open any policy's source answer. In the matrix, hover over a cell for a preview and click it for the full answer.</div></div></div>
     </div>
   </section>
 
@@ -431,13 +492,15 @@ mark { padding: 0 1px; background: #ffe08a; }
       <div class="results-bar">
         <span class="results-text" id="resultsText"></span>
         <div class="view-tabs" role="tablist" aria-label="View">
-          <button type="button" class="view-tab active" data-view="response" role="tab" aria-selected="true">&#9636; Response view</button>
+          <button type="button" class="view-tab active" data-view="policy" role="tab" aria-selected="true">&#9670; Policy view</button>
+          <button type="button" class="view-tab" data-view="response" role="tab" aria-selected="false">&#9636; Response view</button>
           <button type="button" class="view-tab" data-view="question" role="tab" aria-selected="false">&#9776; Question view</button>
           <button type="button" class="view-tab" data-view="matrix" role="tab" aria-selected="false">&#9638; Matrix view</button>
         </div>
       </div>
       <div class="view-hint" id="viewHint"></div>
-      <div id="view-response" class="db-view"></div>
+      <div id="view-policy" class="db-view"></div>
+      <div id="view-response" class="db-view" style="display:none"></div>
       <div id="view-question" class="db-view" style="display:none"></div>
       <div id="view-matrix" class="db-view" style="display:none"></div>
     </div>
@@ -472,15 +535,17 @@ mark { padding: 0 1px; background: #ffe08a; }
   /* ---------- A. Settings ---------- */
   var ALL = '__all__', ROWS_COLLAPSED = 5;
   var HINTS = {
+    policy:   'Policies, strategies, programmes and agreements named in the responses, grouped by policy area. Names and descriptions are quoted exactly as written by each respondent; open the source answer to read it in full.',
     response: 'One full response at a time. Choose a respondent from the list, or use Previous / Next.',
     question: 'Every answer to each question, with the number of respondents who chose each answer. Click a name to open the full response.',
     matrix:   'All responses side by side. Hover over a cell for a preview of the explanation; click it for the full answer.'
   };
 
   /* ---------- State ---------- */
+  var policyCat = null, pvFacets = { areas: [], type: [], scope: [], groups: [] }, pvGroupBy = 'areas', pvOpen = {}, pvShowAll = {}, PV_PER_GROUP = 6;
   var meta = {}, questions = [], qByCode = {}, respondents = [], byId = {};
   var groupCounts = { members: 0, stakeholders: 0 };
-  var view = 'response', currentId = null, keyword = '', shown = [], visibleQs = [];
+  var view = 'policy', currentId = null, keyword = '', shown = [], visibleQs = [];
 
   /* ---------- Helpers ---------- */
   function escapeHtml(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
@@ -592,7 +657,7 @@ mark { padding: 0 1px; background: #ffe08a; }
       $(this).closest('.bootstrap-select').toggleClass('has-real-value', $.isArray(v) ? v.length > 0 : !!(v && v !== ALL));
     });
     var everything = shown.length === respondents.length && visibleQs.length === questions.length;
-    $('#resultsText').text(!shown.length ? 'No responses match the current search and filters'
+    if (view !== 'policy') $('#resultsText').text(!shown.length ? 'No responses match the current search and filters'
       : everything ? 'Showing all responses and questions'
       : 'Showing ' + plural(shown.length, 'response', 'responses') + ' · ' + plural(visibleQs.length, 'question', 'questions'));
     render();
@@ -861,14 +926,157 @@ mark { padding: 0 1px; background: #ffe08a; }
     $('#detailModal').one('hidden.bs.modal', function () { if (t) showRespondent(t.id, t.code); }).modal('hide');
   });
 
-  function render() { if (view === 'response') renderResponseView(); else if (view === 'question') renderQuestionView(); else renderMatrixView(); }
+  /* View 0: Policy view — the named policies catalogued in data/digitalization_policies.json.
+     Names, descriptions and listed items are the respondents' own words (see tools/build_policies.py);
+     the instrument type, policy areas, scope and target groups are classification labels added for browsing. */
+  var PV_FACETS = [
+    ['areas', 'Policy area', 'areas'], ['type', 'Instrument type', 'types'],
+    ['scope', 'Scope', 'scopes'], ['groups', 'Target group', 'groups']
+  ];
+  function pvValues(p, key) { return key === 'type' ? [p.type] : key === 'scope' ? [p.scope] : p[key]; }
+  function pvLabel(key, code) { var m = policyCat.meta[PV_FACETS.filter(function (f) { return f[0] === key; })[0][2]]; return m[code] || code; }
+  function pvDisplayName(n) {   /* drop quotation marks only when they wrap the whole name; capitalise the first letter */
+    var m = /^(["'“‘])(.*)(["'”’])$/.exec(n);
+    if (m && m[2].indexOf(m[1]) === -1 && m[2].indexOf(m[3]) === -1) n = m[2];
+    return n.charAt(0).toUpperCase() + n.slice(1);
+  }
+  function pvRespondentPass(r) {   /* the response filters, without the keyword (it is applied to the policy text) */
+    var group = val('f-group'), areas = multi('f-area'), ids = multi('f-respondent');
+    if (group && group !== ALL && r.group !== group) return false;
+    if (areas.length && areas.indexOf(r.group + '|' + r.area) === -1) return false;
+    if (ids.length && ids.indexOf(r.id) === -1) return false;
+    return true;
+  }
+  function pvBase() {               /* policies passing the main filters and keyword, before the policy facets */
+    var themes = multi('f-theme'), codes = multi('f-question'), kw = keyword.toLowerCase();
+    var qFilter = themes.length || codes.length;
+    var allowed = {};
+    if (qFilter) questions.forEach(function (q) { if ((!themes.length || themes.indexOf(q.theme) !== -1) && (!codes.length || codes.indexOf(q.code) !== -1)) allowed[q.code] = true; });
+    return policyCat.policies.filter(function (p) {
+      var r = byId[p.respondent];
+      if (!r || !pvRespondentPass(r)) return false;
+      if (qFilter && !p.mentioned_in.some(function (c) { return allowed[c]; })) return false;
+      if (kw && p.searchText.indexOf(kw) === -1) return false;
+      return true;
+    });
+  }
+  function pvPassFacets(p, except) {
+    return PV_FACETS.every(function (f) {
+      var sel = pvFacets[f[0]];
+      if (f[0] === except || !sel.length) return true;
+      return pvValues(p, f[0]).some(function (v) { return sel.indexOf(v) !== -1; });
+    });
+  }
+  function pvCard(p) {
+    var r = byId[p.respondent], open = !!pvOpen[p.id];
+    var who = escapeHtml(r.name) + ' <span>· ' + escapeHtml(r.area) + '</span>' + (p.country ? ' <span>· in ' + escapeHtml(p.country) + '</span>' : '');
+    var tags = p.areas.map(function (a) { return '<span class="pv-tag">' + escapeHtml(pvLabel('areas', a)) + '</span>'; }).join('') +
+      p.groups.map(function (g) { return '<span class="pv-tag grp">' + escapeHtml(pvLabel('groups', g)) + '</span>'; }).join('');
+    var items = open && p.items.length ? '<ul class="pv-items">' + p.items.map(function (t) { return '<li>' + highlight(escapeHtml(t)) + '</li>'; }).join('') + '</ul>' : '';
+    var links = p.links.length ? '<div class="pv-links">' + p.links.map(function (u) {
+      var host = u.replace(/^https?:\/\//, '').split('/')[0].replace(/^www\./, '');
+      return '<a href="' + escapeHtml(u) + '" target="_blank" rel="noopener" title="' + escapeHtml(u) + '">' + escapeHtml(host) + ' &#8599;</a>';
+    }).join('') + '</div>' : '';
+    var canMore = p.description.length > 260 || p.items.length;
+    return '<article class="pv-card" data-id="' + escapeHtml(p.id) + '">' +
+      '<div class="pv-card-top"><span class="pv-type">' + escapeHtml(pvLabel('type', p.type)) + '</span><span class="pv-scope">' + escapeHtml(pvLabel('scope', p.scope)) + '</span></div>' +
+      '<h3 class="pv-name">' + highlight(escapeHtml(pvDisplayName(p.name))) + '</h3>' +
+      '<div class="pv-who">' + who + '</div>' +
+      '<p class="pv-desc' + (open ? '' : ' clamped') + '">' + highlight(escapeHtml(p.description)) + '</p>' + items +
+      '<div class="pv-tags">' + tags + '</div>' + links +
+      '<div class="pv-foot"><button type="button" class="pv-src" data-id="' + escapeHtml(r.id) + '" data-code="' + p.source + '">' + codeLabel(p.source) + ' · Read the full answer &rsaquo;</button>' +
+      (canMore ? '<button type="button" class="pv-more">' + (open ? 'Show less' : 'Read more' + (p.items.length ? ' (' + p.items.length + ' listed)' : '')) + '</button>' : '') + '</div>' +
+      '</article>';
+  }
+  function renderPolicyView() {
+    var $v = $('#view-policy');
+    var base = pvBase();
+    var list = base.filter(function (p) { return pvPassFacets(p); });
+    var facetsHtml = PV_FACETS.map(function (f) {
+      var key = f[0], counts = {};
+      base.forEach(function (p) { if (pvPassFacets(p, key)) pvValues(p, key).forEach(function (v) { counts[v] = (counts[v] || 0) + 1; }); });
+      var codes = Object.keys(policyCat.meta[f[2]]);
+      if (key === 'groups') codes = codes.filter(function (c) { return counts[c] || pvFacets.groups.indexOf(c) !== -1; });
+      return '<div class="pv-facet"><div class="pv-facet-title">' + f[1] + '</div>' + codes.map(function (c) {
+        var on = pvFacets[key].indexOf(c) !== -1, n = counts[c] || 0;
+        return '<button type="button" class="pv-opt' + (on ? ' on' : '') + (n ? '' : ' zero') + '" data-facet="' + key + '" data-code="' + c + '" aria-pressed="' + on + '">' +
+          '<span>' + escapeHtml(policyCat.meta[f[2]][c]) + '</span><span class="pv-opt-n">' + n + '</span></button>';
+      }).join('') + '</div>';
+    }).join('');
+    var anyFacet = PV_FACETS.some(function (f) { return pvFacets[f[0]].length; });
+    var nResp = {}; list.forEach(function (p) { nResp[p.respondent] = 1; });
+    var groups = [], byKey = {};
+    function add(k, label, sort, p) { if (!byKey[k]) { byKey[k] = { label: label, sort: sort, items: [] }; groups.push(byKey[k]); } byKey[k].items.push(p); }
+    list.forEach(function (p) {
+      var r = byId[p.respondent];
+      if (pvGroupBy === 'respondent') add(r.id, r.name, (r.group === 'members' ? '0' : '1') + r.name, p);
+      else if (pvGroupBy === 'type') add(p.type, pvLabel('type', p.type), Object.keys(policyCat.meta.types).indexOf(p.type), p);
+      else p.areas.forEach(function (a) {
+        if (pvFacets.areas.length && pvFacets.areas.indexOf(a) === -1) return;
+        add(a, pvLabel('areas', a), Object.keys(policyCat.meta.areas).indexOf(a), p);
+      });
+    });
+    groups.sort(function (a, b) { return a.sort < b.sort ? -1 : a.sort > b.sort ? 1 : 0; });
+    var body = groups.map(function (g) {
+      g.items.sort(function (a, b) { var ra = byId[a.respondent].name, rb = byId[b.respondent].name; return ra < rb ? -1 : ra > rb ? 1 : 0; });
+      var gk = pvGroupBy + ':' + g.label, all = pvShowAll[gk] || keyword || g.items.length <= PV_PER_GROUP + 2;
+      var cards = all ? g.items : g.items.slice(0, PV_PER_GROUP);
+      return '<section class="pv-group"><h3 class="pv-group-h">' + escapeHtml(g.label) + '</h3><div class="pv-grid">' + cards.map(pvCard).join('') + '</div>' +
+        (g.items.length > PV_PER_GROUP + 2 && !keyword ? '<button type="button" class="pv-showall" data-gk="' + escapeHtml(gk) + '">' +
+          (all ? 'Show fewer' : 'Show all ' + g.items.length + ' in ' + escapeHtml(g.label)) + '</button>' : '') + '</section>';
+    }).join('');
+    if (!list.length) body = '<div class="view-empty">No policies match the current search and filters.</div>';
+    /* Respondents in the current selection whose answers do not name specific policies */
+    var named = {}; policyCat.policies.forEach(function (p) { named[p.respondent] = 1; });
+    var none = respondents.filter(function (r) { return pvRespondentPass(r) && !named[r.id]; });
+    var note = !anyFacet && !keyword && none.length ? '<div class="pv-note">The responses of ' + listNames(none) +
+      ' do not name specific policies or programmes in their explanations. Their full answers are available in the Response view.</div>' : '';
+    $v.html('<div class="pv-wrap"><aside class="pv-side"><button type="button" class="pv-side-toggle" aria-expanded="false">&#9776; Filter policies</button><div class="pv-side-body">' + facetsHtml +
+      (anyFacet ? '<button type="button" class="pv-reset">Clear policy filters</button>' : '') + '</div></aside>' +
+      '<div class="pv-main"><div class="pv-bar"><span class="pv-count"><b>' + plural(list.length, 'policy', 'policies') + '</b> from ' + plural(Object.keys(nResp).length, 'respondent', 'respondents') + '</span>' +
+      '<span class="pv-groupby">Group by ' + [['areas', 'Policy area'], ['type', 'Instrument'], ['respondent', 'Respondent']].map(function (o) {
+        return '<button type="button" class="pv-gb' + (pvGroupBy === o[0] ? ' on' : '') + '" data-gb="' + o[0] + '">' + o[1] + '</button>';
+      }).join('') + '</span></div>' + body + note + '</div></div>');
+    if (view === 'policy') $('#resultsText').text(list.length ? 'Showing ' + plural(list.length, 'policy', 'policies') : 'No policies match the current search and filters');
+  }
+  function listNames(rs) {
+    var n = rs.map(function (r) {
+      return '<button type="button" class="pv-goto" data-id="' + escapeHtml(r.id) + '">' + escapeHtml(r.name) + '</button>';
+    });
+    return n.length > 1 ? n.slice(0, -1).join(', ') + ' and ' + n[n.length - 1] : n.join('');
+  }
+  $('#view-policy')
+    .on('click', '.pv-opt', function () {
+      var k = $(this).data('facet'), c = String($(this).data('code')), sel = pvFacets[k], i = sel.indexOf(c);
+      if (i === -1) sel.push(c); else sel.splice(i, 1);
+      renderPolicyView();
+    })
+    .on('click', '.pv-reset', function () { pvFacets = { areas: [], type: [], scope: [], groups: [] }; renderPolicyView(); })
+    .on('click', '.pv-gb', function () { pvGroupBy = $(this).data('gb'); renderPolicyView(); })
+    .on('click', '.pv-showall', function () {
+      var gk = $(this).data('gk'), $g = $(this).closest('.pv-group');
+      pvShowAll[gk] = !pvShowAll[gk];
+      renderPolicyView();
+      if (!pvShowAll[gk]) { var $h = $('#view-policy .pv-showall').filter(function () { return $(this).data('gk') === gk; }).closest('.pv-group'); if ($h.length) $('html, body').scrollTop($h.offset().top - 20); }
+    })
+    .on('click', '.pv-more', function () {
+      var id = $(this).closest('.pv-card').data('id');
+      pvOpen[id] = !pvOpen[id];
+      var p = policyCat.policies.filter(function (x) { return x.id === id; })[0];
+      $('#view-policy .pv-card').filter(function () { return $(this).data('id') === id; }).replaceWith(pvCard(p));
+    })
+    .on('click', '.pv-src', function () { showRespondent($(this).data('id'), $(this).data('code')); })
+    .on('click', '.pv-goto', function () { showRespondent($(this).data('id')); })
+    .on('click', '.pv-side-toggle', function () { var $s = $(this).closest('.pv-side').toggleClass('open'); $(this).attr('aria-expanded', String($s.hasClass('open'))); });
+
+  function render() { if (view === 'policy') renderPolicyView(); else if (view === 'response') renderResponseView(); else if (view === 'question') renderQuestionView(); else renderMatrixView(); }
   function setView(v) {
     view = v;
     $('.view-tab').each(function () { var on = $(this).data('view') === v; $(this).toggleClass('active', on).attr('aria-selected', String(on)); });
     $('.db-view').hide();
     $('#view-' + v).show();
     $('#viewHint').text(HINTS[v]);
-    render();
+    applyFilters();   /* refreshes the results text for the new view, then renders it */
   }
   $('.view-tab').on('click', function () { setView($(this).data('view')); });
 
@@ -878,6 +1086,19 @@ mark { padding: 0 1px; background: #ffe08a; }
      loads data/digitalization_data.js instead: the same data, written by the same tool as a script that sets
      window.DIGITALIZATION_COMPENDIUM_DATA. On a web server only the JSON file is used. */
   var DATA_JSON = 'data/digitalization_data.json', DATA_SCRIPT = 'data/digitalization_data.js', DATA_VARIABLE = 'DIGITALIZATION_COMPENDIUM_DATA';
+  var POLICIES_JSON = 'data/digitalization_policies.json', POLICIES_SCRIPT = 'data/digitalization_policies.js', POLICIES_VARIABLE = 'DIGITALIZATION_POLICIES';
+
+  function loadPolicies(done) {   /* the Policy view catalogue (tools/build_policies.py); the page works without it */
+    function fromScript() {
+      var el = document.createElement('script');
+      el.src = POLICIES_SCRIPT;
+      el.onload = function () { done(window[POLICIES_VARIABLE]); };
+      el.onerror = function () { done(null); };
+      document.body.appendChild(el);
+    }
+    if (window.location.protocol === 'file:') fromScript();
+    else $.getJSON(POLICIES_JSON).done(done).fail(fromScript);
+  }
 
   function loadData(done) {
     function fromScript() {
@@ -906,8 +1127,23 @@ mark { padding: 0 1px; background: #ffe08a; }
       });
       buildFilters();
       bindFilters();
-      $('#viewHint').text(HINTS.response);
-      applyFilters();
+      loadPolicies(function (cat) {
+        if (cat && cat.meta && Array.isArray(cat.policies)) {
+          policyCat = cat;
+          cat.policies.forEach(function (p) {
+            var r = byId[p.respondent];
+            p.searchText = [p.name, p.description, p.country, r ? r.name : '', r ? r.area : ''].concat(p.items, p.areas.map(function (a) { return cat.meta.areas[a]; }),
+              [cat.meta.types[p.type]], p.groups.map(function (g) { return cat.meta.groups[g]; })).join(' \n ').toLowerCase();
+          });
+        } else {
+          view = 'response';
+          $('.view-tab[data-view="policy"]').remove();
+          $('.view-tab[data-view="response"]').addClass('active').attr('aria-selected', 'true');
+          $('#view-policy').hide(); $('#view-response').show();
+        }
+        $('#viewHint').text(HINTS[view]);
+        applyFilters();
+      });
     } else {
       $('#db-ui, .results-bar, #viewHint').hide();
       $('#db-error').show();

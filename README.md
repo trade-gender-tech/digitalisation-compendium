@@ -20,15 +20,11 @@ The WTO site header, footer and breadcrumbs are shown as on the GitHub preview p
 | Section | Content | Source |
 |---|---|---|
 | Hero | Title as in the joint proposal (*Empowering Women to Trade through Digitalisation: Policy Insights*), the two Informal Working Groups, a one-line description; Explore and Excel download buttons | text in `index.html` |
-| About the Compendium | Launch at MC14 (Yaoundé, side event of 25 March 2026), the joint proposal and its Co-Chairs/Coordinator, the work plans it supports, four objective cards, the two lines of work; Contributions panel (the regions and other stakeholders that responded, with names; no counts) | text from the joint communication WT/MIN(26)/4 • INF/TGE/COM/13/Rev.1 • INF/MSME/W/68/Rev.1 (27 February 2026); panel from the data |
-| Survey Themes | The six themes of the Members survey, with their question ranges | text in `index.html`; ranges from the data |
-| What the Responses Show | Six messages in words, not numbers (strategies, programmes, instruments, sectors, skills, data), each in a wide card with a line icon (drawn inline in the script, `ICONS`) and chips quoting the most frequent answers verbatim. Words such as "most" or "some" are worked out from the data (`amount()` in the script), so the wording stays true if responses change | data (`FINDINGS` in the script) |
-| Insights from Other Stakeholders | Four verbatim quotes | data (`QUOTES` in the script) |
+| About the Compendium | Launch at MC14 (Yaoundé, side event of 25 March 2026), the joint proposal and its Co-Chairs/Coordinator, the work plans it supports, two objective cards | text from the joint communication WT/MIN(26)/4 • INF/TGE/COM/13/Rev.1 • INF/MSME/W/68/Rev.1 (27 February 2026) |
+| Survey Themes | The six themes of the Members survey, as teal cards with an illustration | text in `index.html` |
 | How to Use, Database | See below | |
 
 The joint communication itself is not part of the package (it is kept with the source files in `3. Digitalisation Compendium/COM13R1.docx`) and is not offered for download.
-
-**Quotes are checked against the data.** Each quote in `QUOTES` is shown only if it is found word for word in that organization's answer, so a quote can never drift from the source.
 
 **Colours.** The page uses the teal palette of the WTO trade and gender databases (deep teal, navy headings, gold call-to-action button). Every colour is a CSS variable defined once at the top of the stylesheet (`--teal`, `--navy`, `--gold`, …), so the theme can be changed in one place. The hero image is tinted teal by the stylesheet (`background-blend-mode`), so a replacement image takes the same colour. The dot colours were checked for colour-vision deficiency (dark teal for the finding, light teal for a partial answer, grey for the rest), and every figure is also written out, so nothing depends on colour or hover alone.
 
@@ -37,12 +33,13 @@ The joint communication itself is not part of the package (it is kept with the s
 ## The database
 
 **Filters** (all combine):
-- **Responses:** Respondent Type (WTO Members / Other stakeholders), Region / Category, specific Respondents.
+- **Responses:** Respondent Type (WTO Members / WTO stakeholders), Region / Category, specific Respondents.
 - **Questions:** Themes, specific Questions.
 - **Keyword search** across every answer and explanation; matches are highlighted.
 
-**Three views:**
-1. **Response view** (default): one full response at a time: the respondent's identification fields as submitted (Time, WTO Member/Observer Government, Ministry/Institution), then every question with the answer options and the explanation, grouped by theme. A list of respondents on the left (a dropdown on phones) and Previous / Next.
+**Four views:**
+0. **Policy view** (default): a catalogue of the policies, strategies, laws, trade agreement provisions, programmes, platforms, funds and networks that respondents *name* in their answers, so that a researcher can find measures without knowing the questionnaire. One card per policy: its name and a description quoted **word for word** from the response, who reports it (and, for WTO stakeholders, the country where it applies), any items the respondent lists under it, the links the respondent gave for it, and a button that opens the source answer in the Response view. Each policy is labelled with an **instrument type**, one or more **policy areas**, a **scope** (domestic / international cooperation) and, where the response mentions one, a **target group**; these labels are added for browsing and are the only words on the cards that are not the respondent's. Filters on the left combine with each other and with the main filters above (respondent filters, themes and questions: a policy is kept if it is mentioned in one of the chosen questions; keyword: searches the policy names, descriptions and labels). Group by policy area (default; a policy with several areas appears under each), instrument or respondent; groups show six cards with "Show all". Respondents whose answers name no specific policy are listed in a note under the cards. See **The policy catalogue** below.
+1. **Response view**: one full response at a time: the respondent's identification fields as submitted (Time, WTO Member/Observer Government, Ministry/Institution), then every question with the answer options and the explanation, grouped by theme. A list of respondents on the left (a dropdown on phones) and Previous / Next.
    **Download PDF** (Response view only): creates an A4 document of the response shown, in Verdana, with the WTO OMC | Trade for Women logo (`images/wto-trade-for-women-logo.png`), the respondent's details, every question shown with its answer and explanation verbatim, and "Page X of Y" in the footer. It contains only the questions currently shown: if the Themes or Questions filters are used, the PDF is an extract and says so. The button opens the browser's print dialog, where **Save as PDF** creates the file (suggested name: "Digitalisation Compendium – *respondent*"). This keeps the text selectable and the links clickable, and uses the Verdana font installed on the computer: the font itself is licensed by Microsoft and cannot be shipped with the page.
 2. **Question view:** one card per question with a bar chart of the answers among the responses shown, and every respondent's answer and explanation (5 shown, "Show all" for the rest; long explanations have "Read more"). Clicking a name opens that response at that question.
 3. **Matrix view:** all responses side by side (WTO Members 18 × 30, other stakeholders 4 × 12). Cells show the answer options; "¶ Explanation" marks an explanation. Hover shows a preview; click opens the full answer in a pop-up, with a button to open the full response.
@@ -57,16 +54,21 @@ README.md                           This file
 data/
   digitalization_data.json          Questionnaire responses, loaded by index.html
   digitalization_data.js            The same data as a script, used only when index.html is opened from disk
+  digitalization_policies.json      Policy view catalogue, written by tools/build_policies.py
+  digitalization_policies.js        The same catalogue as a script, used only when index.html is opened from disk
 images/
   site-header.png, site-footer.png  WTO site header and footer (stand-ins for the wto.org template)
   favicon.png                       Browser tab icon
   wto-trade-for-women-logo.png      WTO OMC | Trade for Women logo, used on the PDF of a response
-  hero.png, pillar-*.png, purpose-*.png   Hero and illustrations, reused from the IWG Compendium for now
+  hero.png                          Hero background (a dotted world map, tinted teal by the stylesheet)
+  pillar-1…4.png, purpose-*.png     Illustrations of the objective and Survey Theme cards
 downloads/
   digitalization-compendium.xlsx    The compendium in Excel; also the source of the data files
 tools/
   questionnaire_to_excel.py         Builds the compendium Excel from the raw questionnaire exports
   excel_to_json.py                  Rebuilds data/digitalization_data.json and .js from the Excel file
+  build_policies.py                 Builds data/digitalization_policies.json and .js and checks every quote
+  policy_catalogue/                 The policy catalogue, one file per respondent (curated; see below)
   requirements.txt                  Python package needed by both tools
 vendor/                             jquery/  bootstrap/  bootstrap-select/  open-sans/
 ```
@@ -83,13 +85,13 @@ All paths in `index.html` are relative, so the folder works wherever it is copie
 4. **Font.** If `wto.css` already provides Open Sans, remove the `vendor/open-sans/open-sans.css` link.
 5. **CSS and script** can be moved into their own files unchanged. The script must load after the libraries. It loads the data itself (see **Data loading** below).
 6. **Style scope.** Page styles are scoped to `main.digi-compendium` or to class names used only on this page. A few names are generic (`.tag`, `.tags`, `.page-wrap`, `.filter-panel`, `.stats-bar`); prefix them if `wto.css` uses the same names.
-7. **Element IDs used by the script:** `reach`, `cs-theme-count-1`…`6`, `fd-grid`, `sh-quotes`, `btnExploreDb`, `btnExploreDbTop`, `dbCollapse`, `db-error`, `db-ui`, `keywordInput`, `f-group`, `f-area`, `f-respondent`, `f-theme`, `f-question`, `btnClear`, `resultsText`, `viewHint`, `view-response`, `view-question`, `view-matrix`, `detailModal`, `detailModalTitle`, `detailModalBody`, `detailOpenResponse`, `vizTip`, `pdfFrame` (created by the script for the PDF).
+7. **Element IDs used by the script:** `btnExploreDb`, `btnExploreDbTop`, `dbCollapse`, `db-error`, `db-ui`, `keywordInput`, `f-group`, `f-area`, `f-respondent`, `f-theme`, `f-question`, `btnClear`, `resultsText`, `viewHint`, `view-policy`, `view-response`, `view-question`, `view-matrix`, `detailModal`, `detailModalTitle`, `detailModalBody`, `detailOpenResponse`, `vizTip`, `pdfFrame` (created by the script for the PDF).
 
 ---
 
 ## Data loading
 
-The page holds no data. When it opens, the script loads **`data/digitalization_data.json`** and builds everything from it. Browsers do not let a page opened straight from disk (by double-clicking `index.html`) read a JSON file; in that case only, the script loads **`data/digitalization_data.js`**, the same data written by the same converter as a script. On a web server only the JSON file is used. The file names are set in `DATA_JSON` and `DATA_SCRIPT` at the end of the page script.
+The page holds no data. When it opens, the script loads **`data/digitalization_data.json`** and builds everything from it. Browsers do not let a page opened straight from disk (by double-clicking `index.html`) read a JSON file; in that case only, the script loads **`data/digitalization_data.js`**, the same data written by the same converter as a script. On a web server only the JSON file is used. The file names are set in `DATA_JSON` and `DATA_SCRIPT` at the end of the page script. The Policy view catalogue is loaded the same way (`POLICIES_JSON` / `POLICIES_SCRIPT`); if it is missing, the page still works and opens on the Response view.
 
 ---
 
@@ -120,8 +122,19 @@ python3 tools/excel_to_json.py
 
 Then refresh `index.html`. The Excel file can also be edited by hand, followed by this step; keep the sheet names and the coded column headers.
 
+### 3. Rebuild the policy catalogue
+
+```
+python3 tools/build_policies.py
+```
+
+Run it after every data rebuild. It stops with a list of errors if any catalogued name, description, listed item or link is no longer found word for word in the answers, so the Policy view can never show text that differs from the responses. New responses are **not** catalogued automatically: add a file for the new respondent in `tools/policy_catalogue/` (see below).
+
+### The policy catalogue
+Each file in `tools/policy_catalogue/` lists the policies named in one response. An entry points at the respondent's own text rather than copying it: the policy name as written, and the start and end of the passage that describes it (`x=(start, end)`) in a given answer (`q='Q9'`). The builder copies the passage between those two phrases from the data, so the description is always the respondent's wording. The labels (`t` instrument type, `a` policy areas, `g` target groups, `s` scope, `c` country for stakeholder answers) are the editorial part and use the codes listed at the top of `tools/build_policies.py`. The current catalogue (November 2026) covers 247 policies from 19 respondents; the responses of China, Mauritius and the Institute of International Studies (University of Chile) give links or general descriptions without naming specific policies.
+
 ### Written in `index.html`, to be edited by hand if they change
-The About text (taken from the joint communication), the survey period, the theme names and descriptions, the sentence wording of the six findings (`FINDINGS`; their numbers are calculated) and the quotes (`QUOTES`). Everything else is calculated from the data.
+The About text (taken from the joint communication), the survey period, and the theme names and descriptions. Everything else is calculated from the data.
 
 ### Notes on the data
 - Explanations are reproduced as submitted, including placeholders such as "-" or "n.a." and Brazil's response in Portuguese.
