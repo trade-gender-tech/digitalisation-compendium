@@ -21,7 +21,7 @@ The WTO site header, footer and breadcrumbs are shown as on the GitHub preview p
 |---|---|---|
 | Hero | Title as in the joint proposal (*Empowering Women to Trade through Digitalisation: Policy Insights*), the two Informal Working Groups, a one-line description; Explore and Excel download buttons | text in `index.html` |
 | About the Compendium | Launch at MC14 (Yaoundé, side event of 25 March 2026), the joint proposal and its Co-Chairs/Coordinator, the work plans it supports, two objective cards | text from the joint communication WT/MIN(26)/4 • INF/TGE/COM/13/Rev.1 • INF/MSME/W/68/Rev.1 (27 February 2026) |
-| Survey Themes | The six themes of the Members survey, as teal cards with an illustration | text in `index.html` |
+| Themes | The six themes of the Members survey, as teal cards with an illustration | text in `index.html` |
 | How to Use, Database | See below | |
 
 The joint communication itself is not part of the package (it is kept with the source files in `3. Digitalisation Compendium/COM13R1.docx`) and is not offered for download.
@@ -60,7 +60,7 @@ images/
   favicon.png                       Browser tab icon
   wto-trade-for-women-logo.png      WTO OMC | Trade for Women logo, used on the PDF of a response
   hero.png                          Hero background (a dotted world map, tinted teal by the stylesheet)
-  pillar-1…4.png, purpose-*.png     Illustrations of the objective and Survey Theme cards
+  pillar-1…4.png, purpose-*.png     Illustrations of the objective and Theme cards
 downloads/
   digitalization-compendium.xlsx    The compendium in Excel; also the source of the data files
   digitalization-policies.xlsx      The policy catalogue in Excel (written by tools/build_policies.py), offered in the Policy view
