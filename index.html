@@ -33,7 +33,7 @@
   Page layout:
     site header (image)   →  replaced by the WTO site header on wto.org
     main.digi-compendium  →  breadcrumbs, hero, Background, Questionnaire Themes,
-                             How to Use, database (Policy / Response / Question / Matrix views)
+                             How to Use, database (Policy / Response / Question views)
     site footer (image)   →  replaced by the WTO site footer on wto.org
   =============================================================================
 -->
@@ -46,7 +46,7 @@
 /* Colours: teal palette of the WTO trade and gender databases. All colours are tokens (below), so the theme
    can be changed in one place. Chart dots (validated for colour-vision deficiency): #00566a (finding),
    #62b3bd (partial answer), #e0e3e6 (the rest); every dot row also has a written legend with counts. */
-.digi-compendium, #detailModal, #vizTip {
+.digi-compendium, #vizTip {
   --teal-900: #003e4a;    /* darkest: hero and panel gradients */
   --teal-800: #004e5a;
   --teal-700: #004e60;    /* table headers, figures */
@@ -329,35 +329,6 @@ mark { padding: 0 1px; background: #ffe08a; }
 .qv-more, .qv-all { padding: 0; margin-top: 4px; font-size: 12px; font-weight: 600; color: var(--teal); background: none; border: none; cursor: pointer; }
 .qv-all   { display: block; width: 100%; padding: 9px 0; border-top: 1px solid #eef0f3; }
 
-/* ---------- Matrix view ---------- */
-.mx-group { padding: 16px 20px 6px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink); }
-.mx-wrap  { max-height: 80vh; margin: 0 20px 20px; overflow: auto; border: 1px solid #dfe5ec; }
-.mx-table { border-collapse: separate; border-spacing: 0; font-size: 12px; }
-.mx-table th, .mx-table td { width: 230px; min-width: 230px; max-width: 230px; padding: 9px 10px; vertical-align: top; text-align: left; border-right: 1px solid #e6eaef; border-bottom: 1px solid #e6eaef; }
-.mx-table thead th { position: sticky; top: 0; z-index: 2; color: #fff; background: var(--teal-700); font-weight: 600; }
-.mx-qtext { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; margin-top: 3px; font-size: 11px; font-weight: 400; line-height: 1.4; color: rgba(255,255,255,0.85); }
-.mx-table thead .q-code { color: var(--gold); }
-.mx-table .mx-name { position: sticky; left: 0; z-index: 1; width: 170px; min-width: 170px; max-width: 170px; font-weight: 700; color: var(--ink); background: #fff; }
-.mx-table thead .mx-name { z-index: 3; color: #fff; background: var(--teal-700); }
-.mx-name small { display: block; font-weight: 400; color: #7a8a99; }
-.mx-cell  { cursor: pointer; outline: none; }
-.mx-cell:hover, .mx-cell:focus { background: var(--teal-50); }
-.mx-cell .tag { padding: 2px 7px; font-size: 11px; }
-.mx-excerpt { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; font-size: 11.5px; line-height: 1.5; overflow-wrap: anywhere; }
-.mx-has-note { display: inline-block; margin-top: 6px; font-size: 10.5px; font-weight: 700; color: var(--teal-600); }
-/* Long cells are cut at 150px (fade + hint); the click pop-up shows everything */
-.mx-inner { position: relative; max-height: 150px; overflow: hidden; }
-.mx-inner.is-cut { -webkit-mask-image: linear-gradient(#000 70%, transparent); mask-image: linear-gradient(#000 70%, transparent); }
-.mx-cut-hint { display: block; margin-top: 4px; font-size: 10.5px; font-weight: 700; color: var(--teal); }
-
-/* ---------- Detail pop-up ---------- */
-#detailModal .modal-header { color: #fff; background: var(--teal); }
-#detailModal .modal-header .close { color: #fff; opacity: 0.85; }
-#detailModal .modal-title small { display: block; font-size: 12px; color: rgba(255,255,255,0.8); }
-#detailModal .modal-body, #detailModal .modal-title { font-family: 'Open Sans', Arial, sans-serif; }
-#detailModal .dm-q { margin-bottom: 12px; font-size: 13.5px; font-weight: 700; color: var(--teal-700); }
-.btn-open-response { padding: 8px 18px; font-weight: 600; color: #fff; background: var(--teal-500); border: none; border-radius: 4px; }
-
 /* ---------- Responsive ---------- */
 @media (max-width: 1024px) {
   .cs-hero-content { max-width: 66%; }
@@ -394,7 +365,6 @@ mark { padding: 0 1px; background: #ffe08a; }
   .rv-list { display: none; } .rv-select { display: block; }
   .rv-main { padding: 16px; }
   .qv-list { padding: 12px 10px; } .qv-row { grid-template-columns: minmax(0, 1fr); }
-  .mx-wrap { margin: 0 10px 16px; }
 }
 @media (max-width: 480px) {
   .page-wrap { padding: 0 0 24px; }
@@ -407,8 +377,6 @@ mark { padding: 0 1px; background: #ffe08a; }
   .btn-explore { width: 100%; padding: 13px 28px; }
   .view-tabs { width: 100%; } .view-tab { flex: 1; justify-content: center; padding: 7px 4px; font-size: 12px; }
   .rv-info { grid-template-columns: minmax(0, 1fr); }
-  .mx-table th, .mx-table td { width: 190px; min-width: 190px; max-width: 190px; }
-  .mx-table .mx-name { width: 120px; min-width: 120px; max-width: 120px; }
 }
 </style>
 </head>
@@ -481,9 +449,9 @@ mark { padding: 0 1px; background: #ffe08a; }
       <div class="cs-howto-arr">&#8594;</div>
       <div class="cs-howto-step"><div class="cs-howto-n">2</div><div><div class="cs-howto-title">Choose questions</div><div class="cs-howto-desc">Show all questions, or only some themes or questions. Keyword matches are highlighted in every answer and explanation.</div></div></div>
       <div class="cs-howto-arr">&#8594;</div>
-      <div class="cs-howto-step"><div class="cs-howto-n">3</div><div><div class="cs-howto-title">Pick a view</div><div class="cs-howto-desc"><strong>Policy view</strong> lists the policies and programmes named in the responses, by policy area. <strong>Response view</strong> reads one full response at a time. <strong>Question view</strong> compares every answer to a question. <strong>Matrix view</strong> shows all responses side by side.</div></div></div>
+      <div class="cs-howto-step"><div class="cs-howto-n">3</div><div><div class="cs-howto-title">Pick a view</div><div class="cs-howto-desc"><strong>Policy view</strong> lists the policies and programmes named in the responses, by policy area. <strong>Response view</strong> reads one full response at a time. <strong>Question view</strong> compares every answer to a question.</div></div></div>
       <div class="cs-howto-arr">&#8594;</div>
-      <div class="cs-howto-step"><div class="cs-howto-n">4</div><div><div class="cs-howto-title">Open the details</div><div class="cs-howto-desc">Narrow the policies by area, instrument, scope or target group, and open any policy's source answer. In the matrix, hover over a cell for a preview and click it for the full answer.</div></div></div>
+      <div class="cs-howto-step"><div class="cs-howto-n">4</div><div><div class="cs-howto-title">Open the details</div><div class="cs-howto-desc">Narrow the policies by area, instrument, scope or target group, and open any policy's source answer.</div></div></div>
     </div>
   </section>
 
@@ -527,14 +495,12 @@ mark { padding: 0 1px; background: #ffe08a; }
           <button type="button" class="view-tab active" data-view="policy" role="tab" aria-selected="true">&#9670; Policy view</button>
           <button type="button" class="view-tab" data-view="response" role="tab" aria-selected="false">&#9636; Response view</button>
           <button type="button" class="view-tab" data-view="question" role="tab" aria-selected="false">&#9776; Question view</button>
-          <button type="button" class="view-tab" data-view="matrix" role="tab" aria-selected="false">&#9638; Matrix view</button>
         </div>
       </div>
       <div class="view-hint" id="viewHint"></div>
       <div id="view-policy" class="db-view"></div>
       <div id="view-response" class="db-view" style="display:none"></div>
       <div id="view-question" class="db-view" style="display:none"></div>
-      <div id="view-matrix" class="db-view" style="display:none"></div>
     </div>
   </div>
 
@@ -544,14 +510,6 @@ mark { padding: 0 1px; background: #ffe08a; }
 <!-- WTO SITE FOOTER — web team: replace with the standard WTO site footer -->
 <footer class="site-footer"><img src="images/site-footer.png" alt="World Trade Organization — site footer"></footer>
 
-<!-- Detail pop-up for one answer (Bootstrap 3 modal), opened from the matrix -->
-<div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="detailModalTitle">
-  <div class="modal-dialog modal-lg" role="document"><div class="modal-content">
-    <div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 class="modal-title" id="detailModalTitle"></h4></div>
-    <div class="modal-body" id="detailModalBody"></div>
-    <div class="modal-footer"><button type="button" class="btn-open-response" id="detailOpenResponse">Open full response</button></div>
-  </div></div>
-</div>
 <div id="vizTip" role="tooltip"></div>
 
 <script src="vendor/jquery/jquery-3.7.1.min.js"></script>
@@ -559,7 +517,7 @@ mark { padding: 0 1px; background: #ffe08a; }
 <script src="vendor/bootstrap-select/js/bootstrap-select.min.js"></script>
 
 <script>
-/* PAGE SCRIPT — A settings & helpers · B cover pages · C database (filters, three views, pop-up) · D start-up.
+/* PAGE SCRIPT — A settings & helpers · B cover pages · C database (filters, three views) · D start-up.
    All respondent text is inserted escaped; answers and explanations are never reworded. */
 (function ($) {
   'use strict';
@@ -569,8 +527,7 @@ mark { padding: 0 1px; background: #ffe08a; }
   var HINTS = {
     policy:   'Policies, strategies, programmes and agreements named in the responses, grouped by policy area. Click a policy to see its description, quoted exactly as written by the respondent, and to open the source answer.',
     response: 'One full response at a time. Choose a respondent from the list, or use Previous / Next.',
-    question: 'Every answer to each question, with the number of respondents who chose each answer. Click a name to open the full response.',
-    matrix:   'All responses side by side. Hover over a cell for a preview of the explanation; click it for the full answer.'
+    question: 'Every answer to each question, with the number of respondents who chose each answer. Click a name to open the full response.'
   };
 
   /* ---------- State ---------- */
@@ -604,7 +561,7 @@ mark { padding: 0 1px; background: #ffe08a; }
       .sort(function (a, b) { return (isNA(a.value) - isNA(b.value)) || b.count - a.count; });
   }
 
-  /* Tooltip for chart marks and matrix cells (textContent only) */
+  /* Tooltip for chart marks (textContent only) */
   var $tip = $('#vizTip');
   $(document).on('mouseenter focus', '[data-tip],[data-tip-title]', function () {
     var title = this.getAttribute('data-tip-title'), body = this.getAttribute('data-tip');
@@ -912,52 +869,6 @@ mark { padding: 0 1px; background: #ffe08a; }
     .on('click', '.qv-more', function () { var c = $(this).prev('.ans-text').toggleClass('clamped').hasClass('clamped'); $(this).text(c ? 'Read more' : 'Show less'); })
     .on('click', '.qv-who', function () { showRespondent($(this).data('id'), $(this).data('code')); });
 
-  /* View 3: Matrix view */
-  function renderMatrixView() {
-    var $v = $('#view-matrix');
-    if (!shown.length || !visibleQs.length) { $v.html('<div class="view-empty">No responses or questions match the current search and filters.</div>'); return; }
-    var html = '';
-    Object.keys(meta.groups).forEach(function (g) {
-      var rows = shown.filter(function (r) { return r.group === g; }), qs = visibleQs.filter(function (q) { return q.group === g; });
-      if (!rows.length || !qs.length) return;
-      html += '<div class="mx-group">' + escapeHtml(meta.groups[g]) + '</div>' +
-        '<div class="mx-wrap"><table class="mx-table"><thead><tr><th class="mx-name">' + escapeHtml(meta.groups[g]) + '</th>' + qs.map(function (q) {
-          return '<th title="' + escapeHtml(q.question) + '"><span class="q-code">' + codeLabel(q.code) + '</span><span class="mx-qtext">' + escapeHtml(q.question) + '</span></th>';
-        }).join('') + '</tr></thead><tbody>' + rows.map(function (r) {
-          return '<tr><th class="mx-name" scope="row">' + escapeHtml(r.name) + '<small>' + escapeHtml(r.area) + '</small></th>' + qs.map(function (q) {
-            var a = answer(r, q.code), inner, preview = '';
-            if (!hasAnswer(a)) inner = '<span class="ans-empty">No answer</span>';
-            else if (q.kind === 'options') inner = optionTags(a) + (a.notes.some(function (t) { return $.trim(t); }) ? '<span class="mx-has-note">&para; Explanation</span>' : '');
-            else inner = '<div class="mx-excerpt">' + highlight(escapeHtml($.trim(a.main))) + '</div>';
-            if (hasAnswer(a)) {
-              preview = $.trim(a.notes.filter(function (t) { return $.trim(t); })[0] || a.main || '');
-              if (preview.length > 320) preview = preview.slice(0, 320) + '…';
-            }
-            return '<td class="mx-cell" tabindex="0" role="button" data-id="' + escapeHtml(r.id) + '" data-code="' + q.code + '"' +
-              (preview ? ' data-tip-title="' + escapeHtml(r.name + ' · ' + codeLabel(q.code)) + '" data-tip="' + escapeHtml(preview) + '"' : '') + '><div class="mx-inner">' + inner + '</div></td>';
-          }).join('') + '</tr>';
-        }).join('') + '</tbody></table></div>';
-    });
-    $v.html(html);
-    $v.find('.mx-inner').each(function () {
-      if (this.scrollHeight > this.clientHeight + 2) $(this).addClass('is-cut').after('<span class="mx-cut-hint">Click to see all</span>');
-    });
-  }
-  var modalTarget = null;
-  $('#view-matrix').on('click keydown', '.mx-cell', function (e) {
-    if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
-    e.preventDefault();
-    var r = byId[$(this).data('id')], q = qByCode[$(this).data('code')];
-    modalTarget = { id: r.id, code: q.code };
-    $tip.removeClass('show');
-    $('#detailModalTitle').html(escapeHtml(r.name) + '<small>' + escapeHtml(meta.groups[r.group]) + ' · ' + escapeHtml(r.area) + '</small>');
-    $('#detailModalBody').html('<div class="dm-q"><span class="q-code">' + codeLabel(q.code) + '</span>' + escapeHtml(q.question) + '</div>' + answerHtml(r, q, false));
-    $('#detailModal').modal('show');
-  });
-  $('#detailOpenResponse').on('click', function () {
-    var t = modalTarget;
-    $('#detailModal').one('hidden.bs.modal', function () { if (t) showRespondent(t.id, t.code); }).modal('hide');
-  });
 
   /* View 0: Policy view — the named policies catalogued in data/digitalization_policies.json.
      Names, descriptions and listed items are the respondents' own words (see tools/build_policies.py);
@@ -1162,7 +1073,7 @@ mark { padding: 0 1px; background: #ffe08a; }
     return !!policyCat && policyCat.policies.some(function (p) { return p.respondent === r.id && cs.indexOf(pvCountry(p)) !== -1; });
   }
 
-  function render() { if (view === 'policy') renderPolicyView(); else if (view === 'response') renderResponseView(); else if (view === 'question') renderQuestionView(); else renderMatrixView(); }
+  function render() { if (view === 'policy') renderPolicyView(); else if (view === 'response') renderResponseView(); else renderQuestionView(); }
   function setView(v) {
     view = v;
     $('.view-tab').each(function () { var on = $(this).data('view') === v; $(this).toggleClass('active', on).attr('aria-selected', String(on)); });
