@@ -176,6 +176,8 @@ body { margin: 0; background: #f5f5f5; }
 .filter-item .bootstrap-select > .dropdown-toggle .filter-option-inner-inner { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .filter-item .bootstrap-select .caret { display: none !important; }
 .filter-item .bootstrap-select > .dropdown-toggle::after { content: "\25BC"; position: absolute; top: 0; right: 0; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fff; background: var(--teal); border: none; margin: 0; }
+/* long lists: scroll inside the menu only; never pass the wheel/touch scroll on to the page */
+.bootstrap-select .dropdown-menu .inner { overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
 .bootstrap-select .dropdown-menu { min-width: 100%; padding: 0 !important; border-radius: 0 !important; z-index: 9000 !important; }
 .bootstrap-select .dropdown-menu li a { padding: 9px 14px !important; font-size: 13px !important; line-height: 1.45; white-space: normal; }
 .bootstrap-select .dropdown-menu li a span.text { white-space: normal; }
@@ -656,6 +658,22 @@ mark { padding: 0 1px; background: #ffe08a; }
 
   function bindFilters() {
     $('.filter-item .selectpicker').on('changed.bs.select', applyFilters);
+    /* Fit each open filter menu inside the window, so its last item can always be reached without
+       scrolling the page (bootstrap-select sizes the list once, before the panel settles). */
+    function fitSelectMenu(sel) {
+      var $bs = $(sel).closest('.bootstrap-select'), $menu = $bs.children('.dropdown-menu'), $inner = $menu.children('.inner');
+      if (!$inner.length) return;
+      var t = $bs.children('.dropdown-toggle')[0].getBoundingClientRect(),
+          extra = $menu.outerHeight() - $inner.outerHeight(),
+          below = window.innerHeight - t.bottom - 12, above = t.top - 12,
+          up = below - extra < 220 && above > below;
+      $bs.toggleClass('dropup', up);
+      var room = (up ? above : below) - extra;
+      $inner.css({ 'max-height': Math.max(140, Math.min(room, 420)) + 'px', 'overflow-y': 'auto' });
+      $menu.css({ 'max-height': 'none', 'overflow': 'hidden' });
+    }
+    $(document).on('shown.bs.select loaded.bs.select', '.filter-item .selectpicker', function () { fitSelectMenu(this); });
+    $(window).on('resize', function () { $('.filter-item .bootstrap-select.open .selectpicker').each(function () { fitSelectMenu(this); }); });
     $('#keywordInput').on('input', function () { keyword = $.trim(this.value); applyFilters(); });
     $('#btnClear').on('click', function () {
       $('#f-country, #f-area, #f-respondent, #f-theme, #f-question').selectpicker('val', []);
