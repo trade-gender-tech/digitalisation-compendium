@@ -3,7 +3,7 @@
 window.DIGITALIZATION_COMPENDIUM_DATA = {
  "meta": {
   "title": "Empowering Women to Trade through Digitalization: Policy Insights Compendium",
-  "generated_at": "2026-10-23",
+  "generated_at": "2026-11-24",
   "groups": {
    "members": "WTO Members",
    "stakeholders": "WTO stakeholders"

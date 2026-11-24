@@ -53,7 +53,7 @@ README.md                           This file
 data/
   digitalization_data.json          Questionnaire responses, loaded by index.html
   digitalization_data.js            The same data as a script, used only when index.html is opened from disk
-  digitalization_policies.json      Policy view catalogue, written by tools/build_policies.py
+  digitalization_policies.json      Policy view catalogue, written by tools/excel_to_json.py from the policies Excel
   digitalization_policies.js        The same catalogue as a script, used only when index.html is opened from disk
 images/
   site-header.png, site-footer.png  WTO site header and footer (stand-ins for the wto.org template)
@@ -63,17 +63,19 @@ images/
   pillar-1…4.png, purpose-*.png     Illustrations of the objective and Theme cards
 downloads/
   digitalization-compendium.xlsx    The compendium in Excel; also the source of the data files
-  digitalization-policies.xlsx      The policy catalogue in Excel (written by tools/build_policies.py), offered in the Policy view
+  digitalization-policies.xlsx      The policy catalogue in Excel, offered in the Policy view; the source of data/digitalization_policies.*
 tools/
   questionnaire_to_excel.py         Builds the compendium Excel from the raw questionnaire exports
-  excel_to_json.py                  Rebuilds data/digitalization_data.json and .js from the Excel file
-  build_policies.py                 Builds data/digitalization_policies.json and .js and checks every quote
+  excel_to_json.py                  Rebuilds the four data files in data/ from the two Excel files
+  build_policies.py                 Writes the policies Excel from the curated catalogue, checks every quote, then converts it
   policy_catalogue/                 The policy catalogue, one file per respondent (curated; see below)
   requirements.txt                  Python package needed by both tools
 vendor/                             jquery/  bootstrap/  bootstrap-select/  open-sans/
 ```
 
 All paths in `index.html` are relative, so the folder works wherever it is copied.
+
+**Web-team package.** The package for the WTO web team (`Digitalisation Compendium.zip`) is built from this folder in the same form as the Access to Finance and IWG packages: dashed "Header here" / "Footer here" placeholders instead of the header and footer images and breadcrumbs, only `excel_to_json.py` and `requirements.txt` in `tools/`, and its own README for the web team.
 
 ---
 
@@ -120,7 +122,7 @@ The script was checked cell by cell against the current exports: all 1,149 kept 
 python3 tools/excel_to_json.py
 ```
 
-Then refresh `index.html`. The Excel file can also be edited by hand, followed by this step; keep the sheet names and the coded column headers.
+It converts **both** Excel files: `downloads/digitalization-compendium.xlsx` → `data/digitalization_data.json` / `.js`, and `downloads/digitalization-policies.xlsx` → `data/digitalization_policies.json` / `.js`. Then refresh `index.html`. Either Excel file can also be edited by hand, followed by this step; keep the sheet names and header rows. The policies file is checked against the compendium before anything is written (every respondent, question code and label must exist), and a policy whose name, description or item is no longer found word for word in the answers is reported as a warning. The page reads only the JSON files (the `.js` copies only when opened from disk); it never reads the Excel files.
 
 ### 3. Rebuild the policy catalogue
 
@@ -128,7 +130,7 @@ Then refresh `index.html`. The Excel file can also be edited by hand, followed b
 python3 tools/build_policies.py
 ```
 
-Run it after every data rebuild. It also rewrites `downloads/digitalization-policies.xlsx`. It stops with a list of errors if any catalogued name, description, listed item or link is no longer found word for word in the answers, so the Policy view can never show text that differs from the responses. New responses are **not** catalogued automatically: add a file for the new respondent in `tools/policy_catalogue/` (see below).
+Run it after every data rebuild. It rewrites `downloads/digitalization-policies.xlsx` and then converts it with `tools/excel_to_json.py` (after checking that the Excel converts back to exactly the same catalogue), so the Excel stays the source of the page data. It stops with a list of errors if any catalogued name, description, listed item or link is no longer found word for word in the answers, so the Policy view can never show text that differs from the responses. New responses are **not** catalogued automatically: add a file for the new respondent in `tools/policy_catalogue/` (see below).
 
 ### The policy catalogue
 Each file in `tools/policy_catalogue/` lists the policies named in one response. An entry points at the respondent's own text rather than copying it: the policy name as written, and the start and end of the passage that describes it (`x=(start, end)`) in a given answer (`q='Q9'`). The builder copies the passage between those two phrases from the data, so the description is always the respondent's wording. The labels (`t` instrument type, `a` policy areas, `g` target groups, `s` scope, `c` country for stakeholder answers) are the editorial part and use the codes listed at the top of `tools/build_policies.py`. The current catalogue (November 2026) covers 247 policies from 19 respondents; the responses of China, Mauritius and the Institute of International Studies (University of Chile) give links or general descriptions without naming specific policies.
@@ -148,7 +150,7 @@ The About text (taken from the joint communication), the survey period, and the 
 | Library | Version | Used for | Licence |
 |---|---|---|---|
 | jQuery | 3.7.1 | DOM and events | MIT |
-| Bootstrap | 3.4.1 | Base CSS, pop-up (`wto.css` replaces the CSS on wto.org) | MIT |
+| Bootstrap | 3.4.1 | Base CSS, dropdown JS (`wto.css` replaces the CSS on wto.org) | MIT |
 | bootstrap-select | 1.13.18 | Searchable, multi-select filter dropdowns | MIT |
 | Open Sans | variable, 400/600/700 | Page font (self-hosted) | SIL Open Font License 1.1 |
 

@@ -15,7 +15,7 @@
     index.html                        this page
     data/digitalization_data.json     the questionnaire responses (verbatim), loaded by this page
     data/digitalization_data.js       the same data as a script, used only when the page is opened from disk
-    data/digitalization_policies.json the Policy view catalogue (tools/build_policies.py); .js twin for file://
+    data/digitalization_policies.json the Policy view catalogue, loaded by this page; .js twin for file://
     images/                           site header/footer, hero background, illustrations
     vendor/                           third-party libraries and fonts
     downloads/                        the compendium in Excel (hero) and the policy catalogue in Excel (Policy view)
@@ -32,7 +32,7 @@
 
   Page layout:
     site header (image)   →  replaced by the WTO site header on wto.org
-    main.digi-compendium  →  breadcrumbs, hero, Background, Questionnaire Themes,
+    main.digi-compendium  →  breadcrumbs, hero, About the Compendium, Themes,
                              How to Use, database (Policy / Response / Question views)
     site footer (image)   →  replaced by the WTO site footer on wto.org
   =============================================================================
@@ -890,7 +890,7 @@ mark { padding: 0 1px; background: #ffe08a; }
 
 
   /* View 0: Policy view — the named policies catalogued in data/digitalization_policies.json.
-     Names, descriptions and listed items are the respondents' own words (see tools/build_policies.py);
+     Names, descriptions and listed items are the respondents' own words (from downloads/digitalization-policies.xlsx, see README.md);
      the instrument type, policy areas, scope and target groups are classification labels added for browsing.
      Layout: a "policy landscape" strip (one tile per policy area), side filters, and a compact list in which
      each policy is one line that opens to show its description. */
@@ -1111,7 +1111,7 @@ mark { padding: 0 1px; background: #ffe08a; }
   var DATA_JSON = 'data/digitalization_data.json', DATA_SCRIPT = 'data/digitalization_data.js', DATA_VARIABLE = 'DIGITALIZATION_COMPENDIUM_DATA';
   var POLICIES_JSON = 'data/digitalization_policies.json', POLICIES_SCRIPT = 'data/digitalization_policies.js', POLICIES_VARIABLE = 'DIGITALIZATION_POLICIES';
 
-  function loadPolicies(done) {   /* the Policy view catalogue (tools/build_policies.py); the page works without it */
+  function loadPolicies(done) {   /* the Policy view catalogue (data/digitalization_policies.json); the page works without it */
     function fromScript() {
       var el = document.createElement('script');
       el.src = POLICIES_SCRIPT;
